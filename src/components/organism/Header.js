@@ -7,7 +7,7 @@ const StyledHeader = styled.header`
   width: 100%;
   height: 3.5rem;
   background-color: white;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid ${({ theme }) => theme.color.gray02};
   display: flex;
   justify-content: center;
 `;
@@ -26,10 +26,6 @@ const Menu = styled.ul`
   gap: 1rem;
 `;
 
-const SubMenu = styled.ul`
-  border: 1px solid black;
-`;
-
 export default function Header() {
   return (
     <StyledHeader>
@@ -39,9 +35,10 @@ export default function Header() {
         <div>
           <Menu>
             <li>
-              <Link to="/request">
-                {/* 로고 파일 svg? img? */}
-                <h4>BugBusters</h4>
+              {/* 로그인 하기 전이면 landing / 했으면 잡아줘요 
+              무서버(유저)면 글작성 Request page / 버스터는 작성 목록 */}
+              <Link to="/landing">
+                <img width="120px" src="img/logo.png" alt="" />
               </Link>
             </li>
             <li>
@@ -59,25 +56,14 @@ export default function Header() {
               <Link to="/chat">채팅</Link>
             </li>
             <li>
-              <Link to="/signin">로그인</Link>
+              <Link to="/sign-in">로그인</Link>
             </li>
             <li>
-              <Link to="/signup">회원가입</Link>
+              <Link to="/sign-up">회원가입</Link>
             </li>
-            <li>
-              {/* 클릭시 아래 SubMenu 나타남 */}
-              <button>username님</button>
-              <div>
-                <SubMenu>
-                  <li>
-                    <Link to="/signout">로그아웃</Link>
-                  </li>
-                  <li>
-                    <Link to="/MyPage">마이페이지</Link>
-                  </li>
-                </SubMenu>
-              </div>
-            </li>
+            <button>
+              유저님
+            </button>
           </Menu>
         </div>
       </InnerHeader>

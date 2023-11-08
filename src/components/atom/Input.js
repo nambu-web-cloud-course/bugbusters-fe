@@ -1,7 +1,16 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Input = styled.input`
-  width: ${props => (props.$width === "full" ? "100%" : "13rem")};
+const fullWidthStyle = css`
+  ${(props) =>
+    props.fullwidth &&
+    css`
+      width: 100%;
+      justify-content: center;
+    `}
+`;
+
+const StyledInput = styled.input`
+  width: 13rem;
   padding: 1rem;
   height: 3rem;
   font-size: 0.9375rem;
@@ -11,6 +20,10 @@ const Input = styled.input`
   border: none;
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.color.gray01};
+
+  ${fullWidthStyle}
 `;
 
-export default Input;
+export default function Input({ fullwidth, ...rest }) {
+  return <StyledInput fullwidth={fullwidth} {...rest}></StyledInput>;
+}
