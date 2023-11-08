@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { darken, lighten } from "polished";
+import { useState } from "react";
 
 const colorStyles = css`
   ${({ theme, color }) => {
@@ -23,6 +24,19 @@ const colorStyles = css`
             color: white;
           }
         `}
+        ${({ clicked }) =>
+        clicked &&
+        css`
+          background: ${buttonColor};
+          color: white;
+        `}
+      ${(props) =>
+        props.color === "lightgreen" &&
+        css`
+          color: ${theme.color.darkgreen};
+        `}
+
+      
     `;
   }}
 `;
@@ -51,10 +65,17 @@ const sizeStyles = css`
 
 const fullWidthStyle = css`
   ${(props) =>
-    props.fullWidth &&
+    props.fullwidth &&
     css`
       width: 100%;
       justify-content: center;
+    `}
+`;
+
+const width = css`
+  ${(props) =>
+    css`
+      width: ${props.width};
     `}
 `;
 
@@ -70,6 +91,7 @@ const StyledButton = styled.button`
 
   /* 크기 */
   ${sizeStyles}
+  ${width}
 
   /* 색상 */
   ${colorStyles}
@@ -77,21 +99,29 @@ const StyledButton = styled.button`
   ${fullWidthStyle}
 `;
 
-
 export default function Button({
   children,
   color,
   size,
   outline,
-  fullWidth,
+  fullwidth,
+  width,
   ...rest
 }) {
+  const [clicked, setClicked] = useState(false);
+  const handleClick = () => {
+    setClicked(!clicked);
+  };
+
   return (
     <StyledButton
       color={color}
       size={size}
       outline={outline}
-      fullWidth={fullWidth}
+      fullwidth={fullwidth}
+      width={width}
+      clicked={clicked}
+      onClick={handleClick}
       {...rest}
     >
       {children}

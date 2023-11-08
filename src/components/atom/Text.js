@@ -11,6 +11,13 @@ const Text = styled.textarea`
   border-radius: 0.5rem;
   border: none;
   background: ${({ theme }) => theme.color.gray01};
+  margin-bottom: 0.5rem;
 `;
 
-export default Text;
+const CountText = styled.p`
+  font-size: ${({ theme }) => theme.size.font.sm};
+  color: ${({ theme }) => theme.color.gray03};
+  text-align: right;
+`;
+
+export { Text, CountText };

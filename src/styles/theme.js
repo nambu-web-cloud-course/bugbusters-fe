@@ -17,13 +17,11 @@ const color = {
   darkgreen: "#385D1A",
   green: "#82CD2B",
   lightgreen: "#DDF0BD",
-  black: "#000",
   gray05: "#333",
   gray04: "#4F4F4F",
   gray03: "#828282",
   gray02: "#E0E0E0",
   gray01: "#F4F4F4",
-  white: "#fff",
   bg: "fafafa",
 };
 
@@ -31,4 +29,5 @@ const theme = {
   size,
   color,
 };
+
 export default theme;

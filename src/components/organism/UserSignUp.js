@@ -4,10 +4,10 @@ import Input from "../components/atom/Input";
 import Label from "../components/atom/Label";
 import InputGroup from "../components/molecule/InputGroup";
 
-export default function SignIn() {
+export default function UserSignUp() {
   return (
     <div className="Content">
-      <h1>로그인</h1>
+      <h1>무서버 회원가입</h1>
       <Container $size="sm">
         <InputGroup>
           <Label>아이디</Label>

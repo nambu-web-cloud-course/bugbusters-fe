@@ -25,8 +25,7 @@ const GlobalStyle = createGlobalStyle`
     a, dl, dt, dd, ol, ul, li, form, label, table{
         margin: 0;
         padding: 0;
-        border: 0;
-        vertical-align: baseline;
+        border: 0;        
     }
 
     h1 {
@@ -42,8 +41,7 @@ const GlobalStyle = createGlobalStyle`
     }
     body{
         padding-top: 64px;
-        line-height: 1;
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 400;
         font-family: 'Noto Sans KR', sans-serif;
         background-color: #fafafa;
@@ -54,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
     }
     button {
         border: 0;
+        font-size: 0.9rem;
         background: transparent;
         cursor: pointer;
     }

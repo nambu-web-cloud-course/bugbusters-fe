@@ -3,12 +3,16 @@ import Text from "../components/atom/Text";
 import Input from "../components/atom/Input";
 import Label from "../components/atom/Label";
 import Button from "../components/atom/Button";
+import Tabs from "../components/molecule/Tabs";
+import Tab from "../components/atom/Tab";
 
 export default function TradeList() {
   return (
     <div className="Content">
       <h1>이용내역</h1>
-      <Container>{/* 리스트 매핑 */}</Container>
+      
+      <Tabs />
+      <Container></Container>
     </div>
   );
 }
