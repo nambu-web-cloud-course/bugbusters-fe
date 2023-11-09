@@ -24,19 +24,11 @@ const colorStyles = css`
             color: white;
           }
         `}
-        ${({ clicked }) =>
-        clicked &&
-        css`
-          background: ${buttonColor};
-          color: white;
-        `}
       ${(props) =>
         props.color === "lightgreen" &&
         css`
           color: ${theme.color.darkgreen};
         `}
-
-      
     `;
   }}
 `;

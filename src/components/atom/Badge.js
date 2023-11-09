@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 
-const Badge = styled.span`
+const StyledBadge = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: 500;
   border-radius: 0.5rem;
@@ -8,4 +9,10 @@ const Badge = styled.span`
   color: ${({ theme }) => theme.color.darkgreen};
 `;
 
-export default Badge;
+export default function Badge() {
+  return (
+    <StyledBadge>
+      <BugReportRoundedIcon />
+    </StyledBadge>
+  );
+}

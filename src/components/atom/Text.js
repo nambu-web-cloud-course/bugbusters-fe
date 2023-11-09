@@ -14,10 +14,10 @@ const Text = styled.textarea`
   margin-bottom: 0.5rem;
 `;
 
-const CountText = styled.p`
+const SmallText = styled.p`
   font-size: ${({ theme }) => theme.size.font.sm};
   color: ${({ theme }) => theme.color.gray03};
   text-align: right;
 `;
 
-export { Text, CountText };
+export { Text, SmallText };

@@ -25,5 +25,5 @@ const StyledInput = styled.input`
 `;
 
 export default function Input({ fullwidth, ...rest }) {
-  return <StyledInput fullwidth={fullwidth} {...rest}></StyledInput>;
+  return <StyledInput fullwidth={fullwidth} {...rest}/>
 }

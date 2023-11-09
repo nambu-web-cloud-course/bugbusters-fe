@@ -7,17 +7,14 @@ import Landing from "./pages/Landing";
 import Request from "./pages/Request";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import SignUpDetail from "./pages/SignUpDetail";
 import TradeList from "./pages/TradeList";
 import Header from "./components/organism/Header";
 import theme from "./styles/theme";
 import Image from "./components/atom/Image";
 import Review from "./pages/Review";
 import MyPage from "./pages/MyPage";
-
-// import Button from "./components/atom/Button";
-// import Badge from "./components/atom/Badge";
-// import Container from "./components/atom/Container";
-// import Input from "./components/atom/Input";
+import SignInSuccess from "./pages/SignIn";
 
 const App = () => {
   return (
@@ -26,14 +23,15 @@ const App = () => {
         <Router>
           <GlobalStyle />
           <Header />
-
           <Routes>
             <Route path="/" element={<Request />} />
             <Route path="/landing" element={<Landing />} />
             <Route path="/request" element={<Request />} />
             <Route path="/trade-list" element={<TradeList />} />
             <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-in-success" element={<SignInSuccess />} />
             <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/sign-up/:usertype" element={<SignUpDetail />} />
             <Route path="/chat" element={<Chatting />} />
           </Routes>
         </Router>
