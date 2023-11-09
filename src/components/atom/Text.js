@@ -17,7 +17,7 @@ const Text = styled.textarea`
 const SmallText = styled.p`
   font-size: ${({ theme }) => theme.size.font.sm};
   color: ${({ theme }) => theme.color.gray03};
-  text-align: right;
+  text-align: left;
 `;
 
 export { Text, SmallText };

@@ -1,41 +1,35 @@
-import { useState } from "react";
 import Button from "../components/atom/Button";
 import Container from "../components/atom/Container";
-import Input from "../components/atom/Input";
-import Label from "../components/atom/Label";
-import InputGroup from "../components/molecule/InputGroup";
+
 import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [account, setAccount] = useState({
-    userid: "",
-    password: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = async (e) => {
-    e.preventDefault();
-    setAccount({
-      ...account,
-      [e.target.name]: e.target.value,
-    });
-    console.log(account);
-  };
-
-  const handleSubmit = async () => {
-    // header에 bearer
+  console.log(watch());
+  const onSubmit = async (data) => {
+    // header에 bearer, authorization 추가
     try {
-      const res = await axios.post(
-        "http://localhost:8080/auth/sign-in",
-        account
-      );
+      const res = await axios.post("/auth/sign-in", data);
+      // sign-up 하고 토큰값 저장하기
+      // {
+      //   headers: {
+      //     Authorization: token,
+      //   },
+      // });
       console.log(res.data);
       if (res.data.success) {
-        // 이부분 완성시키기
-        navigate("/sign-in-success");
+        navigate("/trade-list");
       }
-      // alert("로그인 성공", res.data);
     } catch (err) {
       console.log(err);
     }
@@ -44,27 +38,25 @@ export default function SignIn() {
   return (
     <div className="Content">
       <h1>로그인</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Container $size="sm">
-          <InputGroup>
-            <Label>아이디</Label>
-            <Input
-              placeholder={"아이디를 입력하세요."}
-              fullwidth
-              onChange={handleChange}
-              name="userid"
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>비밀번호</Label>
-            <Input
-              type="password"
-              placeholder={"아이디를 입력하세요."}
-              fullwidth
-              onChange={handleChange}
-              name="password"
-            />
-          </InputGroup>
+          <label htmlFor="userid">아이디</label>
+          <input
+            {...register("userid", { required: true })}
+            placeholder={"아이디를 입력하세요."}
+            id="userid"
+            fullwidth
+          />
+
+          <label htmlFor="password">비밀번호</label>
+          <input
+            type="password"
+            {...register("password", { required: true })}
+            placeholder={"비밀번호를 입력하세요."}
+            id="password"
+            fullwidth
+          />
+
           <Button color="green" size="lg" fullwidth>
             로그인
           </Button>

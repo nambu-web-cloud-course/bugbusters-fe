@@ -8,10 +8,7 @@ const GlobalStyle = createGlobalStyle`
   display: flex;
   justify-content: center;
   align-items: center;
-  }
-
-  .Content {
-    margin-top: 3rem;
+  margin-top: 3rem;
   }
 
     a{
@@ -27,6 +24,8 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         border: 0;        
     }
+
+
 
     h1 {
       font-size: 2.5rem;
@@ -56,6 +55,48 @@ const GlobalStyle = createGlobalStyle`
         background: transparent;
         cursor: pointer;
     }
+    input {
+    width: 100%;
+    padding: 1rem;
+    height: 3rem;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    letter-spacing: -0.01563rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: ${({ theme }) => theme.color.gray01};
+    }
+
+    label {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+
+[type="radio"] {
+  vertical-align: middle;
+  appearance: none;
+  border: max(5px, 0.1em) solid  ${({ theme }) => theme.color.gray02} ;
+  border-radius: 50%;
+  width: 1.25em;
+  height: 1.25em;
+}
+
+[type="radio"]:checked {
+  border: 5px solid ${({ theme }) => theme.color.green};
+}
+
+[type="radio"]:hover {
+  cursor: pointer;
+}
+
+[type="radio"]:disabled {
+  background-color: lightgray;
+  box-shadow: none;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
 `;
 
 export default GlobalStyle;

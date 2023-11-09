@@ -1,4 +1,4 @@
-import {Items, GapItems} from "../atom/Items";
+import { Items, GapItems } from "../atom/Items";
 import Tab from "../atom/Tab";
 
 export default function Tabs() {

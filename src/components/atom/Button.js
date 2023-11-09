@@ -91,6 +91,8 @@ const StyledButton = styled.button`
   ${fullWidthStyle}
 `;
 
+// 이미지 버튼 추가
+
 export default function Button({
   children,
   color,

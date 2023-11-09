@@ -7,6 +7,7 @@ const Items = styled.div`
 `;
 const GapItems = styled(Items)`
   gap: 0.5rem;
+  margin: 0 auto;
 `;
 
 export { Items, GapItems };

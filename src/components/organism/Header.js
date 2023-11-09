@@ -44,6 +44,7 @@ export default function Header() {
             <li>
               <Link to="/request">잡아줘요</Link>
             </li>
+            {/* 로그인 한 경우에만 보여주기 */}
             <li>
               <Link to="/trade-list">이용내역</Link>
             </li>
@@ -53,6 +54,7 @@ export default function Header() {
         <div>
           <Menu>
             <li>
+              {/* 로그인 한 경우에만 보여주기 */}
               <Link to="/chat">채팅</Link>
             </li>
             <li>
@@ -61,9 +63,8 @@ export default function Header() {
             <li>
               <Link to="/sign-up">회원가입</Link>
             </li>
-            <button>
-              유저님
-            </button>
+            {/* 로그인 토큰이 있으면 보여주기, */}
+            {/* <span style={{cursor: "pointer"}}><span>유저 이름</span>님</span> */}
           </Menu>
         </div>
       </InnerHeader>
