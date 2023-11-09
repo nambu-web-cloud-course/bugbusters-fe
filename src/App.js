@@ -14,7 +14,7 @@ import theme from "./styles/theme";
 import Image from "./components/atom/Image";
 import Review from "./pages/Review";
 import MyPage from "./pages/MyPage";
-import SignInSuccess from "./pages/SignIn";
+import SignInSuccess from "./pages/SignInSuccess";
 
 const App = () => {
   return (

@@ -15,20 +15,20 @@ export default function SignUpForm(props) {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const res = await axios.post("/sign-up", data);
+      const res = await axios.post("http://localhost:8080/auth/sign-up", data);
       // 유저 타입에 따라서 이동 페이지 분기
-      if (res.success) {
+      if (res.data.success) {
         if (props.usertype === "user") {
           navigate("/sign-in");
-        } else {
-          navigate("/register-buster");
-        }
+        } 
+        // else {
+        //   navigate("/register-buster");
+        // }
       }
     } catch (err) {
       console.log(err);
     }
   };
-
   console.log(watch());
 
   return (
@@ -65,6 +65,10 @@ export default function SignUpForm(props) {
         <label>시군구</label>
         <input {...register("sigungu")} value="양천구" />
       </InputGroup>
+      <InputGroup>
+        <label>서울시</label>
+        <input {...register("sido")} value="서울시" />
+      </InputGroup>
       <select {...register("gender")}>
         <label>성별</label>
         <option value="F">여자</option>
@@ -73,6 +77,10 @@ export default function SignUpForm(props) {
       <InputGroup>
         <label>휴대폰번호</label>
         <input {...register("phone")} value="010-1234-5678" />
+      </InputGroup>
+      <InputGroup>
+        <label>유저타입</label>
+        <input {...register("usertype")} value="C" />
       </InputGroup>
 
       <label>

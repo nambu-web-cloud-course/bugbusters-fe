@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignIn() {
   const navigate = useNavigate();
   const [account, setAccount] = useState({
-    id: "",
+    userid: "",
     password: "",
   });
 
@@ -26,8 +26,16 @@ export default function SignIn() {
   const handleSubmit = async () => {
     // header에 bearer
     try {
-      const res = await axios.post("/sign-in", account);
-      if (res.success) navigate("/sign-in-success");
+      const res = await axios.post(
+        "http://localhost:8080/auth/sign-in",
+        account
+      );
+      console.log(res.data);
+      if (res.data.success) {
+        // 이부분 완성시키기
+        navigate("/sign-in-success");
+      }
+      // alert("로그인 성공", res.data);
     } catch (err) {
       console.log(err);
     }
@@ -44,7 +52,7 @@ export default function SignIn() {
               placeholder={"아이디를 입력하세요."}
               fullwidth
               onChange={handleChange}
-              name="id"
+              name="userid"
             />
           </InputGroup>
           <InputGroup>
