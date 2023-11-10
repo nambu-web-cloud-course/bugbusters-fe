@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3rem;
+  margin: 3rem 0;
   }
 
 
@@ -70,6 +70,15 @@ const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.color.gray01};
     }
 
+    textarea {
+      background: ${({ theme }) => theme.color.gray01};
+      height: 12.5rem;
+      font-size: 0.9375rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: none;
+    }
+
     label {
       font-weight: 700;
       display: block;
@@ -85,7 +94,8 @@ const GlobalStyle = createGlobalStyle`
 }
 
 [type="radio"]:checked {
-  border: 5px solid ${({ theme }) => theme.color.green};
+  background-color:${({ theme }) => theme.color.green}; 
+  border: px solid ${({ theme }) => theme.color.green};
 }
 
 [type="radio"]:hover {

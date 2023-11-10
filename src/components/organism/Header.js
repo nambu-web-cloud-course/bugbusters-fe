@@ -6,6 +6,7 @@ const StyledHeader = styled.header`
   position: fixed;
   width: 100%;
   height: 3.5rem;
+  /* 버스터가 로그인했는가? 헤더 색상 초록색으로 변경 */
   background-color: white;
   border-bottom: 1px solid ${({ theme }) => theme.color.gray02};
   display: flex;
@@ -62,6 +63,9 @@ export default function Header() {
             </li>
             <li>
               <Link to="/sign-up">회원가입</Link>
+            </li>
+            <li>
+              <Link to="/mypage">마이페이지</Link>
             </li>
             {/* 로그인 토큰이 있으면 보여주기, */}
             {/* <span style={{cursor: "pointer"}}><span>유저 이름</span>님</span> */}

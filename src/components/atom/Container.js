@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props) => (props.$dir === "row"? "row" : "column")};
   gap: 1rem;
   width: ${(props) => (props.$size === "sm" ? "28.5rem" : "37.5rem")};
   padding: 2rem;

@@ -1,6 +1,5 @@
 import Button from "../components/atom/Button";
 import Container from "../components/atom/Container";
-
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,18 +14,11 @@ export default function SignIn() {
     formState: { errors },
   } = useForm();
 
-  console.log(watch());
   const onSubmit = async (data) => {
     // header에 bearer, authorization 추가
     try {
       const res = await axios.post("http://localhost:8080/auth/sign-in", data);
-      // sign-up 하고 토큰값 저장하기
-      // {
-      //   headers: {
-      //     Authorization: token,
-      //   },
-      // });
-      console.log(res.data);
+
       if (res.data.success) {
         navigate("/request");
       }
@@ -36,7 +28,7 @@ export default function SignIn() {
   };
 
   return (
-    <div >
+    <div>
       <h1>로그인</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container $size="sm">
