@@ -13,5 +13,4 @@ const Tab = styled.button`
   }
 `;
 
-
 export default Tab;

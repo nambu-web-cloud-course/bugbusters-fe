@@ -11,6 +11,8 @@ const GlobalStyle = createGlobalStyle`
   margin-top: 3rem;
   }
 
+
+
     a{
         text-decoration: none;
         color: inherit;
@@ -71,7 +73,6 @@ const GlobalStyle = createGlobalStyle`
     label {
       font-weight: 700;
       display: block;
-      margin-bottom: 0.8rem;
     }
 
 [type="radio"] {

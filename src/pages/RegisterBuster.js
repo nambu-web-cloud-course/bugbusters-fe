@@ -33,9 +33,8 @@ export default function RegisterBuster() {
   return (
     <div className="Content">
       <h2> 프로필 작성 (2/2)</h2>
-      <Container $size="sm">
         <form onSubmit={handleSubmit(onSubmit)}>
-          
+      <Container $size="sm">
             <label htmlFor="profile">프로필</label>
             <input
               {...register("profile", { required: true })}
@@ -94,8 +93,8 @@ export default function RegisterBuster() {
           <Button color="green" size="lg" fullwidth>
             회원가입
           </Button>
-        </form>
       </Container>
+        </form>
     </div>
   );
 }
