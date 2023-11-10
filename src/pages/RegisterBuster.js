@@ -8,8 +8,7 @@ export default function RegisterBuster() {
   // current URL
   const url = new URL(window.location.href);
   const userid = url.searchParams.get("userid");
-  console.log(userid)
-
+  console.log(`userid: ${userid}`);
   const navigate = useNavigate();
   const {
     register,
@@ -21,16 +20,13 @@ export default function RegisterBuster() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const res = await axios.post(
-        "http://localhost:8080/auth/buster",
-        data
-      );
+      const res = await axios.post("http://localhost:8080/auth/buster", data);
       console.log(res.data);
       if (res.data.success) {
         navigate("/sign-in");
       }
     } catch (err) {
-      console.log(err);
+      console.log(`Buster profile submit error: err`);
     }
   };
 
@@ -56,6 +52,7 @@ export default function RegisterBuster() {
             {...register("selfintro", { required: true })}
             defaultValue="안녕하세요. 버스터입니다."
             id="selfintro"
+            autoFocus
           />
           <label htmlFor="tech">기술</label>
           <input

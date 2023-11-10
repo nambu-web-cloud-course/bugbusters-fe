@@ -18,7 +18,6 @@ export default function SignIn() {
     // header에 bearer, authorization 추가
     try {
       const res = await axios.post("http://localhost:8080/auth/sign-in", data);
-
       if (res.data.success) {
         navigate("/request");
       }
@@ -38,6 +37,7 @@ export default function SignIn() {
             placeholder={"아이디를 입력하세요."}
             id="userid"
             fullwidth
+            autoFocus
           />
           <label htmlFor="password">비밀번호</label>
           <input

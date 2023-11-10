@@ -11,8 +11,6 @@ const GlobalStyle = createGlobalStyle`
   margin: 3rem 0;
   }
 
-
-
     a{
         text-decoration: none;
         color: inherit;
@@ -27,8 +25,6 @@ const GlobalStyle = createGlobalStyle`
         border: 0;        
     }
 
-
-
     h1 {
       font-size: 2.5rem;
       font-weight: 700;
@@ -37,19 +33,23 @@ const GlobalStyle = createGlobalStyle`
     h2 {
       font-size: 2rem
     }
-    p {
-      font-size: 1rem
-    }
+
+
     body{
         padding-top: 64px;
         font-size: 0.9rem;
         font-weight: 400;
         font-family: 'Noto Sans KR', sans-serif;
-        background-color: #fafafa;
-        
+        background-color: #fafafa;   
     }
+
     ol, ul{
         list-style: none;
+        cursor: pointer;
+    }
+    li {
+      list-style-type: none;
+      cursor: pointer;
     }
     button {
         border: 0;
@@ -69,7 +69,6 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 0.5rem;
     background: ${({ theme }) => theme.color.gray01};
     }
-
     textarea {
       background: ${({ theme }) => theme.color.gray01};
       height: 12.5rem;
@@ -78,36 +77,73 @@ const GlobalStyle = createGlobalStyle`
       border-radius: 0.5rem;
       border: none;
     }
-
     label {
       font-weight: 700;
       display: block;
     }
+    
+    .select {
+    display: flex;    
+    }
 
-[type="radio"] {
-  vertical-align: middle;
-  appearance: none;
-  border: max(5px, 0.1em) solid  ${({ theme }) => theme.color.gray02} ;
-  border-radius: 50%;
-  width: 1.25em;
-  height: 1.25em;
-}
+    .tabs {
+      display: flex;
+      margin-top: 2rem;
+    }
+    input[type=radio]{
+    display: none;
+    }
 
-[type="radio"]:checked {
-  background-color:${({ theme }) => theme.color.green}; 
-  border: px solid ${({ theme }) => theme.color.green};
-}
+  /* first-child가 안 되는 이유..? */
+  /* styled로 빼는 게 나을지 고민 */
+  input[type=radio]+label:first-of-type {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
 
-[type="radio"]:hover {
-  cursor: pointer;
-}
+  input[type=radio]+label:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+    .tabs input[type=radio]+label{
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+    border-bottom: 2px solid ${({ theme }) => theme.color.gray02};
+    border-radius: 0;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 400;
+    font-size: 0.9375rem;
+  }
 
-[type="radio"]:disabled {
-  background-color: lightgray;
-  box-shadow: none;
-  opacity: 0.7;
-  cursor: not-allowed;
-}
+  .tabs input[type=radio]:checked+label{
+    border-radius: 0;
+    border-bottom: 2px solid ${({ theme }) => theme.color.green};
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .select input[type=radio]+label{
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+    margin-left: -1px;
+    background-color: white;
+    color: ${({ theme }) => theme.color.green};
+    border: 1px solid ${({ theme }) => theme.color.green};
+    padding: 1rem;
+    text-align: center;
+    font-weight:bold;
+    font-size: 0.9375rem;
+  }
+  .select input[type=radio]:checked+label{
+    background-color: ${({ theme }) => theme.color.green};
+    color:white;
+  }
+
+
+
 `;
 
 export default GlobalStyle;

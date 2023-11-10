@@ -33,6 +33,8 @@ const colorStyles = css`
   }}
 `;
 
+
+
 const sizes = {
   lg: {
     padding: "1rem",
@@ -102,11 +104,6 @@ export default function Button({
   width,
   ...rest
 }) {
-  const [clicked, setClicked] = useState(false);
-  const handleClick = () => {
-    setClicked(!clicked);
-  };
-
   return (
     <StyledButton
       color={color}
@@ -114,8 +111,6 @@ export default function Button({
       outline={outline}
       fullwidth={fullwidth}
       width={width}
-      clicked={clicked}
-      onClick={handleClick}
       {...rest}
     >
       {children}

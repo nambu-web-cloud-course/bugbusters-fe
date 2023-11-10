@@ -21,7 +21,7 @@ export default function MyPage() {
     try {
       // 수정
       const res = await axios.post(
-        "http://localhost:8080/auth/마이페이지",
+        "http://localhost:8080/auth/mypage",
         data
       );
     } catch (err) {
@@ -65,23 +65,13 @@ export default function MyPage() {
             defaultValue="010-1234-5678"
             id="phone"
           />
-          <label htmlFor="gender">성별</label>
-          <fieldset>
-            <input
-              {...register("gender", { required: true })}
-              type="radio"
-              defaultChecked
-              value="F"
-            />
-            <span>여자</span>
-            <input
-              {...register("gender", { required: true })}
-              type="radio"
-              name="gender"
-              value="M"
-            />
-            <span>남자</span>
-          </fieldset>
+           <label htmlFor="birthdate">성별</label>
+           <div className="select">
+            <input {...register("gender")} value="F" type="radio" id="F" />
+            <label htmlFor="F">여자</label>
+            <input {...register("gender")} value="M" type="radio" id="M" />
+            <label htmlFor="M">남자</label>
+          </div>
           <label htmlFor="addr1">주소</label>
           <input
             {...register("addr1", { required: true })}

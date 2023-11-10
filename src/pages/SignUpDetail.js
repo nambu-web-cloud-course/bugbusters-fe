@@ -24,9 +24,8 @@ export default function SignUpDetail() {
     display: hideForm ? "none" : "block",
   };
 
-  // 데이터 서버에 전송
+  // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
-    // res.data.data(유저 정보)를 Context API를 이용해 전역으로 저장해서 관리하고 싶음.
     try {
       const res = await axios.post("http://localhost:8080/auth/sign-up", data);
       const userid = await res.data.userid;
@@ -37,8 +36,9 @@ export default function SignUpDetail() {
       }
       // 버스터 가입
       else if (res.data.success && usertype === "buster") {
-        setHideForm(true);
+        // 유저 아이디 공통 폼 가리기
         navigate(`/buster?userid=${userid}`);
+        setHideForm(true);
       }
     } catch (err) {
       console.log(err);
@@ -56,6 +56,7 @@ export default function SignUpDetail() {
             {...register("userid", { required: true })}
             defaultValue="test1234"
             id="userid"
+            autoFocus
           />
           <label htmlFor="password">비밀번호</label>
           <input
@@ -82,22 +83,18 @@ export default function SignUpDetail() {
             id="phone"
           />
           <label htmlFor="gender">성별</label>
-          <fieldset>
+          <div className="select">
             <input
-              {...register("gender", { required: true })}
-              type="radio"
-              defaultChecked
+              {...register("gender")}
               value="F"
-            />
-            <span>여자</span>
-            <input
-              {...register("gender", { required: true })}
               type="radio"
-              name="gender"
-              value="M"
+              id="F"
+              defaultChecked
             />
-            <span>남자</span>
-          </fieldset>
+            <label htmlFor="F">여자</label>
+            <input {...register("gender")} value="M" type="radio" id="M" />
+            <label htmlFor="M">남자</label>
+          </div>
           <label htmlFor="addr1">주소</label>
           <input
             {...register("addr1", { required: true })}
@@ -120,7 +117,6 @@ export default function SignUpDetail() {
           <input {...register("sigungu")} defaultValue="서울시" />
           <label htmlFor="usertype">유저타입</label>
           <input {...register("usertype")} defaultValue="C" />
-          {/* 내일 삭제 */}
           {hideForm && <RegisterBuster />}
           <Button color="green" size="lg" fullwidth>
             {usertype === "user" ? "회원가입" : "개인정보 입력(1 / 2)"}

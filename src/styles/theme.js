@@ -1,6 +1,3 @@
-// font = {size, weight}
-// gray 더 고민해보기
-
 const size = {
   font: {
     xl: "3rem",

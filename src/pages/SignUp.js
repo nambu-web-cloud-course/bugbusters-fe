@@ -3,6 +3,7 @@ import Button from "../components/atom/Button";
 import Container from "../components/atom/Container";
 
 
+// 가입은 무서버, 버스터로 구분
 export default function SignUp() {
   return (
     <div className="Content">

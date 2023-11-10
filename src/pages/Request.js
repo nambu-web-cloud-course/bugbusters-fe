@@ -1,14 +1,14 @@
 import Container from "../components/atom/Container";
-import { Text, CountText } from "../components/atom/Text";
-import Input from "../components/atom/Input";
 import Button from "../components/atom/Button";
 import { useForm } from "react-hook-form";
-import { GapItems, Items } from "../components/atom/Items";
-import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import axios from "axios";
+import { Text, CountText } from "../components/atom/Text";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 export default function Request() {
+  const navigate = useNavigate()
+  const { user, login, logout } = useAuth();
 
   const {
     register,
@@ -17,12 +17,14 @@ export default function Request() {
     formState: { errors },
   } = useForm();
 
+  // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
     console.log(data);
     try {
       const res = await axios.post("http://localhost:8080/request", data);
+      const userid = await res.data.userid;
       if (res.data.success) {
-        alert("작성 성공");
+        navigate('reqlist')      
       }
     } catch (err) {
       console.log(err);
@@ -34,42 +36,36 @@ export default function Request() {
     <div>
       {/* 유저: 글 작성 컴포넌트 / 버스터: 글 목록 리스트 */}
       <form onSubmit={handleSubmit(onSubmit)}>
-          <h1>잡아줘요</h1>
+        <h1>잡아줘요</h1>
         <Container $size="sm">
           <input
             // style={{ display: "none" }}
             {...register("userid", { required: true })}
-            defaultValue="t1"
             id="userid"
           />
           <label htmlFor="content">요청사항</label>
-          <textarea {...register("content")} defaultValue="요청사항" />
+          <textarea
+            {...register("content")}
+            defaultValue="요청사항"
+            id="content"
+          />
           <label htmlFor="price">가격</label>
-          <input {...register("price")} defaultValue="10000" />
+          <input {...register("price")} defaultValue="10000" id="price" />
           <label htmlFor="gender">성별</label>
-          <fieldset>
+          <div className="select">
             <input
-              {...register("gender", { required: true })}
-              type="radio"
-              defaultChecked
+              {...register("gender")}
               value="A"
-            />
-            <span>성별무관</span>
-            <input
-              {...register("gender", { required: true })}
               type="radio"
-              name="gender"
-              value="F"
+              id="A"
+              defaultChecked
             />
-            <span>여자</span>
-            <input
-              {...register("gender", { required: true })}
-              type="radio"
-              name="gender"
-              value="M"
-            />
-            <span>남자</span>
-          </fieldset>
+            <label htmlFor="A">성별무관</label>
+            <input {...register("gender")} value="F" type="radio" id="F" />
+            <label htmlFor="F">여자</label>
+            <input {...register("gender")} value="M" type="radio" id="M" />
+            <label htmlFor="M">남자</label>
+          </div>
           <label htmlFor="addr1">주소</label>
           <input {...register("addr1")} defaultValue="주소" />
           <label htmlFor="addr2">상세주소</label>

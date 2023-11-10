@@ -1,12 +1,12 @@
-import { Items, GapItems } from "../atom/Items";
-import Tab from "../atom/Tab";
-
 export default function Tabs() {
   return (
-    <Items>
-      <Tab>진행중</Tab>
-      <Tab>취소</Tab>
-      <Tab>완료</Tab>
-    </Items>
+    <div className="tabs">
+      <input name="tab" value="PR" type="radio" id="PR" defaultChecked />
+      <label htmlFor="PR">진행중</label>
+      <input name="tab" value="CA" type="radio" id="CA" />
+      <label htmlFor="CA">취소</label>
+      <input name="tab" value="CP" type="radio" id="CP" />
+      <label htmlFor="CP">완료</label>
+    </div>
   );
 }

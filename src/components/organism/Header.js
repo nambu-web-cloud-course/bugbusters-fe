@@ -47,7 +47,7 @@ export default function Header() {
             </li>
             {/* 로그인 한 경우에만 보여주기 */}
             <li>
-              <Link to="/trade-list">이용내역</Link>
+              <Link to="/reqlist">이용내역</Link>
             </li>
           </Menu>
         </div>

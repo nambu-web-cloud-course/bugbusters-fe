@@ -1,23 +1,34 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Text = styled.textarea`
-  padding: 1rem;
-  width: 100%;
-  height: 12rem;
-  font-size: 0.9375rem;
-  font-weight: 400;
-  line-height: 1.25rem;
-  letter-spacing: -0.01563rem;
-  border-radius: 0.5rem;
-  border: none;
-  background: ${({ theme }) => theme.color.gray01};
-  margin-bottom: 0.5rem;
+// const someStyle = css`
+//   ${theme => {
+//     const buttonColor = theme.color[color];
+//     return css `
+//     `
+//   }}
+// `
+
+const PStyles = css`
+  font-size: ${({ theme, fontSize }) => theme.size.font[fontSize] || "1rem"};
+  font-weight: ${(fontWeight) => fontWeight || 400};
+  color: ${({ theme, textColor }) => theme.color[textColor]};
+  text-align: ${(textAlign) => textAlign || "center"};
 `;
 
-const SmallText = styled.p`
-  font-size: ${({ theme }) => theme.size.font.sm};
-  color: ${({ theme }) => theme.color.gray03};
-  text-align: left;
+const SpanStyles = css`
+  font-size: ${({ theme, fontSize }) =>
+    theme.size.font[fontSize] || "0.875rem"};
+  color: ${({ theme, textColor }) =>
+    theme.color[textColor] || theme.color.gray03};
+  text-align: ${(textAlign) => textAlign || "center"};
 `;
 
-export { Text, SmallText };
+const P = styled.p`
+  ${PStyles}
+`;
+
+const Span = styled.span`
+  ${SpanStyles}
+`;
+
+export { Span, P };
