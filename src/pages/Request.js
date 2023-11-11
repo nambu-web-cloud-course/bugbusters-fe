@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Text, CountText } from "../components/atom/Text";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
+// import { useAuth } from "../AuthContext";
 
 export default function Request() {
-  const navigate = useNavigate()
-  const { user, login, logout } = useAuth();
+  const navigate = useNavigate();
+  // const { user, login, logout } = useAuth();
 
   const {
     register,
@@ -24,7 +24,7 @@ export default function Request() {
       const res = await axios.post("http://localhost:8080/request", data);
       const userid = await res.data.userid;
       if (res.data.success) {
-        navigate('reqlist')      
+        navigate("reqlist");
       }
     } catch (err) {
       console.log(err);
@@ -42,6 +42,7 @@ export default function Request() {
             // style={{ display: "none" }}
             {...register("userid", { required: true })}
             id="userid"
+            defaultValue="a"
           />
           <label htmlFor="content">요청사항</label>
           <textarea

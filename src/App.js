@@ -15,11 +15,11 @@ import theme from "./styles/theme";
 import Image from "./components/atom/Image";
 import Review from "./components/organism/Review";
 import RegisterBuster from "./pages/RegisterBuster";
-import { AuthProvider } from "./AuthContext";
+// import { AuthProvider } from "./AuthContext";
 
 const App = () => {
   return (
-    <AuthProvider>
+    // <AuthProvider>
       <ThemeProvider theme={theme}>
         <div className="App">
           <Router>
@@ -41,7 +41,7 @@ const App = () => {
           </Router>
         </div>
       </ThemeProvider>
-    </AuthProvider>
+    // </AuthProvider>
   );
 };
 
