@@ -1,9 +1,9 @@
 import Container from "../components/atom/Container";
-import UserInfo from "../components/molecule/UserInfo";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import { P, Span } from "../components/atom/Text";
+import UserInfo from "../components/atom/UserInfo";
 
 export default function SignUp() {
   return (

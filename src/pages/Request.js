@@ -37,7 +37,7 @@ export default function Request() {
       {/* 유저: 글 작성 컴포넌트 / 버스터: 글 목록 리스트 */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>잡아줘요</h1>
-        <Container $size="sm">
+        <Container>
           <input
             // style={{ display: "none" }}
             {...register("userid", { required: true })}

@@ -1,11 +1,11 @@
 import Container from "../components/atom/Container";
 import Badge from "../components/atom/Badge";
-import Tabs from "../components/molecule/Tabs";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import { GapItems } from "../components/atom/Items";
 import { Span } from "../components/atom/Text";
+import Tabs from "../components/atom/Tabs";
 // 아이콘 가져오기
 
 export default function ReqList() {

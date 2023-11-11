@@ -15,10 +15,11 @@ export default function SignIn() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    // header에 bearer, authorization 추가
     try {
       const res = await axios.post("http://localhost:8080/auth/sign-in", data);
       if (res.data.success) {
+        console.log("Sign in Success", res.data)
+        // res.data.token, res.data.userid 값 저장
         navigate("/request");
       }
     } catch (err) {
