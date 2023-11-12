@@ -1,14 +1,16 @@
-import Container from "../components/atom/Container";
-import Button from "../components/atom/Button";
+import Container from "../components/common/Container";
+import Button from "../components/common/Button";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Text, CountText } from "../components/atom/Text";
+import { Text, CountText } from "../components/common/Text";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
 
 export default function Request() {
-  const navigate = useNavigate()
-  const { user, login, logout } = useAuth();
+  // userid 가져오기
+  const uid = localStorage.getItem("userid");
+  const userid = JSON.parse(uid);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -17,31 +19,32 @@ export default function Request() {
     formState: { errors },
   } = useForm();
 
+  console.log(watch())
+
   // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
-    console.log(data);
     try {
+      // localStorage면 요청시 헤더에 Bearer 토큰 담는 axios default 값 설정
+      // cookie면 자동으로 요청 헤더에 포함시켜 보내므로 설정 필요 X
       const res = await axios.post("http://localhost:8080/request", data);
-      const userid = await res.data.userid;
       if (res.data.success) {
-        navigate('reqlist')      
+        navigate("/trade-list");
       }
     } catch (err) {
-      console.log(err);
+      console.log("Request Post Error", err);
     }
   };
-  console.log(watch());
 
   return (
-    <div>
-      {/* 유저: 글 작성 컴포넌트 / 버스터: 글 목록 리스트 */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div >
+      <form className="Content" onSubmit={handleSubmit(onSubmit)}>
         <h1>잡아줘요</h1>
-        <Container $size="sm">
+        <Container>
           <input
-            // style={{ display: "none" }}
+            style={{ display: "none" }}
             {...register("userid", { required: true })}
             id="userid"
+            defaultValue={userid}
           />
           <label htmlFor="content">요청사항</label>
           <textarea
@@ -74,7 +77,6 @@ export default function Request() {
           <input {...register("zipcode")} defaultValue="12345" />
           <label htmlFor="sigungu">시군구</label>
           <input {...register("sigungu")} defaultValue="시군구" />
-
           <Button color="green" size="lg" fullwidth>
             글 작성
           </Button>

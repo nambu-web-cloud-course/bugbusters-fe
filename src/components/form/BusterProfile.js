@@ -1,45 +1,47 @@
-import Container from "../components/atom/Container";
-import Button from "../components/atom/Button";
+import Button from "../common/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import Container from "../common/Container";
 
-export default function RegisterBuster() {
+export default function BusterProfile() {
   // current URL
   const url = new URL(window.location.href);
   const userid = url.searchParams.get("userid");
   console.log(`userid: ${userid}`);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  // 공통 회원가입 폼 제출 후 버스터 프로필 제출
+  const handleBusterProfile = async (data) => {
     console.log(data);
     try {
+      // auth/buster에 버스터 프로필 POST 요청
       const res = await axios.post("http://localhost:8080/auth/buster", data);
-      console.log(res.data);
+      console.log("response:", res.data);
       if (res.data.success) {
         navigate("/sign-in");
       }
     } catch (err) {
-      console.log(`Buster profile submit error: err`);
+      console.log("Buster Profile Submit Error", err);
     }
   };
 
   return (
-    <div className="Content">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div>
+      <h1>버스터 회원가입</h1>
+      <form onSubmit={handleSubmit(handleBusterProfile)}>
         <Container $size="sm">
-          <h1>프로필 등록</h1>
           <input
-            style={{ display: "none" }}
-            {...register("user_userid", { required: true })}
+            // style={{ display: "none" }}
+            {...register("userid", { required: true })}
             defaultValue={userid}
-            id="user_userid"
+            id="userid"
           />
           <label htmlFor="profile">프로필</label>
           <input

@@ -1,11 +1,12 @@
-import Button from "../components/atom/Button";
-import Container from "../components/atom/Container";
+import Button from "../components/common/Button";
+import Container from "../components/common/Container";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 export default function SignIn() {
+  // 유저 아이디, 토큰 저장
   const navigate = useNavigate();
   const {
     register,
@@ -15,19 +16,33 @@ export default function SignIn() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    // header에 bearer, authorization 추가
     try {
-      const res = await axios.post("http://localhost:8080/auth/sign-in", data);
+      const res = await axios.post(
+        "http://localhost:8080/auth/sign-in",
+        data
+        //  withCredentials: true, // cookie 사용시
+      );
+
       if (res.data.success) {
+        console.log("Sign in Success", res.data);
+        const userid = res.data.userid;
+        const token = res.data.token;
+
+        // cookie version
+        // 자동으로 요청 헤더에 포함시켜 보내므로 설정 필요 X
+
+        // localStorage version
+        localStorage.setItem("userid", JSON.stringify(userid));
+        localStorage.setItem("token", JSON.stringify(token));
         navigate("/request");
       }
     } catch (err) {
-      console.log(err);
+      console.log("Signin Erorr", err);
     }
   };
 
   return (
-    <div>
+    <div className="Content">
       <h1>로그인</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container $size="sm">

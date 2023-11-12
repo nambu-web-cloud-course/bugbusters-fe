@@ -33,8 +33,6 @@ const colorStyles = css`
   }}
 `;
 
-
-
 const sizes = {
   lg: {
     padding: "1rem",

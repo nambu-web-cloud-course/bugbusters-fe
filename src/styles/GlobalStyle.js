@@ -11,13 +11,24 @@ const GlobalStyle = createGlobalStyle`
   margin: 3rem 0;
   }
 
+  .Content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .tabs {
+      display: flex;
+    }
+
+
     a{
         text-decoration: none;
         color: inherit;
     }
     *{
         box-sizing: border-box;
-    }
+    } 
     html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
     a, dl, dt, dd, ol, ul, li, form, label, table{
         margin: 0;
@@ -38,7 +49,6 @@ const GlobalStyle = createGlobalStyle`
     body{
         padding-top: 64px;
         font-size: 0.9rem;
-        font-weight: 400;
         font-family: 'Noto Sans KR', sans-serif;
         background-color: #fafafa;   
     }
@@ -86,16 +96,11 @@ const GlobalStyle = createGlobalStyle`
     display: flex;    
     }
 
-    .tabs {
-      display: flex;
-      margin-top: 2rem;
-    }
+
     input[type=radio]{
     display: none;
     }
 
-  /* first-child가 안 되는 이유..? */
-  /* styled로 빼는 게 나을지 고민 */
   input[type=radio]+label:first-of-type {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;

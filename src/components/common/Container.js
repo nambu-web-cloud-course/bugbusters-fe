@@ -9,7 +9,6 @@ const Container = styled.div`
   border-radius: 0.5rem;
   background: white;
   border: 1px solid ${({ theme }) => theme.color.gray02};
-  margin-top: 2rem;
 `;
 
 export default Container;

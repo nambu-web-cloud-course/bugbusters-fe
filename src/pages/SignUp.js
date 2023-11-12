@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import Button from "../components/atom/Button";
-import Container from "../components/atom/Container";
+import Button from "../components/common/Button";
+import Container from "../components/common/Container";
 
 
 // 가입은 무서버, 버스터로 구분
 export default function SignUp() {
   return (
-    <div className="Content">
+<div className="Content">
       <h1>회원가입</h1>
       <Container $size="sm">
         <Link to="/sign-up/user">
