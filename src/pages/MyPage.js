@@ -1,5 +1,5 @@
-import Container from "../components/atom/Container";
-import Button from "../components/atom/Button";
+import Container from "../components/common/Container";
+import Button from "../components/common/Button";
 
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -19,13 +19,13 @@ export default function MyPage() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      // 수정
-      const res = await axios.post(
+      // 마이페이지 정보 수정
+      const res = await axios.put(
         "http://localhost:8080/auth/mypage",
         data
       );
     } catch (err) {
-      console.log(err);
+      console.log("MyPage Edit", err);
     }
   };
 

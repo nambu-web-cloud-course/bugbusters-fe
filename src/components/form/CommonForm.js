@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Button from "../atom/Button";
-import Container from "../atom/Container";
+import Button from "../common/Button";
+import Container from "../common/Container";
 
 export default function CommonForm({ handleCommonForm }) {
   // URL의 usertype 파라미터 가져오기

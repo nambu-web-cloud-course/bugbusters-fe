@@ -4,7 +4,7 @@ const Badge = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: ${($padding) => "0.375rem 0.5rem" || $padding };
+  padding: ${(props) => props.$padding || "0.375rem 0.5rem" };
   gap: 0.25rem;
   font-size: ${({ theme }) => theme.size.font};
   font-weight: 500;

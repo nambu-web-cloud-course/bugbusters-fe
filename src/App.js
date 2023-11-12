@@ -8,18 +8,17 @@ import Request from "./pages/Request";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import SignUpDetail from "./pages/SignUpDetail";
-import ReqList from "./pages/ReqList";
+import TradeList from "./pages/TradeList";
 import MyPage from "./pages/MyPage";
-import Header from "./components/atom/Header";
+import Header from "./components/common/Header";
 import theme from "./styles/theme";
-import Image from "./components/atom/Image";
+import Image from "./components/common/Image";
 // import Review from "./components/organism/Review";
-import BusterProfile from "./components/form/BusterProfile";
 // import { AuthProvider } from "./AuthContext";
+import BusterProfile from "./components/form/BusterProfile";
 
 const App = () => {
   return (
-    // <AuthProvider>
       <ThemeProvider theme={theme}>
         <div className="App">
           <Router>
@@ -33,7 +32,7 @@ const App = () => {
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/sign-up/:usertype" element={<SignUpDetail />} />
               <Route path="/request" element={<Request />} />
-              <Route path="/reqlist" element={<ReqList />} />
+              <Route path="/trade-list" element={<TradeList />} />
               <Route path="/buster" element={<BusterProfile />} />
               <Route path="/chat" element={<Chatting />} />
               <Route path="/mypage" element={<MyPage />} />
@@ -41,7 +40,6 @@ const App = () => {
           </Router>
         </div>
       </ThemeProvider>
-    // </AuthProvider>
   );
 };
 

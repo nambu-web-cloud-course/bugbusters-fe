@@ -1,8 +1,8 @@
-import Button from "../atom/Button";
+import Button from "../common/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Container from "../atom/Container";
+import Container from "../common/Container";
 
 export default function BusterProfile() {
   // current URL
@@ -39,9 +39,9 @@ export default function BusterProfile() {
         <Container $size="sm">
           <input
             // style={{ display: "none" }}
-            {...register("user_userid", { required: true })}
+            {...register("userid", { required: true })}
             defaultValue={userid}
-            id="user_userid"
+            id="userid"
           />
           <label htmlFor="profile">프로필</label>
           <input

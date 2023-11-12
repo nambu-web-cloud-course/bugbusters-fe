@@ -1,18 +1,10 @@
 import styled, { css } from "styled-components";
 
-// const someStyle = css`
-//   ${theme => {
-//     const buttonColor = theme.color[color];
-//     return css `
-//     `
-//   }}
-// `
-
 const PStyles = css`
   font-size: ${({ theme, fontSize }) => theme.size.font[fontSize] || "1rem"};
-  font-weight: ${(fontWeight) => fontWeight || 400};
+  font-weight: ${(props) => props.$fontWeight || 400};
   color: ${({ theme, textColor }) => theme.color[textColor]};
-  text-align: ${(textAlign) => textAlign || "center"};
+  text-align: ${(props) => props.$textAlign || "left"};
 `;
 
 const SpanStyles = css`
@@ -20,7 +12,7 @@ const SpanStyles = css`
     theme.size.font[fontSize] || "0.875rem"};
   color: ${({ theme, textColor }) =>
     theme.color[textColor] || theme.color.gray03};
-  text-align: ${(textAlign) => textAlign || "center"};
+  text-align: ${(props) => props.$textAlign || "left"};
 `;
 
 const P = styled.p`
@@ -32,3 +24,4 @@ const Span = styled.span`
 `;
 
 export { Span, P };
+

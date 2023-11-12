@@ -39,13 +39,15 @@ export default function SignUpDetail() {
   };
 
   return (
-    <div>
+    <div className="Content">
       <h1>{isBuster ? "버스터" : "무서버"} 회원가입</h1>
       <Container>
-        <CommonForm
-          handleCommonForm={handleCommonForm}
-          style={{ display: submitCommonForm ? "none" : "block" }}
-        />
+        {submitCommonForm ? (
+          ""
+        ) : (
+          <CommonForm handleCommonForm={handleCommonForm} />
+        )}
+
         {submitCommonForm && isBuster ? <BusterProfile /> : ""}
       </Container>
     </div>
