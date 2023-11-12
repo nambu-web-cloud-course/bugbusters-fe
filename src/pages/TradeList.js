@@ -8,7 +8,7 @@ import { Span } from "../components/common/Text";
 import Tabs from "../components/common/Tabs";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import formatDate from "../utils/formatData";
+import formatDateTime from "../utils/formatDateTime";
 
 export default function TradeList() {
   // 탭 상태 (진행중 PR, 취소 CA, 완료 CP)
@@ -67,7 +67,7 @@ export default function TradeList() {
                 {item.price}
               </Badge>
             </GapItems>
-            <Span>{formatDate(item.createdAt)}</Span>
+            <Span>{formatDateTime(item.createdAt)}</Span>
           </Container>
         ))
       ) : (

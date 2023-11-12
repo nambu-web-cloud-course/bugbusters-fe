@@ -14,7 +14,6 @@ export default function Tabs({ onSelectTab }) {
     onSelectTab(value);
   };
 
-  console.log(selectedTab);
   return (
     <div className="tabs">
       <Tab>

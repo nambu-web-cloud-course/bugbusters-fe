@@ -2,8 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
-import BusterProfile from "../components/form/BusterProfile";
-import CommonForm from "../components/form/CommonForm";
+import BusterProfile from "../components/molecule/BusterProfile";
+import CommonForm from "../components/molecule/CommonForm";
 import { Container } from "@mui/material";
 
 export default function SignUpDetail() {

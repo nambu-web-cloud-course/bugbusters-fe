@@ -57,7 +57,7 @@ const sizeStyles = css`
 
 const fullWidthStyle = css`
   ${(props) =>
-    props.fullwidth &&
+    props.$fullwidth &&
     css`
       width: 100%;
       justify-content: center;
@@ -107,7 +107,7 @@ export default function Button({
       color={color}
       size={size}
       outline={outline}
-      fullwidth={fullwidth}
+      $fullwidth={fullwidth}
       width={width}
       {...rest}
     >

@@ -19,7 +19,6 @@ export default function Request() {
     formState: { errors },
   } = useForm();
 
-  console.log(watch())
 
   // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
