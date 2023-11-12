@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Text, CountText } from "../components/common/Text";
 import { useNavigate } from "react-router-dom";
-
+import FileUpload from "../components/common/FileUpload";
 export default function Request() {
   // userid 가져오기
   const uid = localStorage.getItem("userid");
@@ -77,6 +77,9 @@ export default function Request() {
           <input {...register("zipcode")} defaultValue="12345" />
           <label htmlFor="sigungu">시군구</label>
           <input {...register("sigungu")} defaultValue="시군구" />
+
+          <label htmlFor="addr1">이미지</label>
+          <FileUpload/>
           <Button color="green" size="lg" fullwidth>
             글 작성
           </Button>
