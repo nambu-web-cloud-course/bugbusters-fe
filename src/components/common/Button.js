@@ -14,14 +14,14 @@ const colorStyles = css`
         background: ${darken(0.1, buttonColor)};
       }
       ${(props) =>
-        props.outline &&
+        props.$outline &&
         css`
           color: ${buttonColor};
-          background: none;
+          background: white;
           border: 1px solid ${buttonColor};
           &:hover {
-            background: ${buttonColor};
-            color: white;
+            background:${lighten(0.4, buttonColor)};
+            color: ${buttonColor};
           }
         `}
       ${(props) =>
@@ -106,7 +106,7 @@ export default function Button({
     <StyledButton
       color={color}
       size={size}
-      outline={outline}
+      $outline={outline}
       $fullwidth={fullwidth}
       width={width}
       {...rest}

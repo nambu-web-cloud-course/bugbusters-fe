@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Container from "../common/Container";
-import FileUpload from "../common/FileUpload";
+import ImageUpload from "../common/ImageUpload";
 
 export default function BusterProfile() {
   // current URL
@@ -20,7 +20,6 @@ export default function BusterProfile() {
     formState: { errors },
   } = useForm();
 
-  console.log(watch());
   // 공통 회원가입 폼 제출 후 버스터 프로필 제출
   const handleBusterProfile = async (data) => {
     data.profile = watch("profile");

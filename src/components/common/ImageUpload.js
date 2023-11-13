@@ -3,9 +3,9 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Dropzone from "react-dropzone";
 import axios from "axios";
 
-export default function ImageUpload({setValue}) {
+export default function ImageUpload({ setValue }) {
   const [Images, setImages] = useState([]);
-  
+  console.log(Images)
   const dropHandler = (files) => {
     let formData = new FormData();
 
@@ -15,7 +15,7 @@ export default function ImageUpload({setValue}) {
     formData.append("file", files[0]);
 
     return axios
-      .post("http://localhost:8080/request/image", formData, config)
+      .post("http://localhost:8080/image", formData, config)
       .then((res) => {
         if (res.data.success) {
           console.log(res.data);
@@ -43,11 +43,8 @@ export default function ImageUpload({setValue}) {
               }}
               {...getRootProps()}
             >
-               
-              <input 
-               {...getInputProps()} 
-               />
-               
+              <input {...getInputProps()} />
+
               <AddRoundedIcon style={{ alignSelf: "center" }} />
             </div>
           </section>
@@ -74,5 +71,3 @@ export default function ImageUpload({setValue}) {
     </div>
   );
 }
-
-

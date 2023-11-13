@@ -17,6 +17,7 @@ export default function SignIn() {
 
   const onSubmit = async (data) => {
     try {
+      // 로그인
       const res = await axios.post(
         "http://localhost:8080/auth/sign-in",
         data
@@ -28,12 +29,19 @@ export default function SignIn() {
         const userid = res.data.userid;
         const token = res.data.token;
 
-        // cookie version
-        // 자동으로 요청 헤더에 포함시켜 보내므로 설정 필요 X
+        // 유저 타입 가져오기
+        const userInfo = await axios.get(
+          `http://localhost:8080/auth?userid=${userid}`
+        );
+        console.log("usreInfo", userInfo)
+        const usertype = userInfo.data.data.usertype;
 
-        // localStorage version
+        console.log(`User Info: userid: ${userid}, token: ${token}, usertype: ${usertype}`);
+
+        // 로컬 스토리지에 아이디, 토큰, 유저타입 저장 -> 나중에 객체로 합치기
         localStorage.setItem("userid", JSON.stringify(userid));
         localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem("usertype", JSON.stringify(usertype));
         navigate("/request");
       }
     } catch (err) {

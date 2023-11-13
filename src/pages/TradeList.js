@@ -30,8 +30,12 @@ export default function TradeList() {
     const res = await axios.get(
       `http://localhost:8080/request?userid=${userid}`
     );
-    data = res.data.data;
-    setData(data);
+    if(res.data.success) {
+      data = res.data.data;
+      setData(data);
+    } else {
+      console.group("Signin Data Get Error")
+    }
   };
 
   // 이용내역 페이지 이동시 데이터 가져오기

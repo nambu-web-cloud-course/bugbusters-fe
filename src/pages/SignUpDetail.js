@@ -10,6 +10,7 @@ export default function SignUpDetail() {
   // URL의 usertype 파라미터 가져오기
   const { usertype } = useParams();
   console.log(`usertype: ${usertype}`);
+  
   // URL 파라미터에 따라 무서버/버스터 결정
   const isBuster = usertype === "buster" ? true : false;
 
