@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Container from "../common/Container";
-import ImageUpload from "../common/ImageUpload";
+import FileUpload from "../common/FileUpload";
 
 export default function BusterProfile() {
   // current URL
