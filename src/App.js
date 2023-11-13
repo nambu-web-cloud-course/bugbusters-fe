@@ -12,10 +12,8 @@ import TradeList from "./pages/TradeList";
 import MyPage from "./pages/MyPage";
 import Header from "./components/common/Header";
 import theme from "./styles/theme";
-import Image from "./components/common/Image";
-// import Review from "./components/organism/Review";
-// import { AuthProvider } from "./AuthContext";
 import BusterProfile from "./components/molecule/BusterProfile";
+// import Review from "./components/organism/Review";
 
 const App = () => {
   return (

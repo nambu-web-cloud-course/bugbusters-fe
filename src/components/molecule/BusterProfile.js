@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Container from "../common/Container";
+import ImageUpload from "../common/ImageUpload";
 
 export default function BusterProfile() {
   // current URL
@@ -14,12 +15,17 @@ export default function BusterProfile() {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue, 
     formState: { errors },
   } = useForm();
 
+  console.log(watch());
   // 공통 회원가입 폼 제출 후 버스터 프로필 제출
   const handleBusterProfile = async (data) => {
+    data.profile = watch("profile");
     console.log(data);
+
     try {
       // auth/buster에 버스터 프로필 POST 요청
       const res = await axios.post("http://localhost:8080/auth/buster", data);
@@ -44,10 +50,10 @@ export default function BusterProfile() {
             id="userid"
           />
           <label htmlFor="profile">프로필</label>
-          <input
-            {...register("profile", { required: true })}
-            defaultValue="imgurl"
-            id="profile"
+          <ImageUpload 
+           id="profile"
+           defaultValue="imgurl"
+           setValue={setValue}
           />
           <label htmlFor="selfintro">자기소개</label>
           <input

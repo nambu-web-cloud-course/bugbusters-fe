@@ -48,8 +48,8 @@ export default function ChatRoom() {
     <div className="Content">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container>
-          <Span $textAlign="center">{date}</Span>
           <P>아이디: {userid}</P>
+          <Span $textAlign="center">{date}</Span>
           <div style={{ border: "1px solid black" }}>
             {chatList.map((item, idx) => {
               return (

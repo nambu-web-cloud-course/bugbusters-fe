@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Text, CountText } from "../components/common/Text";
 import { useNavigate } from "react-router-dom";
+import ImageUpload from "../components/common/ImageUpload";
 
 export default function Request() {
   // userid 가져오기

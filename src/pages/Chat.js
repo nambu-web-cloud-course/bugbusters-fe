@@ -27,9 +27,9 @@ export default function Chat() {
         메시지가 없습니다.
       </Container>
       <ChatRoom/>
-      {/* <UserInfo />
+  <UserInfo />
         <P>채팅 첫 메시지</P>
-        <Span>2023-10-11</Span> */}
+        <Span>2023-10-11</Span> 
     </div>
   );
 }
