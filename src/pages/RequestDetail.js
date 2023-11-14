@@ -12,26 +12,14 @@ import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 
-export default function RequestDetail({socket}) {
-  // URL의 requset id 파라미터 가져오기
-  const { id } = useParams();
-  const rid = parseInt(id);
-  // console.log(`Request ID : ${rid}`);
-
-  // 로컬 스토리지에서 userid, usertype 가져오기
-  const uid = localStorage.getItem("userid");
-  const utype = localStorage.getItem("usertype");
-
-  // request id 게시글
-  const [data, setData] = useState([]);
-
-  // 로그인한 유저 본인 아이디, 유저 타입(B/C), 요청한 무서버 아이디
-  const userid = JSON.parse(uid);
-  const usertype = JSON.parse(utype);
-  const req_userid = data.userid;
-
+export default function RequestDetail({
+  username,
+  setUsername,
+  room,
+  setRoom,
+  socket,
+}) {
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -39,41 +27,57 @@ export default function RequestDetail({socket}) {
     formState: { errors },
   } = useForm();
 
+  // request id 게시글
+  const [data, setData] = useState([]);
+
+  // URL의 requset id 파라미터 가져오기
+  const { id } = useParams();
+  const rid = parseInt(id);
+
   const getData = async () => {
     try {
       const res = await axios.get(`http://localhost:8080/request/${rid}`);
       if (res.data.success) {
-        setData(res.data.data);
+        const data = await res.data.data;
+        setData(data);
       }
     } catch (err) {
       console.error("Error fetching Request Detail: ", err);
     }
   };
 
+  // 상세 요청 데이터 가져오기
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // 로그인한 유저 본인 아이디, 유저 타입(B/C), 요청한 무서버 아이디
+  const uid = localStorage.getItem("userid");
+  const userid = JSON.parse(uid);
+  const req_userid = data.userid;
+  setUsername(userid);
+
+  // 방이름 지정
+  const roomname = `${rid}_${req_userid}_${userid}`;
+  setRoom(roomname);
+
+  console.log("username", username, "room", room);
+
   // 뒤로가기
   const goBack = () => {
     navigate(-1);
   };
 
-  // 채팅방 이름
-  // const [room, setRoom] = useState("");
-
   // 버튼 클릭시 채팅방 생성
   const joinRoom = async () => {
-    const room = `${rid}_${req_userid}_${userid}`;
-    console.log("Room Name:", room);
     // 서버에 로그인한 유저아이디, 방 이름 전송
-    await socket.emit("join_room", { userid, room, rid, req_userid });
+    await socket.emit("join_room", { username, req_userid, room });
     navigate(`/chat/${room}`);
   };
 
-  // 데이터 가져오기 함수 실행
-  useEffect(() => {
-    getData();
-  }, []);
-
   return (
     <div className="Content">
+      <h1>상세 페이지</h1>
       <Container>
         <h2>업로드한 이미지</h2>
         <p>{data.content}</p>

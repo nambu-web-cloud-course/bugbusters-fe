@@ -4,14 +4,20 @@ import { styled } from "styled-components";
 import { DropDown, DropMenu } from "./DropDown";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+
+const utype = localStorage.getItem("usertype");
+const usertype = JSON.parse(utype);
+
 const StyledHeader = styled.header`
   top: 0;
   position: fixed;
   width: 100%;
   height: 3.5rem;
-  /* 버스터가 로그인했으면 헤더 색상 초록색으로 변경 */
-  background-color: white;
-  border-bottom: 1px solid ${({ theme }) => theme.color.gray02};
+  background-color: ${({ theme }) =>
+    usertype === "B" ? theme.color.lightgreen : "white"};
+  border-bottom: 1px solid {
+    usertype === "B" ? "transparent" : ${({ theme }) => theme.color.gray02};
+  }
   display: flex;
   justify-content: center;
 `;
@@ -35,12 +41,15 @@ export default function Header() {
   const [isSignIn, setIsSignIn] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
   const uid = localStorage.getItem("userid");
+
   const userid = JSON.parse(uid);
   const location = useLocation();
 
   // 로그아웃 함수
   const signout = () => {
+    // localStorage.removeItem("username");
     localStorage.removeItem("userid");
+    localStorage.removeItem("usertype");
     localStorage.removeItem("token");
   };
 
