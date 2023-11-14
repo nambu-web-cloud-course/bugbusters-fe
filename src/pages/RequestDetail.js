@@ -71,7 +71,7 @@ export default function RequestDetail({
   // 버튼 클릭시 채팅방 생성
   const joinRoom = async () => {
     // 서버에 로그인한 유저아이디, 방 이름 전송
-    await socket.emit("join_room", { username, req_userid, room });
+    await socket.emit("join_room", { username, room });
     navigate(`/chat/${room}`);
   };
 

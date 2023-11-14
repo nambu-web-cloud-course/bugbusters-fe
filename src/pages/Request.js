@@ -16,10 +16,8 @@ import { useEffect, useState } from "react";
 
 export default function RequestDetail() {
   // userid, usertype 가져오기
-  const uid = localStorage.getItem("userid");
-  const utype = localStorage.getItem("usertype");
-  const userid = JSON.parse(uid);
-  const usertype = JSON.parse(utype);
+  const userid = JSON.parse(localStorage.getItem("userid"));
+  const usertype = JSON.parse(localStorage.getItem("usertype"));
 
   const navigate = useNavigate();
 

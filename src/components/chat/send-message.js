@@ -4,7 +4,6 @@ import React, { useState } from "react";
 
 const SendMessage = ({ socket, username, room }) => {
   const [message, setMessage] = useState("");
-
   const handleOnKeyPress = (e) => {
     if (e.key === "Enter") {
       sendMessage(); 
@@ -30,7 +29,7 @@ const SendMessage = ({ socket, username, room }) => {
         onKeyDown={handleOnKeyPress}
       />
       <button className="btn btn-primary" onClick={sendMessage}>
-        Send Message
+       전송
       </button>
     </div>
   );

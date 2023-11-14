@@ -59,7 +59,7 @@ const App = () => {
               }
             />
             <Route
-              path="/chat/:room"
+              path="/chat/:chatroom"
               element={
                 <Chat
                   socket={socket}

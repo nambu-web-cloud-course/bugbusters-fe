@@ -1,10 +1,12 @@
+import formatDateTime from "../../utils/formatDateTime";
 import styles from "./styles.module.css";
 import { useState, useEffect, useRef } from "react";
 
 const Messages = ({ socket }) => {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null);
-
+  console.log(messagesRecieved)
+  
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -48,12 +50,6 @@ const Messages = ({ socket }) => {
     );
   }
 
-  // 시간대 수정
-  function formatDateFromTimestamp(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  }
-
   return (
     <div className={styles.messagesColumn} ref={messagesColumnRef}>
       {messagesRecieved.length > 0 ? (
@@ -61,7 +57,7 @@ const Messages = ({ socket }) => {
           <div className={styles.message} key={i}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span className={styles.msgMeta}>
-                {formatDateFromTimestamp(msg.__createdtime__)}
+                {formatDateTime(msg.__createdtime__)}
               </span>
             </div>
             <p className={styles.msgText}>{msg.message}</p>

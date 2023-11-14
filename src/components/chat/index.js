@@ -8,7 +8,6 @@ const Chat = ({ username, room, socket }) => {
       <RoomAndUsersColumn socket={socket} username={username} room={room} />
       <div>
         <MessagesReceived socket={socket} />
-
         {room ? (
           <SendMessage socket={socket} username={username} room={room} />
         ) : (
