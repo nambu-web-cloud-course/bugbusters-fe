@@ -51,7 +51,6 @@ export default function BusterProfile() {
           <label htmlFor="profile">프로필</label>
           <ImageUpload 
            id="profile"
-           defaultValue="imgurl"
            setValue={setValue}
           />
           <label htmlFor="selfintro">자기소개</label>

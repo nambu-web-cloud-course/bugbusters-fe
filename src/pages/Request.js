@@ -14,7 +14,7 @@ import Badge from "../components/common/Badge";
 import formatDateTime from "../utils/formatDateTime";
 import { useEffect, useState } from "react";
 
-export default function RequestDetail() {
+export default function Request() {
   // userid, usertype 가져오기
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
@@ -26,6 +26,7 @@ export default function RequestDetail() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -65,6 +66,7 @@ export default function RequestDetail() {
       <h1>잡아줘요</h1>
       {usertype === "B" ? (
         // 버스터
+        data.length > 0? 
         data.map((item) => (
           // 각 컨테이너 클릭시 상세페이지로 이동
           <Link to={`/request/${item.id}`} key={item.id}>
@@ -90,6 +92,10 @@ export default function RequestDetail() {
             </Container>
           </Link>
         ))
+        : 
+        <Container>
+          요청사항이 없습니다.
+        </Container>
       ) : (
         // 유저(무서버)
         <form className="Content" onSubmit={handleSubmit(onSubmit)}>
@@ -132,7 +138,7 @@ export default function RequestDetail() {
             <label htmlFor="sigungu">시군구</label>
             <input {...register("sigungu")} defaultValue="시군구" />
             <label htmlFor="addr1">이미지</label>
-            <ImageUpload />
+            <ImageUpload setValue={setValue}/>
             <Button color="green" size="lg" fullwidth>
               글 작성
             </Button>

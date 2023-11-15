@@ -90,9 +90,7 @@ export default function MyPage() {
           <label htmlFor="sido">서울시</label>
           <input {...register("sido")} defaultValue="서울시" />
           <label htmlFor="sigungu">시군구</label>
-          <input {...register("sigungu")} defaultValue="서울시" />
-          <label htmlFor="usertype">유저타입</label>
-          <input {...register("usertype")} defaultValue="C" />
+          <input {...register("sigungu")} defaultValue="양천구" />
           <Button color="green" size="lg" fullwidth>
             정보 수정
           </Button>

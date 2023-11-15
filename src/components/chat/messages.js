@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 const Messages = ({ socket }) => {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null);
-  console.log(messagesRecieved)
+  console.log("messagesRecieved", messagesRecieved)
   
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
@@ -43,12 +43,6 @@ const Messages = ({ socket }) => {
     messagesColumnRef.current.scrollTop =
       messagesColumnRef.current.scrollHeight;
   }, [messagesRecieved]);
-
-  function sortMessagesByDate(messages) {
-    return messages.sort(
-      (a, b) => parseInt(a.__createdtime__) - parseInt(b.__createdtime__)
-    );
-  }
 
   return (
     <div className={styles.messagesColumn} ref={messagesColumnRef}>
