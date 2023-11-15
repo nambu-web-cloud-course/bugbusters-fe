@@ -97,6 +97,11 @@ const GlobalStyle = createGlobalStyle`
     }
 
 
+    input:disabled {
+      background: ${({ theme }) => theme.color.gray02};
+      color: ${({ theme }) => theme.color.gray03};
+    }
+
     input[type=radio]{
     display: none;
     }

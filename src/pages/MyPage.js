@@ -79,7 +79,7 @@ export default function MyPage() {
               type="radio"
               id="M"
               disabled
-              defaultChecked={data.gender === "M"}
+              checked={data.gender === "M"}
             />
             <label htmlFor="M">남자</label>
           </div>

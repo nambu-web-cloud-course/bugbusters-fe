@@ -5,7 +5,6 @@ import axios from "axios";
 
 export default function ImageUpload({ setValue }) {
   const [Images, setImages] = useState([]);
-  console.log(Images)
   const dropHandler = (files) => {
     let formData = new FormData();
 
@@ -62,7 +61,7 @@ export default function ImageUpload({ setValue }) {
         {Images.map((image, index) => (
           <div key={index}>
             <img
-              style={{ minWidth: "100px", width: "100px", height: " 100px" }}
+              style={{ minWidth: "100px", width: "100px" }}
               src={`http://localhost:8080/${image}`}
             />
           </div>

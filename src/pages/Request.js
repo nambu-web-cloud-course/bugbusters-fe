@@ -137,7 +137,7 @@ export default function Request() {
             <label htmlFor="sigungu">시군구</label>
             <input {...register("sigungu")} defaultValue="시군구" />
             <label htmlFor="addr1">이미지</label>
-            <ImageUpload setValue={setValue}/>
+            <ImageUpload setValue={setValue} />
             <Button color="green" size="lg" fullwidth>
               글 작성
             </Button>
