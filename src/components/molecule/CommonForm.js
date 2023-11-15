@@ -2,13 +2,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Button from "../common/Button";
 import Container from "../common/Container";
+import { GapItems } from "../common/Items";
+import { useState } from "react";
+import axios from "axios";
 
 export default function CommonForm({ handleCommonForm }) {
   // URL의 usertype 파라미터 가져오기
   const { usertype } = useParams();
-  console.log(`usertype: ${usertype}`);
-  // URL 파라미터에 따라 무서버/버스터 결정
   const isBuster = usertype === "buster" ? true : false;
+
+  ////// SMS 인증 코드 추가
+  const [sendSMS, setSendSMS] = useState(false);
+  const [smsCode, setSMSCode] = useState("");
+  const [authComplete, setAuthComplete] = useState(false);
 
   const {
     register,
@@ -17,6 +23,47 @@ export default function CommonForm({ handleCommonForm }) {
     formState: { errors },
   } = useForm();
 
+  const handleChange = (e) => {
+    setSMSCode(e.target.value);
+  };
+
+  // 서버에 휴대폰번호 전송 - 서버는 받은 번호로 인증번호 6자리를 포함한 문자 전송
+  const handleSMS = async (data) => {
+    try {
+      const res = await axios.post("http://localhost:8080/auth/sms", data);
+      if (data.phone === "") alert("휴대폰 번호를 입력하세요.") 
+      if (res.data.success) console.log("Success Sending Your Phone Number");
+    } catch (err) {
+      console.log("Fail Sending Phone Number", err);
+    }
+    setSendSMS(!sendSMS);
+  };
+
+  // 문자로 받은 코드 서버에 보내기
+  const authCode = async (data) => {
+    const code = parseInt(smsCode);
+    try {
+      const res = await axios.post("http://localhost:8080/auth/code", {
+        data,
+        code,
+      });
+      if (res.data.success) {
+        alert("인증 성공");
+        setAuthComplete(!authComplete);
+      } else alert("다시 인증하세요.");
+    } catch (err) {
+      console.log("Fail Sending Phone Auth Code", err);
+    }
+  };
+
+  // 자동 하이픈 생성 함수
+  const formatPhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) {
+      return "";
+    }
+
+    return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  };
   return (
     <form onSubmit={handleSubmit(handleCommonForm)}>
       <Container $size="sm">
@@ -46,11 +93,46 @@ export default function CommonForm({ handleCommonForm }) {
           id="birthdate"
         />
         <label htmlFor="phone">휴대폰번호</label>
-        <input
-          {...register("phone", { required: true })}
-          defaultValue="010-1234-5678"
-          id="phone"
-        />
+        <GapItems>
+          <input
+            {...register("phone", { required: true })}
+            maxLength={13}
+            placeholder="010-1234-5678"
+            value={formatPhoneNumber(watch("phone"))}
+            id="phone"
+            disabled={authComplete}
+          />
+          <Button
+            width="60%"
+            color="green"
+            size="lg"
+            onClick={handleSubmit(handleSMS)}
+            style={{ display: authComplete ? "none" : "block" }}
+          >
+            인증번호 발송
+          </Button>
+        </GapItems>
+        {sendSMS ? (
+          <form style={{ display: authComplete ? "none" : "block" }}>
+            <GapItems>
+              <input
+                placeholder="인증번호를 입력하세요."
+                id="phone"
+                onChange={handleChange}
+                maxLength={6}
+                value={smsCode}
+              />
+              <Button
+                width="60%"
+                color="green"
+                size="lg"
+                onClick={handleSubmit(authCode)}
+              >
+                인증
+              </Button>
+            </GapItems>
+          </form>
+        ) : null}
         <label htmlFor="gender">성별</label>
         <div className="select">
           <input
@@ -81,7 +163,6 @@ export default function CommonForm({ handleCommonForm }) {
         />
         <label htmlFor="sido">서울시</label>
         <input {...register("sido")} defaultValue="서울시" />
-        {/* 삭제 */}
         <label htmlFor="sigungu">시군구</label>
         <input {...register("sigungu")} defaultValue="서울시" />
         <label htmlFor="usertype">유저타입</label>
