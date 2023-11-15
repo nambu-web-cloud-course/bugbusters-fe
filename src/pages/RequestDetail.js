@@ -29,7 +29,7 @@ export default function RequestDetail({
 
   // request id 게시글
   const [data, setData] = useState([]);
-  const [img, setImage] = useState("")
+  const [image, setImage] = useState([]);
 
   // URL의 requset id 파라미터 가져오기
   const { id } = useParams();
@@ -41,7 +41,7 @@ export default function RequestDetail({
       if (res.data.success) {
         const data = await res.data.data;
         setData(data);
-        setImage(data.Images[0].img)
+        setImage(data.Images);
       }
     } catch (err) {
       console.error("Error fetching Request Detail: ", err);
@@ -80,10 +80,13 @@ export default function RequestDetail({
   return (
     <div className="Content">
       <Container>
-        <img
-          style={{ width: "50%" }}
-          src={`http://localhost:8080/${img}`}
-        />
+        {image.map((img) => (
+          <img
+            key={img.id}
+            style={{ width: "50%" }}
+            src={`http://localhost:8080/${img.img}`}
+          />
+        ))}
         <p>{data.content}</p>
         <GapItems>
           <Badge>

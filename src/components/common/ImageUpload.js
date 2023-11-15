@@ -36,7 +36,7 @@ export default function ImageUpload({ setValue }) {
                 width: 100,
                 height: 100,
                 borderRadius: "0.5rem",
-                backgroundColor: "lightgray",
+                backgroundColor: "#F4F4F4",
                 display: "flex",
                 alignSelf: "center",
                 justifyContent: "center",

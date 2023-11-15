@@ -72,6 +72,7 @@ const App = () => {
             />
             <Route path="/trade-list" element={<TradeList />} />
             <Route path="/buster" element={<BusterProfile />} />
+            <Route path="/profile" element={<BusterProfile />} />
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </Router>

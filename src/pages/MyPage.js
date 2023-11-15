@@ -18,17 +18,7 @@ export default function MyPage() {
     formState: { errors },
   } = useForm();
 
-  // 데이터 서버에 전송
-  const onSubmit = async (data) => {
-    try {
-      const res = await axios.put(`http://localhost:8080/auth/${userid}`, data);
-      if (res.data.success) console.log("수정 성공")
-    } catch (err) {
-      console.log("MyPage Edit", err);
-    }
-  };
-
-  // 저장된 유저 정보
+  // 회원가입시 기입한 유저 정보 가져오기
   const getData = async () => {
     try {
       const res = await axios.get(
@@ -37,13 +27,23 @@ export default function MyPage() {
       const data = res.data.data;
       setData(data);
     } catch (err) {
-      console.log("MyPage Edit", err);
+      console.log("MyPage Edit Error", err);
     }
   };
 
   useEffect(() => {
     getData();
   }, []);
+
+  // 수정 데이터 서버에 전송
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.put(`http://localhost:8080/auth/${userid}`, data);
+      if (res.data.success) alert("수정 성공")
+    } catch (err) {
+      console.log("MyPage Edit", err);
+    }
+  };
 
   return (
     <div className="Content">

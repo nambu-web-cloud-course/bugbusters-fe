@@ -16,7 +16,7 @@ const StyledHeader = styled.header`
   background-color: ${({ theme }) =>
     usertype === "B" ? theme.color.lightgreen : "white"};
   border-bottom: 1px solid {
-    usertype === "B" ? "transparent" : ${({ theme }) => theme.color.gray02};
+    usertype=== "B" ? "transparent" : ${({ theme }) => theme.color.gray02};
   }
   display: flex;
   justify-content: center;
@@ -37,15 +37,14 @@ const Menu = styled.ul`
 `;
 
 export default function Header() {
-  // 로그인 여부
+  const usertype = JSON.parse(localStorage.getItem("usertype"));
   const [isSignIn, setIsSignIn] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
   const userid = JSON.parse(localStorage.getItem("userid"));
   const location = useLocation();
 
   // 로그아웃 함수
-  const signout = () => {
-    // localStorage.removeItem("username");
+  const signOut = () => {
     localStorage.removeItem("userid");
     localStorage.removeItem("usertype");
     localStorage.removeItem("token");
@@ -112,16 +111,16 @@ export default function Header() {
                 {showDropDown ? (
                   <DropDown>
                     <DropMenu>
-                    <Link to="/mypage"> 
-                      마이페이지
-                      </Link>
+                      <Link to="/mypage">마이페이지</Link>
                     </DropMenu>
-                    <DropMenu>
-                      <Link to="/profile"> 
-                      프로필
-                      </Link>
+                    {usertype === "B" ? (
+                      <DropMenu>
+                        <Link to="/profile">프로필</Link>
                       </DropMenu>
-                    <DropMenu onClick={signout} href="/landing">
+                    ) : (
+                      ""
+                    )}
+                    <DropMenu onClick={signOut} href="/landing">
                       로그아웃
                     </DropMenu>
                   </DropDown>

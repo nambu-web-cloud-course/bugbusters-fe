@@ -20,7 +20,6 @@ export default function Request() {
   const usertype = JSON.parse(localStorage.getItem("usertype"));
 
   const navigate = useNavigate();
-
   const [data, setData] = useState([]);
   const {
     register,
