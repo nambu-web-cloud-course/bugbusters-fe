@@ -34,8 +34,7 @@ export default function Header() {
   // 로그인 여부
   const [isSignIn, setIsSignIn] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
-  const uid = localStorage.getItem("userid");
-  const userid = JSON.parse(uid);
+  const userid = JSON.parse(localStorage.getItem("userid"));
   const location = useLocation();
 
   // 로그아웃 함수
@@ -69,7 +68,6 @@ export default function Header() {
             {isSignIn ? (
               <>
                 <li>
-                  {/* 무서버? /request : /reqlist */}
                   <Link to="/request">잡아줘요</Link>
                 </li>
                 <li>
@@ -89,7 +87,6 @@ export default function Header() {
                 <li>
                   <Link to="/chat">채팅</Link>
                 </li>
-                {/* 닉네임 + 님 메뉴*/}
                 <li
                   style={{
                     display: "flex",
@@ -106,7 +103,16 @@ export default function Header() {
                 </li>
                 {showDropDown ? (
                   <DropDown>
-                    <DropMenu href="/mypage">마이페이지</DropMenu>
+                    <DropMenu>
+                    <Link to="/mypage"> 
+                      마이페이지
+                      </Link>
+                    </DropMenu>
+                    <DropMenu>
+                      <Link to="/profile"> 
+                      프로필
+                      </Link>
+                      </DropMenu>
                     <DropMenu onClick={signout} href="/landing">
                       로그아웃
                     </DropMenu>
