@@ -27,7 +27,7 @@ export default function TradeList() {
   // 로그인한 유저의 데이터 가져오기
   const getData = async () => {
     const res = await axios.get(
-      `http://localhost:8080/request?userid=${userid}`
+      `/request?userid=${userid}`
     );
     if (res.data.success) {
       const data = res.data.data;

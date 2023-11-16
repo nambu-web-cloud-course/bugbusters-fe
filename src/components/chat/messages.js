@@ -1,12 +1,61 @@
 import formatDateTime from "../../utils/formatDateTime";
-import styles from "./styles.module.css";
 import { useState, useEffect, useRef } from "react";
 import { P, Span } from "../common/Text";
+import styled, { css } from "styled-components";
+import { GapItems } from "../common/Items";
 
-export default function Messages  ({ socket })  {
+const MessagesColumn = styled.div`
+  height: 60vh;
+  overflow: auto;
+`;
+
+
+// .message__recipient {
+//   background-color: #f5ccc2;
+//   width: 300px;
+//   padding: 10px;
+//   border-radius: 10px;
+//   font-size: 15px;
+//   }
+//   .message__sender{
+//   background-color: rgb(194, 243, 194);
+//   max-width: 300px;
+//   padding: 10px;
+//   border-radius: 10px;
+//   margin-left: auto;
+//   font-size: 15px;
+//   }
+
+const Message = styled.div`
+  width: 60%;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  ${(props) =>
+    props.isUser
+      ? css`
+          background: ${({ theme }) => theme.color.lightgreen};
+          color: ${({ theme }) => theme.color.darkgreen};
+          margin-left: auto;
+        `
+      : css`
+          background: ${({ theme }) => theme.color.gray01};
+          color: black;
+        `}
+`;
+
+export default function Messages({ socket }) {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null);
+
+  const userid = JSON.parse(localStorage.getItem("userid"));
   console.log("messagesRecieved", messagesRecieved);
+
+  function sortMessagesByDate(messages) {
+    return messages.sort(
+      (a, b) => parseInt(a.createdAt) - parseInt(b.createdAt)
+    );
+  }
 
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
@@ -17,6 +66,7 @@ export default function Messages  ({ socket })  {
           message: data.message,
           userid: data.userid,
           createdAt: data.createdAt,
+          isUser: data.userid === userid,
         },
       ]);
     });
@@ -30,7 +80,6 @@ export default function Messages  ({ socket })  {
     socket.on("last_100_messages", (last100Messages) => {
       console.log("Last 100 messages:", JSON.parse(last100Messages));
       last100Messages = JSON.parse(last100Messages);
-      // Sort these messages by __createdtime__
       last100Messages = sortMessagesByDate(last100Messages);
       setMessagesReceived((state) => [...last100Messages, ...state]);
     });
@@ -43,28 +92,18 @@ export default function Messages  ({ socket })  {
       messagesColumnRef.current.scrollHeight;
   }, [messagesRecieved]);
 
-  function sortMessagesByDate(messages) {
-    return messages.sort(
-      (a, b) => parseInt(a.createdAt) - parseInt(b.createdAt)
-    );
-  }
-
   return (
-    <div className={styles.messagesColumn} ref={messagesColumnRef}>
+    <MessagesColumn ref={messagesColumnRef}>
       {messagesRecieved.map((msg, i) => (
-        <div className={styles.message} key={i}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <span className={styles.msgMeta}>
+        <Message key={i} isUser={msg.userid === userid}>
+          <GapItems col="col" left="left">
+            <Span textColor={msg.userid === userid ? "darkgreen" : "black"}>
               {formatDateTime(msg.createdAt)} | {msg.userid}
-            </span>
-            <br />
-            <br />
-          </div>
-          <p className={styles.msgText}>{msg.message}</p>
-          <br />
-        </div>
+            </Span>
+            <P>{msg.message}</P>
+          </GapItems>
+        </Message>
       ))}
-    </div>
+    </MessagesColumn>
   );
-};
- 
+}

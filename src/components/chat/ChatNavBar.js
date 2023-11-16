@@ -1,4 +1,4 @@
-import styles from "./styles.module.css";
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import formatDateTime from "../../utils/formatDateTime";
@@ -10,10 +10,10 @@ import { GapItems } from "../common/Items";
 import UserInfo from "../common/UserInfo";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 
-// 버스터 -> 무서버 채팅하기 버튼 클릭시 room 생성
+
 export default function ChatNavBar({ socket }) {
-  // const [roomUsers, setRoomUsers] = useState([]);
-  // const [rooms, setRooms] = useState([]);
+  const [roomUsers, setRoomUsers] = useState([]);
+  const [rooms, setRooms] = useState([]);
 
   // room을 세팅해도 초기화되는 문제 때문에 각각의 컴포넌트에 room 지정
   const { chatroom } = useParams();
@@ -45,28 +45,28 @@ export default function ChatNavBar({ socket }) {
   }, [socket]);
 
   // 방 데이터 가져오기
-  // const getRooms = async () => {
-  //   let query = "";
-  //   if (usertype === "C") query = `userid=${userid}`;
-  //   else query = `busterid=${userid}`;
-  //   try {
-  //     const res = await axios.get(`/chat?${query}`);
-  //     const data = res.data.data;
-  //     setRooms(data);
-  //   } catch (err) {
-  //     console.log("Getting Room list Error", err);
-  //   }
-  // };
+  const getRooms = async () => {
+    let query = "";
+    if (usertype === "C") query = `userid=${userid}`;
+    else query = `busterid=${userid}`;
+    try {
+      const res = await axios.get(`/chat?${query}`);
+      const data = res.data.data;
+      setRooms(data);
+    } catch (err) {
+      console.log("Getting Room list Error", err);
+    }
+  };
 
   // 방 안에 있는 유저 저장 - { id: socket.id, userid, room }
-  // useEffect(() => {
-  //   getRooms();
-  //   socket.on("chatroom_users", (data) => {
-  //     setRoomUsers(data);
-  //     console.log("chatroom_users", data);
-  //   });
-  //   return () => socket.off("chatroom_users");
-  // }, [socket]);
+  useEffect(() => {
+    getRooms();
+    socket.on("chatroom_users", (data) => {
+      setRoomUsers(data);
+      console.log("chatroom_users", data);
+    });
+    return () => socket.off("chatroom_users");
+  }, [socket]);
 
   const leaveRoom = () => {
     socket.emit("leave_room", { userid, room });

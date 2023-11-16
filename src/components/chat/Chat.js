@@ -1,4 +1,4 @@
-import styles from "./styles.module.css";
+
 import ChatNavBar from "./ChatNavBar";
 import SendMessage from "./SendMessage";
 import Messages from "./Messages";

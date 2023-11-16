@@ -14,9 +14,6 @@ const StyledHeader = styled.header`
   height: 3.5rem;
   background-color: ${({ theme }) =>
     usertype === "B" ? theme.color.lightgreen : "white"};
-  border-bottom: 1px solid {
-    usertype=== "B" ? "transparent" : ${({ theme }) => theme.color.gray02};
-  }
   display: flex;
   justify-content: center;
 `;
