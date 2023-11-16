@@ -17,7 +17,7 @@ export default function SignIn() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("auth/sign-in", data);
+      const res = await axios.post("/auth/sign-in", data);
 
       if (res.data.success) {
         console.log("Sign in Success", res.data);
@@ -26,7 +26,7 @@ export default function SignIn() {
 
         // 유저 타입 가져오기
         const userInfo = await axios.get(
-          `auth?userid=${userid}`
+          `/auth?userid=${userid}`
         );
         console.log("usreInfo", userInfo);
         const usertype = userInfo.data.data.usertype;
@@ -56,7 +56,7 @@ export default function SignIn() {
             {...register("userid", { required: true })}
             placeholder={"아이디를 입력하세요."}
             id="userid"
-            fullwidth
+            $fullwidth
             autoFocus
           />
           <label htmlFor="password">비밀번호</label>
@@ -65,9 +65,9 @@ export default function SignIn() {
             {...register("password", { required: true })}
             placeholder={"비밀번호를 입력하세요."}
             id="password"
-            fullwidth
+            $fullwidth
           />
-          <Button color="green" size="lg" fullwidth>
+          <Button color="green" size="lg" $fullwidth>
             로그인
           </Button>
         </Container>

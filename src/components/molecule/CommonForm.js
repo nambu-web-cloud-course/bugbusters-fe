@@ -30,7 +30,7 @@ export default function CommonForm({ handleCommonForm }) {
   // 서버에 휴대폰번호 전송 - 서버는 받은 번호로 인증번호 6자리를 포함한 문자 전송
   const handleSMS = async (data) => {
     try {
-      const res = await axios.post("http://localhost:8080/auth/sms", data);
+      const res = await axios.post("/auth/sms", data);
       if (data.phone === "") alert("휴대폰 번호를 입력하세요.") 
       if (res.data.success) console.log("Success Sending Your Phone Number");
     } catch (err) {
@@ -43,7 +43,7 @@ export default function CommonForm({ handleCommonForm }) {
   const authCode = async (data) => {
     const code = parseInt(smsCode);
     try {
-      const res = await axios.post("http://localhost:8080/auth/code", {
+      const res = await axios.post("/auth/code", {
         data,
         code,
       });
@@ -167,7 +167,7 @@ export default function CommonForm({ handleCommonForm }) {
         <input {...register("sigungu")} defaultValue="서울시" />
         <label htmlFor="usertype">유저타입</label>
         <input {...register("usertype")} defaultValue="C" />
-        <Button color="green" size="lg" fullwidth>
+        <Button color="green" size="lg" $fullwidth>
           {isBuster ? "개인정보 입력(1 / 2)" : "회원가입"}
         </Button>
       </Container>

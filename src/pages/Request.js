@@ -42,16 +42,12 @@ export default function Request() {
       console.log("Error fetching All Request: ", err);
     }
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
+console.log(data)
 
   // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
     try {
       const res = await axios.post("/request", data);
-      console.log(res.data);
       if (res.data.success) {
         navigate("/trade-list");
       }
@@ -60,6 +56,11 @@ export default function Request() {
     }
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
+
+  
   return (
     <div className="Content">
       <h1>잡아줘요</h1>
@@ -138,7 +139,7 @@ export default function Request() {
             <input {...register("sigungu")} defaultValue="시군구" />
             <label htmlFor="addr1">이미지</label>
             <ImageUpload setValue={setValue} />
-            <Button color="green" size="lg" fullwidth>
+            <Button color="green" size="lg" $fullwidth>
               글 작성
             </Button>
           </Container>

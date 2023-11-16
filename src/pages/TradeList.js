@@ -19,8 +19,7 @@ export default function TradeList() {
   };
 
   // 로컬 스토리지에서 userid가져오기
-  const uid = localStorage.getItem("userid");
-  const userid = JSON.parse(uid);
+  const userid  = JSON.parse(localStorage.getItem("userid"));
 
   // 이용내역 데이터
   const [data, setData] = useState([]);

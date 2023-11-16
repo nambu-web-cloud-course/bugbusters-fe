@@ -17,7 +17,7 @@ const colorStyles = css`
         background: ${theme.color.gray03};
       }
       ${(props) =>
-        props.$outline &&
+        props.outline &&
         css`
           color: ${buttonColor};
           background: white;
@@ -111,7 +111,7 @@ export default function Button({
       color={color}
       size={size}
       outline={outline}
-      fullwidth={fullwidth}
+      $fullwidth={fullwidth}
       width={width}
       {...rest}
     >

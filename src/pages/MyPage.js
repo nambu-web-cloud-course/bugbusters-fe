@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 export default function MyPage() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const [data, setData] = useState([]);
-  console.log(data);
+  console.log("Myapge:", data);
   const navigate = useNavigate();
   const {
     register,
@@ -87,12 +87,12 @@ export default function MyPage() {
           <input {...register("zipcode")} defaultValue={data.zipcode} />
           <label htmlFor="sigungu">시군구</label>
           <input {...register("sigungu")} defaultValue={data.sigungu} />
-          <Button color="green" size="lg" fullwidth>
+          <Button color="green" size="lg" $fullwidth>
             정보 수정
           </Button>
         </Container>
       </form>
-      <Button color="green" size="lg" outline fullwidth>
+      <Button color="green" size="lg" outline $fullwidth>
         회원 탈퇴
       </Button>
     </div>

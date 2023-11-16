@@ -1,11 +1,17 @@
+import { useParams } from "react-router-dom";
 import Button from "../common/Button";
 import { GapItems } from "../common/Items";
 import styles from "./styles.module.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const SendMessage = ({ socket, room }) => {
-  const uid = localStorage.getItem("userid");
- const userid = JSON.parse(uid);
+export default function SendMessage({ socket }) {
+  const { chatroom } = useParams();
+  const [room, setRoom] = useState("");
+  useEffect(() => {
+    setRoom(chatroom);
+  }, []);
+
+  const userid = JSON.parse(localStorage.getItem("userid"));
   const [message, setMessage] = useState("");
   const handleOnKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -14,11 +20,10 @@ const SendMessage = ({ socket, room }) => {
   };
 
   const sendMessage = () => {
+    const createdAt = Date.now();
     if (message !== "") {
-      const createdAt = Date.now();
       // Send message to server. We can't specify who we send the message to from the frontend. We can only send to server. Server can then send message to rest of users in room
-      console.log('userid:',userid);
-      socket.emit("send_message", { userid, room, message, createdAt });
+      socket.emit("send_message", { message, userid, room, createdAt });
       setMessage("");
     }
   };
@@ -32,12 +37,10 @@ const SendMessage = ({ socket, room }) => {
           value={message}
           onKeyDown={handleOnKeyPress}
         />
-        <Button color="green" size="lg" width="30%" fullWidth onClick={sendMessage}>
+        <Button color="green" size="lg" width="30%" onClick={sendMessage}>
           전송
         </Button>
       </GapItems>
     </div>
   );
-};
-
-export default SendMessage;
+}

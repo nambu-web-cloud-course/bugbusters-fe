@@ -14,11 +14,10 @@ import BusterProfile from "./components/molecule/BusterProfile";
 import Request from "./pages/Request";
 import RequestDetail from "./pages/RequestDetail";
 import socket from "./socket";
-import Chat from "./components/chat";
+import Chat from "./components/chat/Chat";
 import ChatList from "./pages/ChatList";
 
 const App = () => {
-  // const [username, setUsername] = useState("");
   const [room, setRoom] = useState("");
 
   return (
@@ -38,39 +37,11 @@ const App = () => {
             <Route
               path="/request/:id"
               element={
-                <RequestDetail
-                  // username={username}
-                  // setUsername={setUsername}
-                  room={room}
-                  setRoom={setRoom}
-                  socket={socket}
-                />
+                <RequestDetail room={room} setRoom={setRoom} socket={socket} />
               }
             />
-            <Route
-              path="/chat"
-              element={
-                <ChatList
-                  socket={socket}
-                  // username={username}
-                  // setUsername={setUsername}
-                  room={room}
-                  setRoom={setRoom}
-                />
-              }
-            />
-            <Route
-              path="/chat/:chatroom"
-              element={
-                <Chat
-                  socket={socket}
-                  // username={username}
-                  // setUsername={setUsername}
-                  room={room}
-                  setRoom={setRoom}
-                />
-              }
-            />
+            <Route path="/chat" element={<ChatList socket={socket} />} />
+            <Route path="/chat/:chatroom" element={<Chat socket={socket} />} />
             <Route path="/trade-list" element={<TradeList />} />
             <Route path="/buster" element={<BusterProfile />} />
             <Route path="/profile" element={<BusterProfile />} />

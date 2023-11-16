@@ -26,10 +26,11 @@ export default function BusterProfile() {
     formState: { errors },
   } = useForm();
 
+  // 회원가입 후 프로필 수정을 위한 정보
   const getData = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/auth/buster?userid=${busterID}`
+        `/auth/buster?userid=${ busterID}`
       );
       const data = res.data.data;
       setData(data);
@@ -40,7 +41,6 @@ export default function BusterProfile() {
   };
 
   const handleBusterProfile = async (data) => {
-    // truthy, falsy 값이 헷갈림 이게 맞나?
     // 회원가입 - 버스터 프로필 등록
     if (!busterID) {
       try {
@@ -72,8 +72,8 @@ export default function BusterProfile() {
 
   // 버스터 프로필 정보 가져오기
   useEffect(() => {
-    getData();
-  }, [data.profile]);
+    if(busterID) getData();
+  }, [busterID]);
 
   return (
     <div className="Content">
@@ -144,7 +144,7 @@ export default function BusterProfile() {
             placeholder="계좌번호를 입력해주세요."
             id="accno"
           />
-          <Button color="green" size="lg" fullwidth>
+          <Button color="green" size="lg" $fullwidth>
             {busterID ? "프로필 수정" : "프로필 입력(2 / 2)"}
           </Button>
         </Container>

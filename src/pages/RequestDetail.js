@@ -13,8 +13,6 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 
 export default function RequestDetail({
-  // userid,
-  // setUserid,
   room,
   setRoom,
   socket,
@@ -48,16 +46,15 @@ export default function RequestDetail({
     }
   };
 
+  console.log(data)
   // 상세 요청 데이터 가져오기
   useEffect(() => {
     getData();
   }, []);
 
   // 로그인한 유저 본인 아이디, 유저 타입(B/C), 요청한 무서버 아이디
-  const uid = localStorage.getItem("userid");
-  const userid = JSON.parse(uid);
+  const userid = JSON.parse(localStorage.getItem("userid"));
   const req_userid = data.userid;
-  // setUserid(userid);
 
   // 방이름 지정
   const roomname = `${rid}_${req_userid}_${userid}`;
@@ -105,11 +102,11 @@ export default function RequestDetail({
         <Span>
           {formatDateTime(data.createdAt)} 😨작성자: {data.userid}
         </Span>
-        <Button onClick={joinRoom} color="green" size="lg" fullwidth>
+        <Button onClick={joinRoom} color="green" size="lg" $fullwidth>
           채팅하기
         </Button>
       </Container>
-      <Button onClick={goBack} color="green" size="lg" outline fullwidth>
+      <Button onClick={goBack} color="green" size="lg" outline $fullwidth>
         목록
       </Button>
     </div>

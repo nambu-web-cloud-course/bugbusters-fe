@@ -1,15 +1,15 @@
 import styles from "./styles.module.css";
-import RoomAndUsersColumn from "./room-and-users";
-import SendMessage from "./send-message";
-import MessagesReceived from "./messages";
+import ChatNavBar from "./ChatNavBar";
+import SendMessage from "./SendMessage";
+import Messages from "./Messages";
 import Container from "../common/Container";
 
 export default function Chat({ username, room, socket }) {
   return (
     <Container>
-      <RoomAndUsersColumn socket={socket} username={username} room={room} />
+      <ChatNavBar socket={socket} username={username} room={room} />
       <div>
-        <MessagesReceived socket={socket} />
+        <Messages socket={socket} />
         <SendMessage socket={socket} username={username} room={room} />
       </div>
     </Container>
