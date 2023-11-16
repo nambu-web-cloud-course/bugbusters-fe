@@ -14,14 +14,14 @@ const colorStyles = css`
         background: ${darken(0.1, buttonColor)};
       }
       ${(props) =>
-        props.outline &&
+        props.$outline &&
         css`
           color: ${buttonColor};
-          background: none;
+          background: white;
           border: 1px solid ${buttonColor};
           &:hover {
-            background: ${buttonColor};
-            color: white;
+            background:${lighten(0.4, buttonColor)};
+            color: ${buttonColor};
           }
         `}
       ${(props) =>
@@ -57,7 +57,7 @@ const sizeStyles = css`
 
 const fullWidthStyle = css`
   ${(props) =>
-    props.fullwidth &&
+    props.$fullwidth &&
     css`
       width: 100%;
       justify-content: center;
@@ -68,6 +68,7 @@ const width = css`
   ${(props) =>
     css`
       width: ${props.width};
+      justify-content: center;
     `}
 `;
 
@@ -106,8 +107,8 @@ export default function Button({
     <StyledButton
       color={color}
       size={size}
-      outline={outline}
-      fullwidth={fullwidth}
+      $outline={outline}
+      $fullwidth={fullwidth}
       width={width}
       {...rest}
     >

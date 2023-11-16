@@ -26,6 +26,13 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: none;
         color: inherit;
     }
+
+    hr {
+      height: 1px;
+      border: 0;
+      background-color: ${({ theme }) => theme.color.gray02}
+    }
+
     *{
         box-sizing: border-box;
     } 
@@ -96,6 +103,11 @@ const GlobalStyle = createGlobalStyle`
     display: flex;    
     }
 
+
+    input:disabled {
+      background: ${({ theme }) => theme.color.gray02};
+      color: ${({ theme }) => theme.color.gray03};
+    }
 
     input[type=radio]{
     display: none;

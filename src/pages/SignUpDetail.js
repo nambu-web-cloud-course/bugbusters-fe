@@ -2,14 +2,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
-import BusterProfile from "../components/form/BusterProfile";
-import CommonForm from "../components/form/CommonForm";
+import BusterProfile from "../components/molecule/BusterProfile";
+import CommonForm from "../components/molecule/CommonForm";
 import { Container } from "@mui/material";
 
 export default function SignUpDetail() {
   // URL의 usertype 파라미터 가져오기
   const { usertype } = useParams();
   console.log(`usertype: ${usertype}`);
+  
   // URL 파라미터에 따라 무서버/버스터 결정
   const isBuster = usertype === "buster" ? true : false;
 
@@ -19,8 +20,7 @@ export default function SignUpDetail() {
   // 공통 회원가입 폼 제출
   const handleCommonForm = async (data) => {
     try {
-      // auth/sign-up에 공통 회원가입 폼 POST 요청
-      const res = await axios.post("http://localhost:8080/auth/sign-up", data);
+      const res = await axios.post("/auth/sign-up", data);
       console.log(`response: ${res.data}`);
       if (res.data.success) {
         // usertype 무서버일 경우

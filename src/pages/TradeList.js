@@ -8,7 +8,7 @@ import { Span } from "../components/common/Text";
 import Tabs from "../components/common/Tabs";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import formatDate from "../utils/formatData";
+import formatDateTime from "../utils/formatDateTime";
 
 export default function TradeList() {
   // 탭 상태 (진행중 PR, 취소 CA, 완료 CP)
@@ -23,15 +23,19 @@ export default function TradeList() {
   const userid = JSON.parse(uid);
 
   // 이용내역 데이터
-  let [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   // 로그인한 유저의 데이터 가져오기
   const getData = async () => {
     const res = await axios.get(
       `http://localhost:8080/request?userid=${userid}`
     );
-    data = res.data.data;
-    setData(data);
+    if (res.data.success) {
+      const data = res.data.data;
+      setData(data);
+    } else {
+      console.group("Signin Data Get Error");
+    }
   };
 
   // 이용내역 페이지 이동시 데이터 가져오기
@@ -67,7 +71,7 @@ export default function TradeList() {
                 {item.price}
               </Badge>
             </GapItems>
-            <Span>{formatDate(item.createdAt)}</Span>
+            <Span>{formatDateTime(item.createdAt)}</Span>
           </Container>
         ))
       ) : (
