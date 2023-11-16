@@ -17,7 +17,7 @@ import socket from "./socket";
 import Chat from "./components/chat";
 
 const App = () => {
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   const [room, setRoom] = useState("");
 
   return (
@@ -38,8 +38,8 @@ const App = () => {
               path="/request/:id"
               element={
                 <RequestDetail
-                  username={username}
-                  setUsername={setUsername}
+                  // username={username}
+                  // setUsername={setUsername}
                   room={room}
                   setRoom={setRoom}
                   socket={socket}
@@ -51,8 +51,8 @@ const App = () => {
               element={
                 <Chat
                   socket={socket}
-                  username={username}
-                  setUsername={setUsername}
+                  // username={username}
+                  // setUsername={setUsername}
                   room={room}
                   setRoom={setRoom}
                 />
@@ -63,8 +63,8 @@ const App = () => {
               element={
                 <Chat
                   socket={socket}
-                  username={username}
-                  setUsername={setUsername}
+                  // username={username}
+                  // setUsername={setUsername}
                   room={room}
                   setRoom={setRoom}
                 />

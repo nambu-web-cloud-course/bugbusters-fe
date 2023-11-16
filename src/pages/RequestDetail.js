@@ -13,8 +13,8 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 
 export default function RequestDetail({
-  username,
-  setUsername,
+  // userid,
+  // setUserid,
   room,
   setRoom,
   socket,
@@ -57,13 +57,13 @@ export default function RequestDetail({
   const uid = localStorage.getItem("userid");
   const userid = JSON.parse(uid);
   const req_userid = data.userid;
-  setUsername(userid);
+  // setUserid(userid);
 
   // 방이름 지정
   const roomname = `${rid}_${req_userid}_${userid}`;
   setRoom(roomname);
 
-  console.log("username", username, "room", room);
+  console.log("userid", userid, "room", room);
 
   // 뒤로가기
   const goBack = () => {
@@ -73,7 +73,7 @@ export default function RequestDetail({
   // 버튼 클릭시 채팅방 생성
   const joinRoom = async () => {
     // 서버에 로그인한 유저아이디, 방 이름 전송
-    await socket.emit("join_room", { username, room });
+    await socket.emit("join_room", { userid, room });
     navigate(`/chat/${room}`);
   };
 
