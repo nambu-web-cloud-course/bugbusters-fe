@@ -32,7 +32,7 @@ export default function Request() {
   // 모든 요청 데이터 가져오기
   const getData = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/request");
+      const res = await axios.get("/request");
       if (res.data.success) {
         setData(res.data.data);
       } else {
@@ -50,7 +50,7 @@ export default function Request() {
   // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("http://localhost:8080/request", data);
+      const res = await axios.post("/request", data);
       console.log(res.data);
       if (res.data.success) {
         navigate("/trade-list");

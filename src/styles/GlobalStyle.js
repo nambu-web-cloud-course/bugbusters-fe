@@ -26,6 +26,13 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: none;
         color: inherit;
     }
+
+    hr {
+      height: 1px;
+      border: 0;
+      background-color: ${({ theme }) => theme.color.gray02}
+    }
+
     *{
         box-sizing: border-box;
     } 

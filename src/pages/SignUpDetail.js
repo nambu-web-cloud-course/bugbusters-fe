@@ -20,8 +20,7 @@ export default function SignUpDetail() {
   // 공통 회원가입 폼 제출
   const handleCommonForm = async (data) => {
     try {
-      // auth/sign-up에 공통 회원가입 폼 POST 요청
-      const res = await axios.post("http://localhost:8080/auth/sign-up", data);
+      const res = await axios.post("/auth/sign-up", data);
       console.log(`response: ${res.data}`);
       if (res.data.success) {
         // usertype 무서버일 경우

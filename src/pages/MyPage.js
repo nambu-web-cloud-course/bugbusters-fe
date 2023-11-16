@@ -22,7 +22,7 @@ export default function MyPage() {
   const getData = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/auth?userid=${userid}`
+        `/auth?userid=${userid}`
       );
       const data = res.data.data;
       setData(data);
@@ -38,8 +38,8 @@ export default function MyPage() {
   // 수정 데이터 서버에 전송
   const onSubmit = async (data) => {
     try {
-      const res = await axios.put(`http://localhost:8080/auth/${userid}`, data);
-      if (res.data.success) alert("수정 성공");
+      const res = await axios.put(`/auth/${userid}`, data);
+      if (res.data.success) alert("수정 성공")
     } catch (err) {
       console.log("MyPage Edit", err);
     }

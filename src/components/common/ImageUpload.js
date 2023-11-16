@@ -14,7 +14,7 @@ export default function ImageUpload({ setValue }) {
     formData.append("file", files[0]);
 
     return axios
-      .post("http://localhost:8080/image", formData, config)
+      .post("/image", formData, config)
       .then((res) => {
         if (res.data.success) {
           console.log(res.data);
