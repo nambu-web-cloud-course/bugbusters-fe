@@ -15,6 +15,7 @@ import Request from "./pages/Request";
 import RequestDetail from "./pages/RequestDetail";
 import socket from "./socket";
 import Chat from "./components/chat";
+import ChatList from "./pages/ChatList";
 
 const App = () => {
   // const [username, setUsername] = useState("");
@@ -49,7 +50,7 @@ const App = () => {
             <Route
               path="/chat"
               element={
-                <Chat
+                <ChatList
                   socket={socket}
                   // username={username}
                   // setUsername={setUsername}

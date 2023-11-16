@@ -2,20 +2,16 @@ import styles from "./styles.module.css";
 import RoomAndUsersColumn from "./room-and-users";
 import SendMessage from "./send-message";
 import MessagesReceived from "./messages";
-const Chat = ({ userid, room, socket }) => {
+import Container from "../common/Container";
+
+export default function Chat({ username, room, socket }) {
   return (
-    <div className={styles.chatContainer}>
-      <RoomAndUsersColumn socket={socket} userid={userid} room={room} />
+    <Container>
+      <RoomAndUsersColumn socket={socket} username={username} room={room} />
       <div>
         <MessagesReceived socket={socket} />
-        {room ? (
-          <SendMessage socket={socket} userid={userid} room={room} />
-        ) : (
-          ""
-        )}
+        <SendMessage socket={socket} username={username} room={room} />
       </div>
-    </div>
+    </Container>
   );
-};
-
-export default Chat;
+}

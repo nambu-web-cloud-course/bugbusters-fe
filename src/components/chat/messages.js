@@ -1,12 +1,12 @@
 import formatDateTime from "../../utils/formatDateTime";
 import styles from "./styles.module.css";
 import { useState, useEffect, useRef } from "react";
-
+import { P, Span } from "../common/Text";
 const Messages = ({ socket }) => {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null);
-  console.log("messagesRecieved", messagesRecieved)
-  
+  console.log("messagesRecieved", messagesRecieved);
+
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -23,19 +23,6 @@ const Messages = ({ socket }) => {
 
     // Remove event listener on component unmount
     return () => socket.off("receive_message");
-  }, [socket]);
-
-  // 📀 이 부분은 DB 설계하고 수정하기
-  useEffect(() => {
-    // Last 100 messages sent in the chat room (fetched from the db in backend)
-    socket.on("last_100_messages", (last100Messages) => {
-      console.log("Last 100 messages:", JSON.parse(last100Messages));
-      last100Messages = JSON.parse(last100Messages);
-      // Sort these messages by __createdtime__
-      last100Messages = sortMessagesByDate(last100Messages);
-      setMessagesReceived((state) => [...last100Messages, ...state]);
-    });
-    return () => socket.off("last_100_messages");
   }, [socket]);
 
   // Scroll to the most recent message

@@ -5,8 +5,7 @@ import { DropDown, DropMenu } from "./DropDown";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
-const utype = localStorage.getItem("usertype");
-const usertype = JSON.parse(utype);
+const usertype = JSON.parse(localStorage.getItem("usertype"));
 
 const StyledHeader = styled.header`
   top: 0;

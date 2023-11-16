@@ -1,6 +1,7 @@
+import Button from "../common/Button";
+import { GapItems } from "../common/Items";
 import styles from "./styles.module.css";
 import React, { useState } from "react";
-// 리액트 훅 폼으로 수정하기
 
 const SendMessage = ({ socket, room }) => {
   const uid = localStorage.getItem("userid");
@@ -8,7 +9,7 @@ const SendMessage = ({ socket, room }) => {
   const [message, setMessage] = useState("");
   const handleOnKeyPress = (e) => {
     if (e.key === "Enter") {
-      sendMessage(); 
+      sendMessage();
     }
   };
 
@@ -23,17 +24,18 @@ const SendMessage = ({ socket, room }) => {
   };
 
   return (
-    <div className={styles.sendMessageContainer}>
-      <input
-        className={styles.messageInput}
-        placeholder="Message..."
-        onChange={(e) => setMessage(e.target.value)}
-        value={message}
-        onKeyDown={handleOnKeyPress}
-      />
-      <button className="btn btn-primary" onClick={sendMessage}>
-       전송
-      </button>
+    <div>
+      <GapItems>
+        <input
+          placeholder="메시지를 전송하세요."
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
+          onKeyDown={handleOnKeyPress}
+        />
+        <Button color="green" size="lg" width="30%" fullWidth onClick={sendMessage}>
+          전송
+        </Button>
+      </GapItems>
     </div>
   );
 };

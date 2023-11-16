@@ -37,7 +37,7 @@ export default function RequestDetail({
 
   const getData = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/request/${rid}`);
+      const res = await axios.get(`/request/${rid}`);
       if (res.data.success) {
         const data = await res.data.data;
         setData(data);

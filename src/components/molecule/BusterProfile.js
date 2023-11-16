@@ -43,7 +43,7 @@ export default function BusterProfile() {
     // 회원가입 - 버스터 프로필 등록
     if (!busterID) {
       try {
-        const res = await axios.post("http://localhost:8080/auth/buster", data);
+        const res = await axios.post("/auth/buster", data);
         console.log("Buster Signup:", res.data);
         if (res.data.success) {
           navigate("/sign-in");
@@ -56,7 +56,7 @@ export default function BusterProfile() {
     else {
       try {
         const res = await axios.put(
-          `http://localhost:8080/auth/buster/${busterID}`,
+          `/auth/buster/${busterID}`,
           data
         );
         if (res.data.success) {

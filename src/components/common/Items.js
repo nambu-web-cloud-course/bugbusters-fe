@@ -6,7 +6,7 @@ const Items = styled.div`
   margin-bottom: 0.5rem;
 `;
 const GapItems = styled(Items)`
-  width: 100%; 
+  width: 100%;
   gap: 0.5rem;
   margin: 0 auto;
 `;

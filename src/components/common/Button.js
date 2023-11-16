@@ -68,6 +68,7 @@ const width = css`
   ${(props) =>
     css`
       width: ${props.width};
+      justify-content: center;
     `}
 `;
 
