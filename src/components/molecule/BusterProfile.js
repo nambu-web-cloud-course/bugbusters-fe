@@ -40,6 +40,7 @@ export default function BusterProfile() {
   };
 
   const handleBusterProfile = async (data) => {
+    // truthy, falsy 값이 헷갈림 이게 맞나?
     // 회원가입 - 버스터 프로필 등록
     if (!busterID) {
       try {

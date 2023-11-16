@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 export default function MyPage() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const [data, setData] = useState([]);
-  console.log(data)
+  console.log(data);
   const navigate = useNavigate();
   const {
     register,
@@ -59,11 +59,7 @@ export default function MyPage() {
           <label htmlFor="birthdate">생년월일</label>
           <input id="birthdate" value={data.birthdate} disabled />
           <label htmlFor="phone">휴대폰번호</label>
-          <input
-            {...register("phone")}
-            id="phone"
-            defaultValue={data.phone}
-          />
+          <input {...register("phone")} id="phone" defaultValue={data.phone} />
           <label htmlFor="birthdate">성별</label>
           <div className="select">
             <input
@@ -84,22 +80,13 @@ export default function MyPage() {
             <label htmlFor="M">남자</label>
           </div>
           <label htmlFor="addr1">주소</label>
-          <input
-            {...register("addr1")}
-            defaultValue={data.addr1}
-          />
+          <input {...register("addr1")} defaultValue={data.addr1} />
           <label htmlFor="addr2">상세주소</label>
-          <input
-            {...register("addr2")}
-            defaultValue={data.addr2}
-          />
+          <input {...register("addr2")} defaultValue={data.addr2} />
           <label htmlFor="zipcode">우편번호</label>
-          <input
-            {...register("zipcode")}
-            defaultValue={data.zipcode}
-          />
+          <input {...register("zipcode")} defaultValue={data.zipcode} />
           <label htmlFor="sigungu">시군구</label>
-          <input {...register("sigungu")}  defaultValue={data.sigungu} />
+          <input {...register("sigungu")} defaultValue={data.sigungu} />
           <Button color="green" size="lg" fullwidth>
             정보 수정
           </Button>

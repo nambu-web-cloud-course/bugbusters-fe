@@ -13,6 +13,9 @@ const colorStyles = css`
       &:active {
         background: ${darken(0.1, buttonColor)};
       }
+      &:disabled {
+        background: ${theme.color.gray03};
+      }
       ${(props) =>
         props.$outline &&
         css`
@@ -64,7 +67,7 @@ const fullWidthStyle = css`
     `}
 `;
 
-const width = css`
+const widthStyles = css`
   ${(props) =>
     css`
       width: ${props.width};
@@ -84,7 +87,7 @@ const StyledButton = styled.button`
 
   /* 크기 */
   ${sizeStyles}
-  ${width}
+  ${widthStyles}
 
   /* 색상 */
   ${colorStyles}
@@ -107,8 +110,8 @@ export default function Button({
     <StyledButton
       color={color}
       size={size}
-      $outline={outline}
-      $fullwidth={fullwidth}
+      outline={outline}
+      fullwidth={fullwidth}
       width={width}
       {...rest}
     >
