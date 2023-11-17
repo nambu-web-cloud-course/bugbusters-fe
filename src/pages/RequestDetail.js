@@ -1,7 +1,6 @@
 import Container from "../components/common/Container";
 import Button from "../components/common/Button";
 import Badge from "../components/common/Badge";
-import axios from "axios";
 import formatDateTime from "../utils/formatDateTime";
 import { P, Span } from "../components/common/Text";
 import { GapItems } from "../components/common/Items";
@@ -11,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
+import api from "../api";
 
 export default function RequestDetail({ socket }) {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function RequestDetail({ socket }) {
   const [image, setImage] = useState([]);
   const [room, setRoom] = useState(""); // 방 이름
   const [chatroom, setChatRoom] = useState([]); // 채팅방 정보
-  const [disabledBtn, setDisabledBtn] = useState(false);
+  // const [disabledBtn, setDisabledBtn] = useState(false);
 
   const userid = JSON.parse(localStorage.getItem("userid")); // 유저아이디
   const { id } = useParams();
@@ -34,7 +34,7 @@ export default function RequestDetail({ socket }) {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`/request/${reqid}`);
+      const res = await api.get(`/request/${reqid}`);
       if (res.data.success) {
         const data = await res.data.data;
         setData(data);
@@ -47,7 +47,7 @@ export default function RequestDetail({ socket }) {
 
   const getChatRoom = async () => {
     try {
-      const res = await axios.get(`/chat?reqid=${reqid}`);
+      const res = await api.get(`/chat?reqid=${reqid}`);
       const data = res.data.data;
       setChatRoom(data);
     } catch (err) {
@@ -82,8 +82,6 @@ export default function RequestDetail({ socket }) {
   //     setDisabledBtn(!disabledBtn);
   //   }
   // }, []);
-
-  
 
   return (
     <div className="Content">

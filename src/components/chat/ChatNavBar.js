@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import formatDateTime from "../../utils/formatDateTime";
-import Container from "../common/Container";
 import Button from "../common/Button";
 import { P } from "../common/Text";
-import axios from "axios";
 import { GapItems } from "../common/Items";
 import UserInfo from "../common/UserInfo";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
@@ -12,6 +9,7 @@ import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
+import api from "../../api";
 
 export default function ChatNavBar({ socket }) {
   const [roomUsers, setRoomUsers] = useState([]);
@@ -51,7 +49,7 @@ export default function ChatNavBar({ socket }) {
     if (usertype === "C") query = `userid=${userid}`;
     else query = `busterid=${userid}`;
     try {
-      const res = await axios.get(`/chat?${query}`);
+      const res = await api.get(`/chat?${query}`);
       const data = res.data.data;
       setRooms(data);
     } catch (err) {
@@ -79,7 +77,7 @@ export default function ChatNavBar({ socket }) {
   };
 
   const writeReview = async () => {
-    const res = await axios.put(`/trade/${reqid}`, {
+    const res = await api.put(`/trade/${reqid}`, {
       rev1: "1",
       rev2: "2",
       rev3: "3",

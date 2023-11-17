@@ -30,7 +30,6 @@ const Message = styled.div`
 export default function Messages({ socket }) {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null);
-
   const userid = JSON.parse(localStorage.getItem("userid"));
   console.log("messagesRecieved", messagesRecieved);
 

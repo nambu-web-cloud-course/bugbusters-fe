@@ -3,10 +3,9 @@ import Container from "../components/common/Container";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import api from "../api";
 
 export default function SignIn() {
-  // 유저 아이디, 토큰 저장
   const navigate = useNavigate();
   const {
     register,
@@ -17,15 +16,14 @@ export default function SignIn() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("/auth/sign-in", data);
-
+      const res = await api.post("/auth/sign-in", data);
       if (res.data.success) {
         console.log("Sign in Success", res.data);
         const userid = res.data.userid;
         const token = res.data.token;
 
         // 유저 타입 가져오기
-        const userInfo = await axios.get(`/auth?userid=${userid}`);
+        const userInfo = await api.get(`/auth?userid=${userid}`);
         console.log("usreInfo", userInfo);
         const usertype = userInfo.data.data.usertype;
 

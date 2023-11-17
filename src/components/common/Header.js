@@ -4,7 +4,6 @@ import { styled } from "styled-components";
 import { DropDown, DropMenu } from "./DropDown";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-
 const usertype = JSON.parse(localStorage.getItem("usertype"));
 
 const StyledHeader = styled.header`
@@ -17,6 +16,7 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: center;
 `;
+
 
 const InnerHeader = styled.div`
   width: 50rem;
@@ -39,13 +39,14 @@ export default function Header() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const location = useLocation();
 
-  // 로그아웃 함수
-  const signOut = () => {
-    localStorage.removeItem("userid");
-    localStorage.removeItem("usertype");
-    localStorage.removeItem("token");
-  };
 
+
+ // 로그아웃 함수
+ const signOut = () => {
+  localStorage.removeItem("userid");
+  localStorage.removeItem("usertype");
+  localStorage.removeItem("token");
+};
   // 드롭다운 메뉴 보이기
   const handleDropDown = () => {
     setShowDropDown(!showDropDown);
@@ -56,6 +57,7 @@ export default function Header() {
     const token = localStorage.getItem("token");
     setIsSignIn(token);
   });
+
 
   return (
     <StyledHeader>

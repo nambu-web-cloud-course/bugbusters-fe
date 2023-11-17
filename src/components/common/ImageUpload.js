@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Dropzone from "react-dropzone";
-import axios from "axios";
+import api from "../../api";
 
 export default function ImageUpload({ setValue }) {
   const [Images, setImages] = useState([]);
@@ -13,7 +13,7 @@ export default function ImageUpload({ setValue }) {
     };
     formData.append("file", files[0]);
 
-    return axios
+    return api
       .post("/image", formData, config)
       .then((res) => {
         if (res.data.success) {

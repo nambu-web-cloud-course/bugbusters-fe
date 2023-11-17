@@ -1,7 +1,6 @@
 import Container from "../components/common/Container";
 import Button from "../components/common/Button";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { Text, CountText, Span, P } from "../components/common/Text";
 import { Link, useNavigate } from "react-router-dom";
 import ImageUpload from "../components/common/ImageUpload";
@@ -13,13 +12,11 @@ import { GapItems } from "../components/common/Items";
 import Badge from "../components/common/Badge";
 import formatDateTime from "../utils/formatDateTime";
 import { useEffect, useState } from "react";
+import api from "../api";
 
 export default function Request() {
-  // userid, usertype 가져오기
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
-  // const [chatroom, setChatRoom] = useState([]);
-  // const [disabledBtn, setDisabledBtn] = useState(false);
 
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -34,7 +31,7 @@ export default function Request() {
   // 모든 요청 데이터 가져오기
   const getData = async () => {
     try {
-      const res = await axios.get("/request");
+      const res = await api.get("/request");
       if (res.data.success) {
         setData(res.data.data);
       } else {
@@ -49,7 +46,7 @@ export default function Request() {
   // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("/request", data);
+      const res = await api.post("/request", data);
       if (res.data.success) {
         navigate("/trade-list");
       }

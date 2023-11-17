@@ -34,9 +34,7 @@ const App = () => {
             <Route path="/request" element={<Request />} />
             <Route
               path="/request/:id"
-              element={
-                <RequestDetail socket={socket} />
-              }
+              element={<RequestDetail socket={socket} />}
             />
             <Route path="/chat" element={<ChatList socket={socket} />} />
             <Route path="/chat/:chatroom" element={<Chat socket={socket} />} />

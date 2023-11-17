@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 const socket = io("http://localhost:8080", {
-  withCredentials: true
+  withCredentials: true,
 });
 
 export default socket;

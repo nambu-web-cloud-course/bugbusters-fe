@@ -1,4 +1,3 @@
-import axios from "axios";
 import Container from "../components/common/Container";
 import UserInfo from "../components/common/UserInfo";
 import { useState, useEffect, useRef } from "react";
@@ -6,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Span } from "../components/common/Text";
 import formatDateTime from "../utils/formatDateTime";
 import Messages from "../components/chat/Messages";
+import api from "../api";
 
 export default function ChatList({ socket }) {
   const userid = JSON.parse(localStorage.getItem("userid"));
@@ -18,7 +18,7 @@ export default function ChatList({ socket }) {
     const URL = `/chat?${typeid}=${userid}`;
 
     try {
-      const res = await axios.get(URL);
+      const res = await api.get(URL);
       const data = res.data.data;
       if (res.data.success) {
         data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -34,7 +34,7 @@ export default function ChatList({ socket }) {
   //   const URL = `/chat?${typeid}=${userid}`;
 
   //   try {
-  //     const res = await axios.get(URL);
+  //     const res = await api.get(URL);
   //     const data = res.data.data;
   //     if (res.data.success) {
   //       data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

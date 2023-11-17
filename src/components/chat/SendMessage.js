@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
-import Button from "../common/Button";
 import { GapItems } from "../common/Items";
-
-import React, { useEffect, useState } from "react";
+import Button from "../common/Button";
+import { useEffect, useState } from "react";
 
 export default function SendMessage({ socket }) {
   const { chatroom } = useParams();

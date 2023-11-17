@@ -1,11 +1,10 @@
 import Container from "../components/common/Container";
 import Button from "../components/common/Button";
-
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import api from "../api";
 
 export default function MyPage() {
   const userid = JSON.parse(localStorage.getItem("userid"));
@@ -21,7 +20,7 @@ export default function MyPage() {
   // 회원가입시 기입한 유저 정보 가져오기
   const getData = async () => {
     try {
-      const res = await axios.get(
+      const res = await api.get(
         `/auth?userid=${userid}`
       );
       const data = res.data.data;
@@ -38,7 +37,7 @@ export default function MyPage() {
   // 수정 데이터 서버에 전송
   const onSubmit = async (data) => {
     try {
-      const res = await axios.put(`/auth/${userid}`, data);
+      const res = await api.put(`/auth/${userid}`, data);
       if (res.data.success) alert("수정 성공")
     } catch (err) {
       console.log("MyPage Edit", err);

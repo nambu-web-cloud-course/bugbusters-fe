@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { darken, lighten } from "polished";
-import { useState } from "react";
 
 const colorStyles = css`
   ${({ theme, color }) => {
@@ -28,7 +27,7 @@ const colorStyles = css`
           background: white;
           border: 1px solid ${buttonColor};
           &:hover {
-            background:${lighten(0.4, buttonColor)};
+            background: ${lighten(0.4, buttonColor)};
             color: ${buttonColor};
           }
         `}

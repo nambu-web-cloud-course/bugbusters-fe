@@ -1,11 +1,12 @@
 import Button from "../common/Button";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Container from "../common/Container";
 import ImageUpload from "../common/ImageUpload";
 import { useState, useEffect } from "react";
 import { GapItems } from "../common/Items";
+import axios from "axios";
+import api from "../../api";
 
 export default function BusterProfile() {
   // 프로필 작성 중인 버스터 아이디
@@ -29,9 +30,7 @@ export default function BusterProfile() {
   // 회원가입 후 프로필 수정을 위한 정보
   const getData = async () => {
     try {
-      const res = await axios.get(
-        `/auth/buster?userid=${ busterID}`
-      );
+      const res = await axios.get(`/auth/buster?userid=${busterID}`);
       const data = res.data.data;
       setData(data);
       setImage(data.profile);
@@ -57,10 +56,7 @@ export default function BusterProfile() {
     // 버스터 프로필 수정
     else {
       try {
-        const res = await axios.put(
-          `/auth/buster/${busterID}`,
-          data
-        );
+        const res = await axios.put(`/auth/buster/${busterID}`, data);
         if (res.data.success) {
           alert("프로필 수정 완료");
           getData();
@@ -73,7 +69,7 @@ export default function BusterProfile() {
 
   // 버스터 프로필 정보 가져오기
   useEffect(() => {
-    if(busterID) getData();
+    if (busterID) getData();
   }, [busterID]);
 
   return (
