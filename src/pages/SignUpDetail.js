@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import BusterProfile from "../components/molecule/BusterProfile";
-import CommonForm from "../components/molecule/CommonForm";
+import BusterProfile from "../components/form/BusterProfile";
+import CommonForm from "../components/form/CommonForm";
 import api from "../api";
 
 export default function SignUpDetail() {

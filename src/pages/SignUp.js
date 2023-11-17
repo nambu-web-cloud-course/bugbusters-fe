@@ -4,7 +4,7 @@ import Container from "../components/common/Container";
 
 export default function SignUp() {
   return (
-<div className="Content">
+    <div className="Content">
       <h1>회원가입</h1>
       <Container $size="sm">
         <Link to="/sign-up/user">

@@ -1,6 +1,6 @@
 import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import Badge from "../common/Badge";
-import { GapItems } from "../common/Items";
+import { GapItems } from "./GapItems";
 import { P, Span } from "../common/Text";
 
 export default function UserInfo({ busterid, userid, usertype, room }) {

@@ -3,7 +3,7 @@ import Badge from "../components/common/Badge";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
-import { GapItems } from "../components/common/Items";
+import { GapItems } from "../components/common/GapItems";
 import { Span } from "../components/common/Text";
 import Tabs from "../components/common/Tabs";
 import { useEffect, useState } from "react";

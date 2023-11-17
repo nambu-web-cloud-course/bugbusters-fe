@@ -10,7 +10,7 @@ import TradeList from "./pages/TradeList";
 import MyPage from "./pages/MyPage";
 import Header from "./components/common/Header";
 import theme from "./styles/theme";
-import BusterProfile from "./components/molecule/BusterProfile";
+import BusterProfile from "./components/form/BusterProfile";
 import Request from "./pages/Request";
 import RequestDetail from "./pages/RequestDetail";
 import socket from "./socket";

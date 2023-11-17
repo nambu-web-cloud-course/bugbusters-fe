@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { GapItems } from "../common/Items";
+import { GapItems } from "../common/GapItems";
 import Button from "../common/Button";
 import { useEffect, useState } from "react";
 

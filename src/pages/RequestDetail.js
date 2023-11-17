@@ -3,7 +3,7 @@ import Button from "../components/common/Button";
 import Badge from "../components/common/Badge";
 import formatDateTime from "../utils/formatDateTime";
 import { P, Span } from "../components/common/Text";
-import { GapItems } from "../components/common/Items";
+import { GapItems } from "../components/common/GapItems";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";

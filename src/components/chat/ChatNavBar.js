@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import { P } from "../common/Text";
-import { GapItems } from "../common/Items";
+import { GapItems } from "../common/GapItems";
 import UserInfo from "../common/UserInfo";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
