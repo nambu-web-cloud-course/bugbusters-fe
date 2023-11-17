@@ -11,7 +11,8 @@ export default function ChatList({ socket }) {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const [chatroom, setChatRoom] = useState([]);
-  console.log(`"/chat" page: `, chatroom)
+  // const [userinfo, setUserInfo] = useState([])
+  
   const getChatRoom = async () => {
     const typeid = usertype === "B" ? "busterid" : "userid";
     const URL = `/chat?${typeid}=${userid}`;
@@ -20,7 +21,6 @@ export default function ChatList({ socket }) {
       const res = await axios.get(URL);
       const data = res.data.data;
       if (res.data.success) {
-        console.log("chat data fetching clear!")
         data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setChatRoom(data);
       }
@@ -28,6 +28,23 @@ export default function ChatList({ socket }) {
       console.log("Get Chatroom Error", err);
     }
   };
+  
+  // const getUserInfo = async () => {
+  //   const typeid = usertype === "B" ? "busterid" : "userid";
+  //   const URL = `/chat?${typeid}=${userid}`;
+
+  //   try {
+  //     const res = await axios.get(URL);
+  //     const data = res.data.data;
+  //     if (res.data.success) {
+  //       data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  //       setUserInfo(data);
+  //     }
+  //   } catch (err) {
+  //     console.log("Get UserInfo Error", err);
+  //   }
+  // };
+
   useEffect(() => {
     getChatRoom();
   }, []);

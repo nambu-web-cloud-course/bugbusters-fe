@@ -40,6 +40,7 @@ export default function BusterProfile() {
     }
   };
 
+  // 분리하는 게 좋을 듯?
   const handleBusterProfile = async (data) => {
     // 회원가입 - 버스터 프로필 등록
     if (!busterID) {

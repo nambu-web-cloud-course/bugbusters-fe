@@ -1,16 +1,15 @@
-
 import ChatNavBar from "./ChatNavBar";
 import SendMessage from "./SendMessage";
 import Messages from "./Messages";
 import Container from "../common/Container";
 
-export default function Chat({ username, room, socket }) {
+export default function Chat({ socket }) {
   return (
     <Container>
-      <ChatNavBar socket={socket} username={username} room={room} />
+      <ChatNavBar socket={socket} />
       <div>
         <Messages socket={socket} />
-        <SendMessage socket={socket} username={username} room={room} />
+        <SendMessage socket={socket} />
       </div>
     </Container>
   );

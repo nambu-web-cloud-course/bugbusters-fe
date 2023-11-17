@@ -7,6 +7,10 @@ const colorStyles = css`
     const buttonColor = theme.color[color];
     return css`
       background: ${buttonColor};
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.25rem;
       &:hover {
         background: ${lighten(0.1, buttonColor)};
       }
@@ -14,7 +18,8 @@ const colorStyles = css`
         background: ${darken(0.1, buttonColor)};
       }
       &:disabled {
-        background: ${theme.color.gray03};
+        background: ${theme.color.gray02};
+        color: ${theme.color.gray03};
       }
       ${(props) =>
         props.outline &&
@@ -48,6 +53,11 @@ const sizes = {
   sm: {
     padding: "0.375rem 0.5rem",
     fontSize: "0.875rem",
+  },
+
+  xs: {
+    padding: "0.25rem 0.3rem",
+    fontSize: "0.8125rem",
   },
 };
 

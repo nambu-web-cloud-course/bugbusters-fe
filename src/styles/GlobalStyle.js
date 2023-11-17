@@ -74,18 +74,7 @@ const GlobalStyle = createGlobalStyle`
         background: transparent;
         cursor: pointer;
     }
-    input {
-    width: 100%;
-    padding: 1rem;
-    height: 3rem;
-    font-size: 0.9375rem;
-    font-weight: 400;
-    line-height: 1.25rem;
-    letter-spacing: -0.01563rem;
-    border: none;
-    border-radius: 0.5rem;
-    background: ${({ theme }) => theme.color.gray01};
-    }
+
     textarea {
       background: ${({ theme }) => theme.color.gray01};
       height: 12.5rem;
@@ -103,6 +92,18 @@ const GlobalStyle = createGlobalStyle`
     display: flex;    
     }
 
+    input {
+    width: 100%;
+    padding: 1rem;
+    height: 3rem;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    letter-spacing: -0.01563rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: ${({ theme }) => theme.color.gray01};
+    }
 
     input:disabled {
       background: ${({ theme }) => theme.color.gray02};
@@ -113,15 +114,15 @@ const GlobalStyle = createGlobalStyle`
     display: none;
     }
 
-  input[type=radio]+label:first-of-type {
+   input[type=radio]+label:first-of-type {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-  }
+   }
 
-  input[type=radio]+label:last-child {
+   input[type=radio]+label:last-child {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-  }
+   }
     .tabs input[type=radio]+label{
     display: inline-block;
     cursor: pointer;

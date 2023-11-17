@@ -9,23 +9,6 @@ const MessagesColumn = styled.div`
   overflow: auto;
 `;
 
-
-// .message__recipient {
-//   background-color: #f5ccc2;
-//   width: 300px;
-//   padding: 10px;
-//   border-radius: 10px;
-//   font-size: 15px;
-//   }
-//   .message__sender{
-//   background-color: rgb(194, 243, 194);
-//   max-width: 300px;
-//   padding: 10px;
-//   border-radius: 10px;
-//   margin-left: auto;
-//   font-size: 15px;
-//   }
-
 const Message = styled.div`
   width: 60%;
   border-radius: 0.5rem;

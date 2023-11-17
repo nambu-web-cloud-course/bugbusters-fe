@@ -13,7 +13,8 @@ export default function SendMessage({ socket }) {
 
   const userid = JSON.parse(localStorage.getItem("userid"));
   const [message, setMessage] = useState("");
-  const handleOnKeyPress = (e) => {
+  const handleOnKeyDown = (e) => {
+    if (e.nativeEvent.isComposing) return;
     if (e.key === "Enter") {
       sendMessage();
     }
@@ -34,7 +35,7 @@ export default function SendMessage({ socket }) {
           placeholder="메시지를 전송하세요."
           onChange={(e) => setMessage(e.target.value)}
           value={message}
-          onKeyDown={handleOnKeyPress}
+          onKeyDown={handleOnKeyDown}
         />
         <Button color="green" size="lg" width="20%" onClick={sendMessage}>
           전송

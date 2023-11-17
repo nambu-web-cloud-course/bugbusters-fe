@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import formatDateTime from "../../utils/formatDateTime";
@@ -9,20 +8,22 @@ import axios from "axios";
 import { GapItems } from "../common/Items";
 import UserInfo from "../common/UserInfo";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
-
+import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
+import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 
 export default function ChatNavBar({ socket }) {
   const [roomUsers, setRoomUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
-
-  // room을 세팅해도 초기화되는 문제 때문에 각각의 컴포넌트에 room 지정
+  const [room, setRoom] = useState("");
   const { chatroom } = useParams();
-  const [room, setRoom] = useState("")
+
   useEffect(() => {
-    setRoom(chatroom);  
+    setRooms(chatroom);
   }, []);
-  
-  const userid = JSON.parse(localStorage.getItem("userid"));  
+  const reqid = chatroom.split("_")[0];
+  const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const navigate = useNavigate();
@@ -73,18 +74,56 @@ export default function ChatNavBar({ socket }) {
     navigate("/chat", { replace: true });
   };
 
+  const sendAddress = () => {
+    // socket.emit("send_address", {sigungu, ???)}
+  };
+
+  const writeReview = async () => {
+    const res = await axios.put(`/trade/${reqid}`, {
+      rev1: "1",
+      rev2: "2",
+      rev3: "3",
+    });
+    console.log(res.data.data);
+  };
+
+  // 리뷰: 모달? 키워드 5개 넣어서 선택시 value를 데이터에 저장해서 보내기
+
+  const completeTrade = () => {};
+
   return (
-    <div>
-      <GapItems>
-        <UserInfo />
-        <button onClick={leaveRoom}>
-          <ExitToAppRoundedIcon />
-        </button>
+    <div style={{ borderBottom: "1px solid gray" }}>
+      <GapItems col="col">
+        <GapItems>
+          <UserInfo />
+          <button onClick={leaveRoom}>
+            <ExitToAppRoundedIcon />
+          </button>
+        </GapItems>
+        {usertype === "B" ? (
+          <GapItems left="left">
+            <Button color="green" size="xs" outline>
+              <CreditCardRoundedIcon />
+              결제 요청
+            </Button>
+          </GapItems>
+        ) : (
+          <GapItems>
+            <Button color="green" size="xs" outline onClick={sendAddress}>
+              <LocationOnRoundedIcon />
+              주소 전송
+            </Button>
+            <Button color="green" size="xs" outline onClick={writeReview}>
+              <CreateRoundedIcon />
+              리뷰 작성
+            </Button>
+            <Button color="green" size="xs" outline onClick={completeTrade}>
+              <CheckRoundedIcon />
+              거래완료
+            </Button>
+          </GapItems>
+        )}
       </GapItems>
-      <Button color="green" size="sm" outline>
-        결제 요청
-      </Button>
-      <hr />
     </div>
   );
 }

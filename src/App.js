@@ -18,8 +18,6 @@ import Chat from "./components/chat/Chat";
 import ChatList from "./pages/ChatList";
 
 const App = () => {
-  const [room, setRoom] = useState("");
-
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
@@ -37,7 +35,7 @@ const App = () => {
             <Route
               path="/request/:id"
               element={
-                <RequestDetail room={room} setRoom={setRoom} socket={socket} />
+                <RequestDetail socket={socket} />
               }
             />
             <Route path="/chat" element={<ChatList socket={socket} />} />

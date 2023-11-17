@@ -12,11 +12,7 @@ import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 
-export default function RequestDetail({
-  room,
-  setRoom,
-  socket,
-}) {
+export default function RequestDetail({ socket }) {
   const navigate = useNavigate();
   const {
     register,
@@ -25,17 +21,20 @@ export default function RequestDetail({
     formState: { errors },
   } = useForm();
 
-  // request id 게시글
   const [data, setData] = useState([]);
   const [image, setImage] = useState([]);
+  const [room, setRoom] = useState(""); // 방 이름
+  const [chatroom, setChatRoom] = useState([]); // 채팅방 정보
+  const [disabledBtn, setDisabledBtn] = useState(false);
 
-  // URL의 requset id 파라미터 가져오기
+  const userid = JSON.parse(localStorage.getItem("userid")); // 유저아이디
   const { id } = useParams();
-  const rid = parseInt(id);
+  const reqid = parseInt(id); // 요청 아이디
+  const req_userid = data.userid; // 요청한 유저 아이디
 
   const getData = async () => {
     try {
-      const res = await axios.get(`/request/${rid}`);
+      const res = await axios.get(`/request/${reqid}`);
       if (res.data.success) {
         const data = await res.data.data;
         setData(data);
@@ -46,21 +45,15 @@ export default function RequestDetail({
     }
   };
 
-  console.log(data)
-  // 상세 요청 데이터 가져오기
-  useEffect(() => {
-    getData();
-  }, []);
-
-  // 로그인한 유저 본인 아이디, 유저 타입(B/C), 요청한 무서버 아이디
-  const userid = JSON.parse(localStorage.getItem("userid"));
-  const req_userid = data.userid;
-
-  // 방이름 지정
-  const roomname = `${rid}_${req_userid}_${userid}`;
-  setRoom(roomname);
-
-  console.log("userid", userid, "room", room);
+  const getChatRoom = async () => {
+    try {
+      const res = await axios.get(`/chat?reqid=${reqid}`);
+      const data = res.data.data;
+      setChatRoom(data);
+    } catch (err) {
+      console.log("Getting Room list Error", err);
+    }
+  };
 
   // 뒤로가기
   const goBack = () => {
@@ -73,6 +66,24 @@ export default function RequestDetail({
     await socket.emit("join_room", { userid, room });
     navigate(`/chat/${room}`);
   };
+
+  useEffect(() => {
+    getData();
+    getChatRoom();
+    const roomname = `${reqid}_${req_userid}_${userid}`;
+    setRoom(roomname);
+  }, [reqid, req_userid, userid]);
+
+  // 나중에 버튼 비활성화
+  // useEffect(() => {
+  // Check the condition for disabling the button
+  //   console.log(chatroom[0], chatroom.userid, chatroom.busterid)
+  //   if (!chatroom.busterid && !chatroom.userid) {
+  //     setDisabledBtn(!disabledBtn);
+  //   }
+  // }, []);
+
+  
 
   return (
     <div className="Content">
@@ -102,7 +113,13 @@ export default function RequestDetail({
         <Span>
           {formatDateTime(data.createdAt)} 😨작성자: {data.userid}
         </Span>
-        <Button onClick={joinRoom} color="green" size="lg" $fullwidth>
+        <Button
+          onClick={joinRoom}
+          color="green"
+          size="lg"
+          $fullwidth
+          // disabled={disabledBtn}
+        >
           채팅하기
         </Button>
       </Container>

@@ -2,40 +2,35 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = function (app) {
   app.use(
-    "/auth",
-    createProxyMiddleware({
+    createProxyMiddleware("/auth", {
       target: "http://localhost:8080",
       changeOrigin: true,
     })
   );
 
   app.use(
-    "/image",
-    createProxyMiddleware({
+    createProxyMiddleware("/image", {
       target: "http://localhost:8080",
       changeOrigin: true,
     })
   );
 
   app.use(
-    "/request",
-    createProxyMiddleware({
+    createProxyMiddleware("/request", {
       target: "http://localhost:8080",
       changeOrigin: true,
     })
   );
 
   app.use(
-    "/trade",
-    createProxyMiddleware({
+    createProxyMiddleware("/trade", {
       target: "http://localhost:8080",
       changeOrigin: true,
     })
   );
 
   app.use(
-    "/chat",
-    createProxyMiddleware({
+    createProxyMiddleware("/chat", {
       target: "http://localhost:8080",
       changeOrigin: true,
     })

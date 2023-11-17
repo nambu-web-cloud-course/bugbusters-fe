@@ -18,6 +18,8 @@ export default function Request() {
   // userid, usertype 가져오기
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
+  // const [chatroom, setChatRoom] = useState([]);
+  // const [disabledBtn, setDisabledBtn] = useState(false);
 
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -42,7 +44,7 @@ export default function Request() {
       console.log("Error fetching All Request: ", err);
     }
   };
-console.log(data)
+  console.log(data);
 
   // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
@@ -60,42 +62,40 @@ console.log(data)
     getData();
   }, []);
 
-  
   return (
     <div className="Content">
       <h1>잡아줘요</h1>
       {usertype === "B" ? (
         // 버스터
-        data.length > 0? 
-        data.map((item) => (
-          // 각 컨테이너 클릭시 상세페이지로 이동
-          <Link to={`/request/${item.id}`} key={item.id}>
-            <Container key={item.id}>
-              <p>{item.content}</p>
-              <GapItems>
-                <Badge>
-                  <LocationOnRoundedIcon fontSize="small" />
-                  {item.sido} {item.sigungu}
-                </Badge>
-                <Badge>
-                  <PersonRoundedIcon fontSize="small" />
-                  {item.gender}
-                </Badge>
-                <Badge>
-                  <CreditCardRoundedIcon fontSize="small" />
-                  {item.price}
-                </Badge>
-              </GapItems>
-              <Span>
-                {formatDateTime(item.createdAt)} 😨작성자: {item.userid}
-              </Span>
-            </Container>
-          </Link>
-        ))
-        : 
-        <Container>
-          요청사항이 없습니다.
-        </Container>
+        data.length > 0 ? (
+          data.map((item) => (
+            // 각 컨테이너 클릭시 상세페이지로 이동
+            <Link to={`/request/${item.id}`} key={item.id}>
+              <Container key={item.id}>
+                <p>{item.content}</p>
+                <GapItems>
+                  <Badge>
+                    <LocationOnRoundedIcon fontSize="small" />
+                    {item.sido} {item.sigungu}
+                  </Badge>
+                  <Badge>
+                    <PersonRoundedIcon fontSize="small" />
+                    {item.gender}
+                  </Badge>
+                  <Badge>
+                    <CreditCardRoundedIcon fontSize="small" />
+                    {item.price}
+                  </Badge>
+                </GapItems>
+                <Span>
+                  {formatDateTime(item.createdAt)} 😨작성자: {item.userid}
+                </Span>
+              </Container>
+            </Link>
+          ))
+        ) : (
+          <Container>요청사항이 없습니다.</Container>
+        )
       ) : (
         // 유저(무서버)
         <form className="Content" onSubmit={handleSubmit(onSubmit)}>

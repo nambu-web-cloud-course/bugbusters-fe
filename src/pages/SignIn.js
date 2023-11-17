@@ -1,9 +1,9 @@
 import Button from "../components/common/Button";
 import Container from "../components/common/Container";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 export default function SignIn() {
   // 유저 아이디, 토큰 저장
@@ -25,9 +25,7 @@ export default function SignIn() {
         const token = res.data.token;
 
         // 유저 타입 가져오기
-        const userInfo = await axios.get(
-          `/auth?userid=${userid}`
-        );
+        const userInfo = await axios.get(`/auth?userid=${userid}`);
         console.log("usreInfo", userInfo);
         const usertype = userInfo.data.data.usertype;
 
