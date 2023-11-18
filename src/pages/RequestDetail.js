@@ -14,20 +14,14 @@ import GapItems from "../components/common/GapItems";
 
 export default function RequestDetail({ socket }) {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-
   const [data, setData] = useState([]);
   const [image, setImage] = useState([]);
   const [room, setRoom] = useState(""); // 방 이름
   const [chatroom, setChatRoom] = useState([]); // 채팅방 정보
   // const [disabledBtn, setDisabledBtn] = useState(false);
 
-  const userid = JSON.parse(localStorage.getItem("userid")); // 유저아이디
+  const userid = JSON.parse(localStorage.getItem("userid"));
+  const usertype = JSON.parse(localStorage.getItem("usertype"));
   const { id } = useParams();
   const reqid = parseInt(id); // 요청 아이디
   const req_userid = data.userid; // 요청한 유저 아이디
@@ -41,7 +35,7 @@ export default function RequestDetail({ socket }) {
         setImage(data.Images);
       }
     } catch (err) {
-      console.error("Error fetching Request Detail: ", err);
+      console.error("Error on fetching request detail: ", err);
     }
   };
 
@@ -51,7 +45,7 @@ export default function RequestDetail({ socket }) {
       const data = res.data.data;
       setChatRoom(data);
     } catch (err) {
-      console.log("Getting Room list Error", err);
+      console.log("Error on getting room list", err);
     }
   };
 
@@ -60,6 +54,20 @@ export default function RequestDetail({ socket }) {
     navigate(-1);
   };
 
+  const cancelRequest = async () => {
+    if (window.confirm("정말 요청을 취소하시겠습니까?")) {
+      navigate("/trade-list");
+    }
+    const data = {
+      state: "CA",
+    };
+    try {
+      const res = await api.put(`/request/${reqid}`, data);
+      if (res.data.success) console.log("Success cancle request");
+    } catch (err) {
+      console.log("Cancle requset error", err);
+    }
+  };
 
   const joinRoom = async () => {
     const data = {
@@ -71,9 +79,9 @@ export default function RequestDetail({ socket }) {
     // 거래 생성
     try {
       const res = await api.post("/trade", data);
-      if (res.data.success) console.log("Create Trade Success");
+      if (res.data.success) console.log("Success Create trade");
     } catch (err) {
-      console.log("Create Trade Fail", err);
+      console.log("Fail create trade", err);
     }
 
     // 채팅방 입장
@@ -104,6 +112,7 @@ export default function RequestDetail({ socket }) {
           <img
             key={img.id}
             style={{ width: "50%" }}
+            // 주소 수정
             src={`http://localhost:8080/${img.img}`}
           />
         ))}
@@ -115,25 +124,35 @@ export default function RequestDetail({ socket }) {
           </Badge>
           <Badge>
             <PersonRoundedIcon fontSize="small" />
-            {data.gender}
+            {data.gender === "F"
+              ? "여자"
+              : data.gender === "M"
+              ? "남자"
+              : "성별무관"}
           </Badge>
           <Badge>
             <CreditCardRoundedIcon fontSize="small" />
-            {data.price}
+            {data.price?.toLocaleString()}원
           </Badge>
         </GapItems>
         <Span>
-          {formatDateTime(data.createdAt)} 😨작성자: {data.userid}
+          {formatDateTime(data.createdAt)} | 작성자: {data.userid}
         </Span>
-        <Button
-          onClick={joinRoom}
-          color="green"
-          size="lg"
-          $fullwidth
-          // disabled={disabledBtn}
-        >
-          채팅하기
-        </Button>
+        {usertype === "B" ? (
+          <Button
+            onClick={joinRoom}
+            color="green"
+            size="lg"
+            $fullwidth
+            // disabled={disabledBtn}
+          >
+            채팅하기
+          </Button>
+        ) : (
+          <Button onClick={cancelRequest} color="green" size="lg" $fullwidth>
+            요청 취소
+          </Button>
+        )}
       </Container>
       <Button onClick={goBack} color="green" size="lg" outline $fullwidth>
         목록

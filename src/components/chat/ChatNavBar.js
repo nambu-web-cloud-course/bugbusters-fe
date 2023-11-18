@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import Button from "../common/Button";
-import { P } from "../common/Text";
 import GapItems from "../common/GapItems";
 import UserInfo from "../common/UserInfo";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
@@ -11,61 +11,66 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import api from "../../api";
 import Modal from "../common/Modal";
-import { useForm } from "react-hook-form";
 
 export default function ChatNavBar({ socket }) {
+  // 채팅방 정보
+  // const [room, setRoom] = useState("");
+  const navigate = useNavigate();
   const [roomUsers, setRoomUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  // const [room, setRoom] = useState("");
-  const navigate = useNavigate();
+
+  // 메시지 정보
+  const [messagesRecieved, setMessagesReceived] = useState([]);
+
+  // URL의 방 이름 가져오기
   const { chatroom } = useParams();
   const room = chatroom;
   const reqid = chatroom.split("_")[0];
-  const req_userid = chatroom.split("_")[1];
+  const muserverid = chatroom.split("_")[1];
+  const busterid = chatroom.split("_")[2];
+
+  // 로그인한 유저 정보 가져오기
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
-  const [data, setData] = useState([]);
+
+  // 거래 내역 가져오기
   const [trade, setTrade] = useState([]);
-  const [messagesRecieved, setMessagesReceived] = useState([]);
+  const [tradeid, setTradeID] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-
-  const getData = async () => {
-    try {
-      const res = await api.get(`/trade?userid=${req_userid}`);
-      if (res.data.success) {
-        setData(res.data.data);
-      } else {
-        console.log("Error fetching All Request");
-      }
-    } catch (err) {
-      console.log("Error fetching All Request: ", err);
-    }
-  };
+  const { register, handleSubmit } = useForm();
 
   const getTrade = async () => {
     try {
-      const filteredData = await data.filter((item) => item.reqid == reqid);
-      setTrade(filteredData);
+      const tradeRes = await api.get(`/trade`);
+
+      if (tradeRes.data.success) {
+        const commonTrades = tradeRes.data.data.filter(
+          (trade) =>
+            trade.reqid == reqid &&
+            trade.userid === muserverid &&
+            trade.busterid === busterid
+        );
+        setTrade(commonTrades);
+      } else {
+        console.log("Error fetching trade data");
+      }
     } catch (err) {
-      console.log("Get Trade Error", err);
+      console.log("Error fetching trade data: ", err);
     }
   };
 
   useEffect(() => {
     setRooms(chatroom);
-    getData();
+    getTrade();
   }, []);
 
   useEffect(() => {
-    getTrade();
-  }, [data]);
+    const tid = trade?.[0]?.id;
+    if (tid) {
+      setTradeID(tid);
+    }
+  }, [trade]);
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -85,31 +90,36 @@ export default function ChatNavBar({ socket }) {
   }, [socket]);
 
   // 방 안에 있는 유저 저장 - { id: socket.id, userid, room }
-  useEffect(() => {
-    getRooms();
-    socket.on("chatroom_users", (data) => {
-      setRoomUsers(data);
-      console.log("chatroom_users", data);
-    });
-    return () => socket.off("chatroom_users");
-  }, [socket]);
+  // useEffect(() => {
+  //   getRooms();
+  //   socket.on("chatroom_users", (data) => {
+  //     setRoomUsers(data);
+  //     console.log("chatroom_users", data);
+  //   });
+  //   return () => socket.off("chatroom_users");
+  // }, [socket]);
 
   // 방 데이터 가져오기
-  const getRooms = async () => {
-    let query = "";
-    if (usertype === "C") query = `userid=${userid}`;
-    else query = `busterid=${userid}`;
-    try {
-      const res = await api.get(`/chat?${query}`);
-      const data = res.data.data;
-      setRooms(data);
-    } catch (err) {
-      console.log("Getting Room list Error", err);
-    }
-  };
+  // const getRooms = async () => {
+  //   let query = "";
+  //   if (usertype === "C") query = `userid=${userid}`;
+  //   else query = `busterid=${userid}`;
+  //   try {
+  //     const res = await api.get(`/chat?${query}`);
+  //     const data = res.data.data;
+  //     setRooms(data);
+  //   } catch (err) {
+  //     console.log("Getting Room list Error", err);
+  //   }
+  // };
 
   const leaveRoom = async () => {
-    await setShowModal(!showModal);
+    // 취소 눌러도 나가지는데..?
+    if (window.confirm("정말 방을 나가시겠습니까?")) {
+      navigate("/chat");
+    } else {
+      navigate(`/chat/${room}`);
+    }
     socket.emit("leave_room", { userid, room });
     navigate("/chat", { replace: true });
   };
@@ -119,29 +129,22 @@ export default function ChatNavBar({ socket }) {
     // socket.emit("send_address", {sigungu, ???)}
   };
 
-  ////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////// 거래 액션
 
-  const writeReview = async () => {
-    const trade_id = trade[0].id;
-    const res = await api.put(`/trade/${trade_id}`, {
-      rev1: "1",
-      rev2: "2",
-      rev3: "3",
-    });
-    console.log(res.data.data);
+  // 리뷰 작성
+  const goReivew = async () => {
+    navigate(`/review/${tradeid}`)
   };
 
   // 결제 요청
   const requestPayment = async (data) => {
-    const trade_id = trade[0].id;
     const finalprice = {
       finalprice: parseInt(data.finalprice),
     };
 
     try {
-      const res = await api.put(`/trade/${trade_id}`, finalprice);
-      console.log(res.data);
-      // success로 수정
+      const res = await api.put(`/trade/${tradeid}`, finalprice);
+      // success로 수정 요청
       if (res.data.succss) {
         console.log("Sending Payment Request Success");
         setShowModal(!showModal);
@@ -152,16 +155,30 @@ export default function ChatNavBar({ socket }) {
         });
       }
     } catch (err) {
-      console.log("Sending Payment Request Fail", err);
+      console.log("Fail Sending Payment Request", err);
     }
   };
 
+  console.log(trade, tradeid);
   // 거래 완료
-  const completeTrade = () => {};
+  const completeTrade = async () => {
+    const data = {
+      state: "CP",
+    };
+
+    socket.emit("complete_trade", { userid, room });
+
+    try {
+      const res = await api.put(`/trade/${tradeid}`, data);
+      if (res.data.success) console.log("Success complete request");
+    } catch (err) {
+      console.log("Error on complete request", err);
+    }
+  };
 
   return (
-    <div style={{ borderBottom: "1px solid gray" }}>
-      <GapItems col="col">
+    <div style={{ borderBottom: "1px solid lightgray" }}>
+      <GapItems col="col" style={{ marginBottom: "1rem" }}>
         <GapItems>
           <UserInfo />
           <button onClick={leaveRoom}>
@@ -199,7 +216,7 @@ export default function ChatNavBar({ socket }) {
               <LocationOnRoundedIcon />
               주소 전송
             </Button>
-            <Button color="green" size="xs" outline onClick={writeReview}>
+            <Button color="green" size="xs" outline onClick={goReivew}>
               <CreateRoundedIcon />
               리뷰 작성
             </Button>
@@ -222,7 +239,6 @@ export default function ChatNavBar({ socket }) {
               <GapItems>
                 <input
                   {...register("finalprice", { required: true })}
-                  // value={formatPrice(watch("finalprice"))}
                   placeholder="최종 금액을 입력하세요."
                   id="finalprice"
                 />

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import GlobalStyle from "./styles/GlobalStyle";
-import styled, { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components";
 import Landing from "./pages/Landing";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -16,6 +16,7 @@ import RequestDetail from "./pages/RequestDetail";
 import socket from "./socket";
 import Chat from "./components/chat/Chat";
 import ChatList from "./pages/ChatList";
+import Review from "./pages/Review"
 
 const App = () => {
   return (
@@ -24,7 +25,6 @@ const App = () => {
         <Router>
           <GlobalStyle />
           <Header />
-          {/* 라우팅 */}
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/landing" element={<Landing />} />
@@ -42,6 +42,7 @@ const App = () => {
             <Route path="/buster" element={<BusterProfile />} />
             <Route path="/profile" element={<BusterProfile />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/review/:tradeid" element={<Review />} />
           </Routes>
         </Router>
       </div>

@@ -32,7 +32,9 @@ export default function Request() {
     try {
       const res = await api.get("/request");
       if (res.data.success) {
-        setData(res.data.data);
+        const reqData = res.data.data;
+        const filteredData = reqData.filter((data) => data.state === "PR");
+        setData(filteredData);
       } else {
         console.log("Error fetching All Request");
       }
@@ -75,15 +77,19 @@ export default function Request() {
                   </Badge>
                   <Badge>
                     <PersonRoundedIcon fontSize="small" />
-                    {item.gender}
+                    {item.gender === "F"
+                      ? "여자"
+                      : item.gender === "M"
+                      ? "남자"
+                      : "성별무관"}
                   </Badge>
                   <Badge>
                     <CreditCardRoundedIcon fontSize="small" />
-                    {item.price}
+                    {item.price.toLocaleString()}
                   </Badge>
                 </GapItems>
                 <Span>
-                  {formatDateTime(item.createdAt)} 😨작성자: {item.userid}
+                  {formatDateTime(item.createdAt)} | 작성자: {item.userid}
                 </Span>
               </Container>
             </Link>

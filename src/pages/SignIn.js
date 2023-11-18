@@ -27,10 +27,6 @@ export default function SignIn() {
         console.log("usreInfo", userInfo);
         const usertype = userInfo.data.data.usertype;
 
-        console.log(
-          `User Info: userid: ${userid}, token: ${token}, usertype: ${usertype}`
-        );
-
         // 로컬 스토리지에 아이디, 토큰, 유저타입 저장 -> 나중에 객체로 합치기
         localStorage.setItem("userid", JSON.stringify(userid));
         localStorage.setItem("token", JSON.stringify(token));

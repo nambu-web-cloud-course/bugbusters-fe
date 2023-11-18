@@ -12,7 +12,7 @@ export default function ChatList({ socket }) {
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const [chatroom, setChatRoom] = useState([]);
   // const [userinfo, setUserInfo] = useState([])
-  
+
   const getChatRoom = async () => {
     const typeid = usertype === "B" ? "busterid" : "userid";
     const URL = `/chat?${typeid}=${userid}`;
@@ -28,7 +28,7 @@ export default function ChatList({ socket }) {
       console.log("Get Chatroom Error", err);
     }
   };
-  
+
   // const getUserInfo = async () => {
   //   const typeid = usertype === "B" ? "busterid" : "userid";
   //   const URL = `/chat?${typeid}=${userid}`;
@@ -57,23 +57,27 @@ export default function ChatList({ socket }) {
   return (
     <div className="Content">
       <h1>채팅</h1>
-      {chatroom.map((room) => (
-        <Link
-          to={`/chat/${room.room}`}
-          key={room.room}
-          onClick={()=>handleList(room.room)}
-        >
-          <Container>
-            <UserInfo
-              room={room.room}
-              busterid={room.busterid}
-              userid={room.userid}
-              usertype={usertype}
-            />
-            <Span>{formatDateTime(room.createdAt)}</Span>
-          </Container>
-        </Link>
-      ))}
+      {chatroom.length > 0 ? (
+        chatroom.map((room) => (
+          <Link
+            to={`/chat/${room.room}`}
+            key={room.room}
+            onClick={() => handleList(room.room)}
+          >
+            <Container>
+              <UserInfo
+                room={room.room}
+                busterid={room.busterid}
+                userid={room.userid}
+                usertype={usertype}
+              />
+              <Span>{formatDateTime(room.createdAt)}</Span>
+            </Container>
+          </Link>
+        ))
+      ) : (
+        <Container>채팅 방이 없습니다.</Container>
+      )}
     </div>
   );
 }

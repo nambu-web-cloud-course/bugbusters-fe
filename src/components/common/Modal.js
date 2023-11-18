@@ -21,8 +21,6 @@ const ModalWrapper = styled.div`
 const ModalInner = styled.div`
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  /* align-items: center; */
 `;
 
 const ModalOverlay = styled.div`
@@ -36,14 +34,8 @@ const ModalOverlay = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 `;
+
 export default function Modal({ showModal, setShowModal, title, children }) {
-  const [price, setPrice] = useState("");
-
-  const handleInputChange = (event) => {
-    // Remove commas and set the price state
-    setPrice(event.target.value.replace(/,/g, ""));
-  };
-
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -52,11 +44,13 @@ export default function Modal({ showModal, setShowModal, title, children }) {
     <div className="Content">
       <ModalOverlay show={showModal} />
       <ModalWrapper show={showModal}>
-        <button>
-          <CloseRoundedIcon onClick={toggleModal} />
-        </button>
-        <h1>{title}</h1>
-        {children}
+        <ModalInner>
+          <button style={{ marginLeft: "auto" }}>
+            <CloseRoundedIcon onClick={toggleModal} />
+          </button>
+          <h1>{title}</h1>
+          {children}
+        </ModalInner>
       </ModalWrapper>
     </div>
   );
