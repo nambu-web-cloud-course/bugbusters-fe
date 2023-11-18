@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import { P } from "../common/Text";
-import { GapItems } from "../common/GapItems";
+import GapItems from "../common/GapItems";
 import UserInfo from "../common/UserInfo";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
@@ -10,6 +10,7 @@ import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import api from "../../api";
+import * as PortOne from "@portone/browser-sdk/v2";
 
 export default function ChatNavBar({ socket }) {
   const [roomUsers, setRoomUsers] = useState([]);
@@ -87,6 +88,33 @@ export default function ChatNavBar({ socket }) {
 
   // 리뷰: 모달? 키워드 5개 넣어서 선택시 value를 데이터에 저장해서 보내기
 
+  const requestPayment = () => {
+    PortOne.requestPayment({
+      storeId: "store-35891247-52ee-4acc-a88c-8ff8e7b3691d",
+      paymentId: "1", 
+      // 주문번호는 결제창 요청 시 항상 고유 값으로 채번 되어야 합니다.
+      // 결제 완료 이후 결제 위변조 대사 작업시 주문번호를 이용하여 검증이 필요하므로
+      // 주문번호는 가맹점 서버에서 고유하게(unique)채번하여 DB에 저장해주세요
+      orderName: "버그버스터즈_결제창",
+      isTestChannel: true,
+      totalAmount: 1,
+      customer: {
+        customerId: "userid",
+        firstName: "김",
+        lastName: "철수",
+        phoneNumber: "010-1234-5678",
+        birthYear: "1990",
+        birthMonth: "10",
+        birthDay: "20",
+      },
+      currency: "CURRENCY_KRW",
+      pgProvider: "PG_PROVIDER_KAKAOPAY",
+      payMethod: "EASY_PAY",
+    });
+    PortOne.requestIssueBillingKey({
+      issueName: "CREATE_BILLING_KEY",
+    });
+  };
   const completeTrade = () => {};
 
   return (
@@ -100,7 +128,7 @@ export default function ChatNavBar({ socket }) {
         </GapItems>
         {usertype === "B" ? (
           <GapItems left="left">
-            <Button color="green" size="xs" outline>
+            <Button color="green" size="xs" outline onClick={requestPayment}>
               <CreditCardRoundedIcon />
               결제 요청
             </Button>

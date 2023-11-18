@@ -2,7 +2,7 @@ import formatDateTime from "../../utils/formatDateTime";
 import { useState, useEffect, useRef } from "react";
 import { P, Span } from "../common/Text";
 import styled, { css } from "styled-components";
-import { GapItems } from "../common/GapItems";
+import  GapItems  from "../common/GapItems";
 
 const MessagesColumn = styled.div`
   height: 60vh;

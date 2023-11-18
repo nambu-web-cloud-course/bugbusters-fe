@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Button from "../common/Button";
 import Container from "../common/Container";
-import { GapItems } from "../common/GapItems";
+import  GapItems  from "../common/GapItems";
 import { useState } from "react";
 import axios from "axios";
 

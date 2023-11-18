@@ -3,12 +3,12 @@ import Badge from "../components/common/Badge";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
-import { GapItems } from "../components/common/GapItems";
 import { Span } from "../components/common/Text";
 import Tabs from "../components/common/Tabs";
 import { useEffect, useState } from "react";
 import formatDateTime from "../utils/formatDateTime";
 import api from "../api";
+import GapItems from "../components/common/GapItems";
 
 export default function TradeList() {
   // 탭 상태 (진행중 PR, 취소 CA, 완료 CP)

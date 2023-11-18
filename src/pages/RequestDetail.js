@@ -3,7 +3,6 @@ import Button from "../components/common/Button";
 import Badge from "../components/common/Badge";
 import formatDateTime from "../utils/formatDateTime";
 import { P, Span } from "../components/common/Text";
-import { GapItems } from "../components/common/GapItems";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,6 +10,7 @@ import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import api from "../api";
+import GapItems from "../components/common/GapItems";
 
 export default function RequestDetail({ socket }) {
   const navigate = useNavigate();

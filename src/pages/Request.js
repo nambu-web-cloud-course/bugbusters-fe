@@ -8,12 +8,11 @@ import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
-import { GapItems } from "../components/common/GapItems";
+import GapItems from "../components/common/GapItems";
 import Badge from "../components/common/Badge";
 import formatDateTime from "../utils/formatDateTime";
 import { useEffect, useState } from "react";
 import api from "../api";
-import getUserInfo from "../utils/getUserInfo";
 
 export default function Request() {
   const userid = JSON.parse(localStorage.getItem("userid"));

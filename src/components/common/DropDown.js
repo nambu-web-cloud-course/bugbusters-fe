@@ -1,4 +1,3 @@
-import { lighten } from "polished";
 import { css, styled } from "styled-components";
 
 const DropMenu = styled.a`

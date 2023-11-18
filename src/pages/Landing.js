@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button";
-import { GapItems } from "../components/common/GapItems";
+import GapItems from "../components/common/GapItems";
 
 export default function Landing() {
   return (

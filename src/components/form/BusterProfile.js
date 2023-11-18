@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Container from "../common/Container";
 import ImageUpload from "../common/ImageUpload";
 import { useState, useEffect } from "react";
-import { GapItems } from "../common/GapItems";
+import  GapItems  from "../common/GapItems";
 import axios from "axios";
 import api from "../../api";
 
