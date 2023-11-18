@@ -2,7 +2,11 @@ import formatDateTime from "../../utils/formatDateTime";
 import { useState, useEffect, useRef } from "react";
 import { P, Span } from "../common/Text";
 import styled, { css } from "styled-components";
-import  GapItems  from "../common/GapItems";
+import GapItems from "../common/GapItems";
+import Button from "../common/Button";
+import * as PortOne from "@portone/browser-sdk/v2";
+import { v4 as uuidv4 } from "uuid";
+const BUSTER_BOT = "BugBusters_Official";
 
 const MessagesColumn = styled.div`
   height: 60vh;
@@ -25,13 +29,48 @@ const Message = styled.div`
           background: ${({ theme }) => theme.color.gray01};
           color: black;
         `}
+  ${(props) =>
+    props.isOfficial &&
+    css`
+      background: white;
+      border: 2px solid ${({ theme }) => theme.color.green};
+      margin-left: 0 auto;
+    `}
 `;
 
 export default function Messages({ socket }) {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null);
   const userid = JSON.parse(localStorage.getItem("userid"));
+  const usertype = JSON.parse(localStorage.getItem("usertype"));
   console.log("messagesRecieved", messagesRecieved);
+
+  const payment = () => {
+    const uuid = uuidv4();
+
+    PortOne.requestPayment({
+      storeId: "store-35891247-52ee-4acc-a88c-8ff8e7b3691d",
+      paymentId: `${uuid}`,
+      // 주문번호는 가맹점 서버에서 고유하게(unique)채번하여 DB에 저장해주세요
+      orderName: "버그버스터즈_결제창",
+      isTestChannel: true,
+      totalAmount: 10000, // 버스터가 입력한 금액
+      customer: {
+        customerId: "userid",
+        fullName: "userName",
+        phoneNumber: "010-1234-5678",
+        birthYear: "1990",
+        birthMonth: "10",
+        birthDay: "20",
+      },
+      currency: "CURRENCY_KRW",
+      pgProvider: "PG_PROVIDER_KAKAOPAY",
+      payMethod: "EASY_PAY",
+    });
+    PortOne.requestIssueBillingKey({
+      issueName: "CREATE_BILLING_KEY",
+    });
+  };
 
   function sortMessagesByDate(messages) {
     return messages.sort(
@@ -48,7 +87,6 @@ export default function Messages({ socket }) {
           message: data.message,
           userid: data.userid,
           createdAt: data.createdAt,
-          isUser: data.userid === userid,
         },
       ]);
     });
@@ -77,12 +115,29 @@ export default function Messages({ socket }) {
   return (
     <MessagesColumn ref={messagesColumnRef}>
       {messagesRecieved.map((msg, i) => (
-        <Message key={i} isUser={msg.userid === userid}>
+        <Message
+          key={i}
+          isUser={msg.userid === userid}
+          isOfficial={msg.userid === BUSTER_BOT}
+        >
           <GapItems col="col" left="left">
-            <Span textColor={msg.userid === userid ? "darkgreen" : "black"}>
-              {formatDateTime(msg.createdAt)} | {msg.userid}
-            </Span>
+            {msg.userid === BUSTER_BOT && (
+              <GapItems>
+                <P textColor="darkgreen">🪲 {BUSTER_BOT}</P>
+              </GapItems>
+            )}
             <P>{msg.message}</P>
+            {usertype === "C" &&
+              msg.message.includes("결제") &&
+              msg.userid === BUSTER_BOT && (
+                <Button color="green" size="lg" onClick={payment}>
+                  {/* final price원 */}
+                  결제하기
+                </Button>
+              )}
+            <Span textColor={msg.userid === userid ? "darkgreen" : "black"}>
+              {formatDateTime(msg.createdAt)}
+            </Span>
           </GapItems>
         </Message>
       ))}

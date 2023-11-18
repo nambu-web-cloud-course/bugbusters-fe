@@ -10,23 +10,25 @@ import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import api from "../../api";
-import * as PortOne from "@portone/browser-sdk/v2";
+import Modal from "../common/Modal";
 
 export default function ChatNavBar({ socket }) {
   const [roomUsers, setRoomUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const [room, setRoom] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  // const [room, setRoom] = useState("");
   const { chatroom } = useParams();
+  const room = chatroom;
+  const reqid = chatroom.split("_")[0];
+  const userid = JSON.parse(localStorage.getItem("userid"));
+  const usertype = JSON.parse(localStorage.getItem("usertype"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     setRooms(chatroom);
   }, []);
-  const reqid = chatroom.split("_")[0];
-  const userid = JSON.parse(localStorage.getItem("userid"));
-  const usertype = JSON.parse(localStorage.getItem("usertype"));
-  const [messagesRecieved, setMessagesReceived] = useState([]);
-  const navigate = useNavigate();
 
+  const [messagesRecieved, setMessagesReceived] = useState([]);
   useEffect(() => {
     socket.on("receive_message", (data) => {
       console.log("receive_message(msgs)", data);
@@ -44,6 +46,16 @@ export default function ChatNavBar({ socket }) {
     return () => socket.off("receive_message");
   }, [socket]);
 
+  // 방 안에 있는 유저 저장 - { id: socket.id, userid, room }
+  useEffect(() => {
+    getRooms();
+    socket.on("chatroom_users", (data) => {
+      setRoomUsers(data);
+      console.log("chatroom_users", data);
+    });
+    return () => socket.off("chatroom_users");
+  }, [socket]);
+
   // 방 데이터 가져오기
   const getRooms = async () => {
     let query = "";
@@ -58,24 +70,21 @@ export default function ChatNavBar({ socket }) {
     }
   };
 
-  // 방 안에 있는 유저 저장 - { id: socket.id, userid, room }
-  useEffect(() => {
-    getRooms();
-    socket.on("chatroom_users", (data) => {
-      setRoomUsers(data);
-      console.log("chatroom_users", data);
-    });
-    return () => socket.off("chatroom_users");
-  }, [socket]);
-
   const leaveRoom = () => {
+    // 팝업으로 나갈 건지 확인
     socket.emit("leave_room", { userid, room });
     navigate("/chat", { replace: true });
   };
 
+  // 주소 전송 -> 소영님이 올리면 맞추기
   const sendAddress = () => {
     // socket.emit("send_address", {sigungu, ???)}
   };
+
+
+////////////////////////////////////////////////////////////////////////
+
+  const [price, setPrice] = useState("");
 
   const writeReview = async () => {
     const res = await api.put(`/trade/${reqid}`, {
@@ -86,36 +95,20 @@ export default function ChatNavBar({ socket }) {
     console.log(res.data.data);
   };
 
-  // 리뷰: 모달? 키워드 5개 넣어서 선택시 value를 데이터에 저장해서 보내기
+  const setFinalPrice = () => {
 
-  const requestPayment = () => {
-    PortOne.requestPayment({
-      storeId: "store-35891247-52ee-4acc-a88c-8ff8e7b3691d",
-      paymentId: "1", 
-      // 주문번호는 결제창 요청 시 항상 고유 값으로 채번 되어야 합니다.
-      // 결제 완료 이후 결제 위변조 대사 작업시 주문번호를 이용하여 검증이 필요하므로
-      // 주문번호는 가맹점 서버에서 고유하게(unique)채번하여 DB에 저장해주세요
-      orderName: "버그버스터즈_결제창",
-      isTestChannel: true,
-      totalAmount: 1,
-      customer: {
-        customerId: "userid",
-        firstName: "김",
-        lastName: "철수",
-        phoneNumber: "010-1234-5678",
-        birthYear: "1990",
-        birthMonth: "10",
-        birthDay: "20",
-      },
-      currency: "CURRENCY_KRW",
-      pgProvider: "PG_PROVIDER_KAKAOPAY",
-      payMethod: "EASY_PAY",
-    });
-    PortOne.requestIssueBillingKey({
-      issueName: "CREATE_BILLING_KEY",
-    });
+  }
+  const requestPayment = async () => {
+    setShowModal(!showModal);
+    // 입력 후 버튼 클릭시 setFinalPrice
+    // socket.emit("request_payment", { userid, room, finalprice });
   };
+
   const completeTrade = () => {};
+
+  const handleInputChange = (e) => {
+    setPrice(e.target.value.replace(/,/g, ""));
+  };
 
   return (
     <div style={{ borderBottom: "1px solid gray" }}>
@@ -150,6 +143,31 @@ export default function ChatNavBar({ socket }) {
           </GapItems>
         )}
       </GapItems>
+      {showModal ? (
+        <Modal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          title={"주문서"}
+        >
+          <GapItems col="col" left="left">
+            <label htmlFor="price">최종금액</label>
+            <GapItems>
+              <input
+                id="price"
+                value={price}
+                onChange={handleInputChange}
+                onBlur={() => setPrice(Number(price).toLocaleString())}
+              />
+              원
+            </GapItems>
+            <Button color="green" size="lg" onClick={setFinalPrice}>
+              결제 요청
+            </Button>
+          </GapItems>
+        </Modal>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
