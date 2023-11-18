@@ -40,7 +40,6 @@ export default function Request() {
       console.log("Error fetching All Request: ", err);
     }
   };
-  console.log(data);
 
   // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {

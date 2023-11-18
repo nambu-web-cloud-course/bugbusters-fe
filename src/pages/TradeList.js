@@ -11,33 +11,58 @@ import api from "../api";
 import GapItems from "../components/common/GapItems";
 
 export default function TradeList() {
-  // 탭 상태 (진행중 PR, 취소 CA, 완료 CP)
   const [selectedTab, setSelectedTab] = useState("PR");
-  const userid  = JSON.parse(localStorage.getItem("userid"));
+  const userid = JSON.parse(localStorage.getItem("userid"));
+  const usertype = JSON.parse(localStorage.getItem("usertype"));
+
   const handleTabSelect = (tab) => {
     setSelectedTab(tab);
   };
 
-  // 이용내역 데이터
   const [data, setData] = useState([]);
 
-  // 로그인한 유저의 데이터 가져오기
-  const getData = async () => {
-    const res = await api.get(`/request?userid=${userid}`);
-    if (res.data.success) {
-      const data = res.data.data;
-      setData(data);
-    } else {
-      console.group("Signin Data Get Error");
+   // 무서버의 요청 데이터 가져오기
+   const getReqData = async () => {
+    try {
+      const res = await api.get(`/request?userid=${userid}`);
+      if (res.data.success) {
+        const data = res.data.data;
+        setData(data);
+      }
+    } catch (err) {
+      console.log("Request Data Get Error", err);
     }
   };
 
-  // 이용내역 페이지 이동시 데이터 가져오기
-  useEffect(() => {
-    getData();
-  }, [selectedTab]);
+  // 버스터가 채팅을 건 요청 데이터 가져오기
+  const getChatList = async () => {
+    try {
+      const res = await api.get(`/chat?busterid=${userid}`);
+      if (res.data.success) {
+        const chatList = res.data.data;
+        const reqList = chatList.map(async (chat) => {
+          const res = await api.get(`/request/${chat.reqid}`);
+          if (res.data.success) {
+            return res.data.data;
+          }
+          return null;
+        });
 
-  console.log("Request Data", data);
+        const reqData = await Promise.all(reqList);
+        const validReqData = reqData.filter((data) => data !== null);
+
+        setData(validReqData);
+      }
+    } catch (err) {
+      console.log("Chat List Get Error", err);
+    }
+  };
+
+  useEffect(() => {
+    if (usertype === "B") {
+      getChatList();
+    } else getReqData();
+  }, [selectedTab]);
 
   const filteredData = data
     ? data.filter((item) => item.state === selectedTab)
@@ -65,11 +90,17 @@ export default function TradeList() {
                 {item.price}
               </Badge>
             </GapItems>
-            <Span>{formatDateTime(item.createdAt)}</Span>
+            {usertype === "C" ? (
+              <Span>{formatDateTime(item.createdAt)}</Span>
+            ) : (
+              <Span>
+                {formatDateTime(item.createdAt)} 😨 작성자: {item.userid}
+              </Span>
+            )}
           </Container>
         ))
       ) : (
-        <Container> 이용 내역이 없습니다.</Container>
+        <Container>이용 내역이 없습니다.</Container>
       )}
     </div>
   );

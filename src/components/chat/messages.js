@@ -6,6 +6,9 @@ import GapItems from "../common/GapItems";
 import Button from "../common/Button";
 import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuidv4 } from "uuid";
+import api from "../../api";
+import { useParams } from "react-router-dom";
+
 const BUSTER_BOT = "BugBusters_Official";
 
 const MessagesColumn = styled.div`
@@ -41,8 +44,14 @@ const Message = styled.div`
 export default function Messages({ socket }) {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null);
+
+  const { chatroom } = useParams();
+  const room = chatroom;
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
+  const reqid = chatroom.split("_")[0];
+  const req_userid = chatroom.split("_")[1];
+
   console.log("messagesRecieved", messagesRecieved);
 
   const payment = () => {
@@ -54,7 +63,7 @@ export default function Messages({ socket }) {
       // 주문번호는 가맹점 서버에서 고유하게(unique)채번하여 DB에 저장해주세요
       orderName: "버그버스터즈_결제창",
       isTestChannel: true,
-      totalAmount: 10000, // 버스터가 입력한 금액
+      totalAmount: 10000, // 버스터가 입력한 finalprice
       customer: {
         customerId: "userid",
         fullName: "userName",
@@ -131,7 +140,6 @@ export default function Messages({ socket }) {
               msg.message.includes("결제") &&
               msg.userid === BUSTER_BOT && (
                 <Button color="green" size="lg" onClick={payment}>
-                  {/* final price원 */}
                   결제하기
                 </Button>
               )}

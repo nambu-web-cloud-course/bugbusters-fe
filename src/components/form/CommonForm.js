@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Button from "../common/Button";
 import Container from "../common/Container";
-import  GapItems  from "../common/GapItems";
+import GapItems from "../common/GapItems";
 import { useState } from "react";
 import axios from "axios";
 
@@ -31,7 +31,7 @@ export default function CommonForm({ handleCommonForm }) {
   const handleSMS = async (data) => {
     try {
       const res = await axios.post("/auth/sms", data);
-      if (data.phone === "") alert("휴대폰 번호를 입력하세요.") 
+      if (data.phone === "") alert("휴대폰 번호를 입력하세요.");
       if (res.data.success) console.log("Success Sending Your Phone Number");
     } catch (err) {
       console.log("Fail Sending Phone Number", err);
@@ -58,11 +58,9 @@ export default function CommonForm({ handleCommonForm }) {
 
   // 자동 하이픈 생성 함수
   const formatPhoneNumber = (phoneNumber) => {
-    if (!phoneNumber) {
-      return "";
-    }
-
-    return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    return phoneNumber
+      ? phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+      : "";
   };
   return (
     <form onSubmit={handleSubmit(handleCommonForm)}>

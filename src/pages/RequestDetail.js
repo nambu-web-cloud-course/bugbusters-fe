@@ -60,9 +60,23 @@ export default function RequestDetail({ socket }) {
     navigate(-1);
   };
 
-  // 버튼 클릭시 채팅방 생성
+
   const joinRoom = async () => {
-    // 서버에 로그인한 유저아이디, 방 이름 전송
+    const data = {
+      userid: req_userid,
+      busterid: userid,
+      reqid: reqid,
+    };
+
+    // 거래 생성
+    try {
+      const res = await api.post("/trade", data);
+      if (res.data.success) console.log("Create Trade Success");
+    } catch (err) {
+      console.log("Create Trade Fail", err);
+    }
+
+    // 채팅방 입장
     await socket.emit("join_room", { userid, room });
     navigate(`/chat/${room}`);
   };

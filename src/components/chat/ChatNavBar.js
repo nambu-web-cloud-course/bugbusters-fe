@@ -11,24 +11,62 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import api from "../../api";
 import Modal from "../common/Modal";
+import { useForm } from "react-hook-form";
 
 export default function ChatNavBar({ socket }) {
   const [roomUsers, setRoomUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [showModal, setShowModal] = useState(false);
   // const [room, setRoom] = useState("");
+  const navigate = useNavigate();
   const { chatroom } = useParams();
   const room = chatroom;
   const reqid = chatroom.split("_")[0];
+  const req_userid = chatroom.split("_")[1];
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
-  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [trade, setTrade] = useState([]);
+  const [messagesRecieved, setMessagesReceived] = useState([]);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const getData = async () => {
+    try {
+      const res = await api.get(`/trade?userid=${req_userid}`);
+      if (res.data.success) {
+        setData(res.data.data);
+      } else {
+        console.log("Error fetching All Request");
+      }
+    } catch (err) {
+      console.log("Error fetching All Request: ", err);
+    }
+  };
+
+  const getTrade = async () => {
+    try {
+      const filteredData = await data.filter((item) => item.reqid == reqid);
+      setTrade(filteredData);
+    } catch (err) {
+      console.log("Get Trade Error", err);
+    }
+  };
 
   useEffect(() => {
     setRooms(chatroom);
+    getData();
   }, []);
 
-  const [messagesRecieved, setMessagesReceived] = useState([]);
+  useEffect(() => {
+    getTrade();
+  }, [data]);
+
   useEffect(() => {
     socket.on("receive_message", (data) => {
       console.log("receive_message(msgs)", data);
@@ -70,8 +108,8 @@ export default function ChatNavBar({ socket }) {
     }
   };
 
-  const leaveRoom = () => {
-    // 팝업으로 나갈 건지 확인
+  const leaveRoom = async () => {
+    await setShowModal(!showModal);
     socket.emit("leave_room", { userid, room });
     navigate("/chat", { replace: true });
   };
@@ -81,13 +119,11 @@ export default function ChatNavBar({ socket }) {
     // socket.emit("send_address", {sigungu, ???)}
   };
 
-
-////////////////////////////////////////////////////////////////////////
-
-  const [price, setPrice] = useState("");
+  ////////////////////////////////////////////////////////////////////////
 
   const writeReview = async () => {
-    const res = await api.put(`/trade/${reqid}`, {
+    const trade_id = trade[0].id;
+    const res = await api.put(`/trade/${trade_id}`, {
       rev1: "1",
       rev2: "2",
       rev3: "3",
@@ -95,20 +131,33 @@ export default function ChatNavBar({ socket }) {
     console.log(res.data.data);
   };
 
-  const setFinalPrice = () => {
+  // 결제 요청
+  const requestPayment = async (data) => {
+    const trade_id = trade[0].id;
+    const finalprice = {
+      finalprice: parseInt(data.finalprice),
+    };
 
-  }
-  const requestPayment = async () => {
-    setShowModal(!showModal);
-    // 입력 후 버튼 클릭시 setFinalPrice
-    // socket.emit("request_payment", { userid, room, finalprice });
+    try {
+      const res = await api.put(`/trade/${trade_id}`, finalprice);
+      console.log(res.data);
+      // success로 수정
+      if (res.data.succss) {
+        console.log("Sending Payment Request Success");
+        setShowModal(!showModal);
+        socket.emit("request_payment", {
+          userid,
+          room,
+          price: parseInt(data.finalprice),
+        });
+      }
+    } catch (err) {
+      console.log("Sending Payment Request Fail", err);
+    }
   };
 
+  // 거래 완료
   const completeTrade = () => {};
-
-  const handleInputChange = (e) => {
-    setPrice(e.target.value.replace(/,/g, ""));
-  };
 
   return (
     <div style={{ borderBottom: "1px solid gray" }}>
@@ -118,10 +167,28 @@ export default function ChatNavBar({ socket }) {
           <button onClick={leaveRoom}>
             <ExitToAppRoundedIcon />
           </button>
+          {showModal && (
+            <Modal showModal={showModal} setShowModal={setShowModal}>
+              <Button color="green" size="lg" type="button">
+                취소
+              </Button>
+              <Button color="green" size="lg" type="button">
+                확인
+              </Button>
+            </Modal>
+          )}
         </GapItems>
         {usertype === "B" ? (
           <GapItems left="left">
-            <Button color="green" size="xs" outline onClick={requestPayment}>
+            <Button
+              type="button"
+              color="green"
+              size="xs"
+              outline
+              onClick={() => {
+                setShowModal(!showModal);
+              }}
+            >
               <CreditCardRoundedIcon />
               결제 요청
             </Button>
@@ -143,30 +210,30 @@ export default function ChatNavBar({ socket }) {
           </GapItems>
         )}
       </GapItems>
-      {showModal ? (
-        <Modal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          title={"주문서"}
-        >
-          <GapItems col="col" left="left">
-            <label htmlFor="price">최종금액</label>
-            <GapItems>
-              <input
-                id="price"
-                value={price}
-                onChange={handleInputChange}
-                onBlur={() => setPrice(Number(price).toLocaleString())}
-              />
-              원
+      {showModal && (
+        <form onSubmit={handleSubmit(requestPayment)}>
+          <Modal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            title={"주문서"}
+          >
+            <GapItems col="col" left="left">
+              <label htmlFor="price">최종금액</label>
+              <GapItems>
+                <input
+                  {...register("finalprice", { required: true })}
+                  // value={formatPrice(watch("finalprice"))}
+                  placeholder="최종 금액을 입력하세요."
+                  id="finalprice"
+                />
+                원
+              </GapItems>
+              <Button color="green" size="lg" type="submit">
+                결제 요청
+              </Button>
             </GapItems>
-            <Button color="green" size="lg" onClick={setFinalPrice}>
-              결제 요청
-            </Button>
-          </GapItems>
-        </Modal>
-      ) : (
-        ""
+          </Modal>
+        </form>
       )}
     </div>
   );
