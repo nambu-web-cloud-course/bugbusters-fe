@@ -9,11 +9,12 @@ import api from "../api";
 export default function MyPage() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const [data, setData] = useState([]);
-  console.log("Myapge:", data);
+
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,  // Add this line
     watch,
     formState: { errors },
   } = useForm();
@@ -22,8 +23,15 @@ export default function MyPage() {
   const getData = async () => {
     try {
       const res = await api.get(`/auth?userid=${userid}`);
-      const data = res.data.data;
-      setData(data);
+      const userData = res.data.data;
+      setData(userData);
+
+      // Set default values using setValue
+      setValue("phone", userData.phone);
+      setValue("addr1", userData.addr1);
+      setValue("addr2", userData.addr2);
+      setValue("zipcode", userData.zipcode);
+      setValue("sigungu", userData.sigungu);
     } catch (err) {
       console.log("MyPage Edit Error", err);
     }
@@ -43,7 +51,8 @@ export default function MyPage() {
     }
   };
 
-  console.log(watch())
+  console.log(watch());
+
 
   return (
     <div className="Content">

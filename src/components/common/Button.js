@@ -10,6 +10,7 @@ const colorStyles = css`
       justify-content: center;
       align-items: center;
       gap: 0.25rem;
+        transition: background 0.3s ease, color 0.3s ease;
       &:hover {
         background: ${lighten(0.1, buttonColor)};
       }

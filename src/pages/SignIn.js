@@ -18,7 +18,7 @@ export default function SignIn() {
     try {
       const res = await api.post("/auth/sign-in", data);
       if (res.data.success) {
-        console.log("Sign in Success", res.data);
+        console.log("Sign in Success");
         const userid = res.data.userid;
         const token = res.data.token;
 

@@ -26,6 +26,8 @@ export default function BusterProfile() {
     formState: { errors },
   } = useForm();
 
+  console.log(watch());
+
   // 회원가입 후 프로필 수정을 위한 정보
   const getData = async () => {
     try {
@@ -76,7 +78,15 @@ export default function BusterProfile() {
 
   // 버스터 프로필 정보 가져오기
   useEffect(() => {
-    if (busterID) getData();
+    if (busterID) {
+      getData();
+      setValue("selfintro", data.selfintro);
+      setValue("tech", data.tech);
+      setValue("exp", data.exp);
+      setValue("fav", data.fav);
+      setValue("accbank", data.accbank);
+      setValue("accno", data.accno);
+    }
   }, [busterID]);
 
   return (
@@ -96,7 +106,7 @@ export default function BusterProfile() {
             {busterID ? (
               <img
                 style={{ width: "100px" }}
-                src={`http://localhost:8080/${img}`} 
+                src={`http://localhost:8080/${img}`}
                 alt="Profile"
               />
             ) : (

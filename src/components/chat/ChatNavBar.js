@@ -26,10 +26,14 @@ export default function ChatNavBar({ socket }) {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const [request, setRequest] = useState([]);
   const [userinfo, setUserInfo] = useState([]);
+  const [address, setAddress] = useState("");
+
+  // URL 파라미터 아이디
   const reqid = chatroom.split("_")[0];
   const muserverid = chatroom.split("_")[1];
   const busterid = chatroom.split("_")[2];
 
+  // 데이터 가져오기
   const getTrade = async () => {
     try {
       const res = await api.get("/trade");
@@ -77,33 +81,21 @@ export default function ChatNavBar({ socket }) {
     }
   };
 
-  useEffect(() => {
-    setRooms(chatroom);
-    getTrade();
-    getUserInfo();
-    getReqData();
-  }, []);
+  const getAddress = async () => {
+    try {
+      const res = await api.get(`/auth?userid=${muserverid}`);
+      if (res.data.success) {
+        const addr = res.data.data.addr2;
+        setAddress(addr);
+      } else {
+        console.log("Error fetching address");
+      }
+    } catch (err) {
+      console.log("Error fetching address: ", err);
+    }
+  };
 
-  useEffect(() => {
-    const tid = trade?.[0]?.id;
-    if (tid) setTradeID(tid);
-  }, [trade]);
-
-  useEffect(() => {
-    socket.on("receive_message", (data) => {
-      console.log("receive_message(msgs)", data);
-      setMessagesReceived((state) => [
-        ...state,
-        {
-          message: data.message,
-          userid: data.userid,
-          createdAt: data.createdAt,
-        },
-      ]);
-    });
-
-    return () => socket.off("receive_message");
-  }, [socket]);
+  const handleModal = () => setShowModal(!showModal);
 
   const leaveRoom = () => {
     if (window.confirm("정말 방을 나가시겠습니까?")) navigate("/chat");
@@ -112,18 +104,17 @@ export default function ChatNavBar({ socket }) {
     navigate("/chat", { replace: true });
   };
 
+  // 상단바 버튼 액션
   const sendAddress = () => {
-    // socket.emit("send_address", {sigungu, ???)}
+    socket.emit("send_address", { userid, room, address });
   };
-
-  const handleModal = () => setShowModal(!showModal);
 
   const requestPayment = async (data) => {
     const finalprice = { finalprice: parseInt(data.finalprice) };
 
     try {
       const res = await api.put(`/trade/${tradeid}`, finalprice);
-      if (res.data.success) {
+      if (res.data.succss) {
         console.log("Success sending payment request");
         handleModal();
         socket.emit("request_payment", {
@@ -169,6 +160,35 @@ export default function ChatNavBar({ socket }) {
       </>
     );
   };
+
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      console.log("receive_message(msgs)", data);
+      setMessagesReceived((state) => [
+        ...state,
+        {
+          message: data.message,
+          userid: data.userid,
+          createdAt: data.createdAt,
+        },
+      ]);
+    });
+
+    return () => socket.off("receive_message");
+  }, [socket]);
+
+  useEffect(() => {
+    setRooms(chatroom);
+    getTrade();
+    getUserInfo();
+    getReqData();
+    getAddress();
+  }, []);
+
+  useEffect(() => {
+    const tid = trade?.[0]?.id;
+    if (tid) setTradeID(tid);
+  }, [trade]);
 
   return (
     <div style={{ borderBottom: "1px solid lightgray" }}>

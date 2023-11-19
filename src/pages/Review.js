@@ -4,16 +4,27 @@ import GapItems from "../components/common/GapItems";
 import Button from "../components/common/Button";
 import api from "../api";
 import UserInfo from "../components/common/UserInfo";
+import { P, Span } from "../components/common/Text";
+import { useForm, useWatch } from "react-hook-form";
+import { useState } from "react";
 
 export default function Review() {
   const { tradeid } = useParams();
 
-  const writeReview = async () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  console.log(watch());
+  const writeReview = async (data) => {
     const review = {
-      rev1: 1,
-      rev2: 2,
-      rev3: 3,
-    };
+      rev1: "",
+      rev2: "",
+      rev3: ""
+    }
     try {
       const res = await api.put(`/trade/${tradeid}`, review);
       if (res.data.success)
@@ -28,21 +39,30 @@ export default function Review() {
     <div className="Content">
       {/* 제출 후 완료 컴포넌트 보여주기 */}
       <h1>리뷰</h1>
-      <form action="">
+      <form onSubmit={handleSubmit(writeReview)}>
         <Container>
           <UserInfo />
-          <hr />
-          리뷰를 작성하세요.
+          <P>
+            거래는 만족스러우셨나요?
+            <br />
+            버스터를 설명할 수 있는 키워드를 선택해주세요.{" "}
+          </P>
           <GapItems>
-            <Button color="green" size="sm">
-              빨라요
-            </Button>
-            <Button color="green" size="sm">
-              침착해요
-            </Button>
-            <Button color="green" size="sm">
-              터프해요
-            </Button>
+            <input
+              type="checkbox"
+              id="1"
+              {...register("1")}
+              defaultChecked
+            />
+            <label htmlFor="1">빨라요</label>
+            <input type="checkbox" id="2" {...register("2")} />
+            <label htmlFor="2">침착해요</label>
+            <input type="checkbox" id="3" {...register("3")} />
+            <label htmlFor="3">시간을 잘 지켜요</label>
+            <input type="checkbox" id="4" {...register("4")} />
+            <label htmlFor="4">꼼꼼해요</label>
+            <input type="checkbox" id="5" {...register("5")} />
+            <label htmlFor="5">섬세해요</label>
           </GapItems>
           <Button color="green" size="lg" fullwidth>
             제출

@@ -36,7 +36,7 @@ export default function UserInfo({
           <P $fontWeight="700">
             {usertype === "B" ? userid : busterid || "방을 나갔어요."}
           </P>
-          <Span textColor="gray04">{content ? content.slice(0, 20) : ""}</Span>
+          <Span textColor="gray04">{content ? content.slice(0, 20) + "..." : ""}</Span>
         </GapItems>
         <GapItems>
           <Span textColor="darkgreen" $fontWeight="700">

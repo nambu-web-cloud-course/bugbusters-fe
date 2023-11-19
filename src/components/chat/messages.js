@@ -5,8 +5,9 @@ import styled, { css } from "styled-components";
 import GapItems from "../common/GapItems";
 import Button from "../common/Button";
 import * as PortOne from "@portone/browser-sdk/v2";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import api from "../../api";
 
 const BUSTER_BOT = "BugBusters_Official";
 
@@ -41,15 +42,55 @@ const Message = styled.div`
 `;
 
 export default function Messages({ socket }) {
+  const navigate = useNavigate();
   const [messagesRecieved, setMessagesReceived] = useState([]);
+  const [trade, setTrade] = useState([]);
+  const [tradeid, setTradeID] = useState("");
+  const [finalprice, setFinalPrice] = useState("");
   const messagesColumnRef = useRef(null);
 
   const { chatroom } = useParams();
   const room = chatroom;
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
+
+  // URL 파라미터 아이디
   const reqid = chatroom.split("_")[0];
-  const req_userid = chatroom.split("_")[1];
+  const muserverid = chatroom.split("_")[1];
+  const busterid = chatroom.split("_")[2];
+
+  // 데이터 가져오기
+  const getTrade = async () => {
+    try {
+      const res = await api.get("/trade");
+
+      if (res.data.success) {
+        const commonTrades = res.data.data.filter(
+          (trade) =>
+            trade.reqid == reqid &&
+            trade.userid === muserverid &&
+            trade.busterid === busterid
+        );
+        setTrade(commonTrades);
+      } else {
+        console.log("Error fetching trade data");
+      }
+    } catch (err) {
+      console.log("Error fetching trade data: ", err);
+    }
+  };
+
+  const getFinalPrice = async () => {
+    try {
+      const res = await api.get(`/trade/${tradeid}`);
+      if (res.data.success) {
+        const price = res.data.data.finalprice;
+        setFinalPrice(price);
+      }
+    } catch (err) {
+      console.log("Error fetching trade data: ", err);
+    }
+  };
 
   console.log("messagesRecieved", messagesRecieved);
 
@@ -62,7 +103,7 @@ export default function Messages({ socket }) {
       // 주문번호는 가맹점 서버에서 고유하게(unique)채번하여 DB에 저장해주세요
       orderName: "버그버스터즈_결제창",
       isTestChannel: true,
-      totalAmount: 10000, // 버스터가 입력한 finalprice
+      totalAmount: finalprice,
       customer: {
         customerId: "userid",
         fullName: "userName",
@@ -120,6 +161,21 @@ export default function Messages({ socket }) {
       messagesColumnRef.current.scrollHeight;
   }, [messagesRecieved]);
 
+  useEffect(() => {
+    getTrade();
+  }, []);
+
+  useEffect(() => {
+    const tid = trade?.[0]?.id;
+    if (tid) setTradeID(tid);
+  }, [trade]);
+
+  useEffect(() => {
+    getFinalPrice();
+  }, [tradeid]);
+
+  console.log(finalprice);
+
   return (
     <MessagesColumn ref={messagesColumnRef}>
       {messagesRecieved.map((msg, i) => (
@@ -131,7 +187,10 @@ export default function Messages({ socket }) {
           <GapItems col="col" left="left">
             {msg.userid === BUSTER_BOT && (
               <GapItems>
-                <P textColor="darkgreen">🪲 {BUSTER_BOT}</P>
+                <P textColor="darkgreen">
+                  🪲
+                  {BUSTER_BOT}
+                </P>
               </GapItems>
             )}
             <P>{msg.message}</P>
@@ -139,7 +198,20 @@ export default function Messages({ socket }) {
               msg.message.includes("결제") &&
               msg.userid === BUSTER_BOT && (
                 <Button color="green" size="lg" onClick={payment}>
-                  결제하기
+                  {finalprice}원 결제하기
+                </Button>
+              )}
+            {usertype === "C" &&
+              msg.message.includes("완료") &&
+              msg.userid === BUSTER_BOT && (
+                <Button
+                  color="green"
+                  size="lg"
+                  onClick={() => {
+                    navigate(`/review/${tradeid}`);
+                  }}
+                >
+                  리뷰 작성
                 </Button>
               )}
             <Span textColor={msg.userid === userid ? "darkgreen" : "black"}>

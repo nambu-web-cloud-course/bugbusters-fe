@@ -1,7 +1,7 @@
 import Container from "../components/common/Container";
 import Button from "../components/common/Button";
 import { useForm } from "react-hook-form";
-import { Text, CountText, Span, P } from "../components/common/Text";
+import { Span, P } from "../components/common/Text";
 import { Link, useNavigate } from "react-router-dom";
 import ImageUpload from "../components/common/ImageUpload";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
@@ -19,14 +19,16 @@ export default function Request() {
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [userinfo, setUserInfo] = useState([]);
+  const [userinfo, setUserInfo] = useState({});
+
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
+    setValue, 
     formState: { errors },
   } = useForm();
+
 
   // 모든 요청 데이터 가져오기
   const getData = async () => {
@@ -44,14 +46,23 @@ export default function Request() {
     }
   };
 
-  // 회원가입시 기입한 유저 정보 가져오기
   const getUserInfo = async () => {
     try {
       const res = await api.get(`/auth?userid=${userid}`);
       const data = res.data.data;
       setUserInfo(data);
+
+      // Set default values using setValue
+      setValue("userid", userid);
+      setValue("content", "");
+      setValue("gender", "A");
+      setValue("addr1", data?.addr1);
+      setValue("addr2", data?.addr2);
+      setValue("zipcode", data?.zipcode);
+      setValue("sido", data?.sido);
+      setValue("sigungu", data?.sigungu);
     } catch (err) {
-      console.log("MyPage Edit Error", err);
+      console.log("Error getting user info", err);
     }
   };
 
@@ -63,13 +74,16 @@ export default function Request() {
         navigate("/trade-list");
       }
     } catch (err) {
-      console.log("Request Post Error", err);
+      console.log("Error submitting request", err);
     }
   };
 
   useEffect(() => {
-    getData();
+    // Fetch user info
     getUserInfo();
+
+    // Fetch data
+    getData();
   }, []);
 
   return (
@@ -127,6 +141,7 @@ export default function Request() {
               id="content"
             />
             <label htmlFor="price">가격</label>
+            <Span>버스터와 협의 후 최종 가격으로 거래를 진행합니다.</Span>
             <input
               {...register("price", { required: true })}
               placeholder="최소 금액 10,000원"
@@ -151,22 +166,35 @@ export default function Request() {
             <label htmlFor="addr1">주소</label>
             <input
               {...register("addr1", { required: true })}
-              defaultValue={userinfo.addr1}
+              defaultValue={userinfo?.addr1}
             />
             <label htmlFor="addr2">상세주소</label>
+            <Span>
+              버스터의 요청 목록에서는 보이지 않으며, 거래 진행시 전송할 수
+              있습니다.
+            </Span>
             <input
               {...register("addr2", { required: true })}
-              defaultValue={userinfo.addr2}
+              defaultValue={userinfo?.addr2}
             />
             <div style={{ display: "none" }}>
               <label htmlFor="zipcode">우편번호</label>
-              <input {...register("zipcode")} defaultValue={userinfo.zipcode} />
+              <input
+                {...register("zipcode")}
+                defaultValue={userinfo?.zipcode}
+              />
               <label htmlFor="sido">시도</label>
-              <input {...register("sido")} defaultValue={userinfo.sido} />
+              <input {...register("sido")} defaultValue={userinfo?.sido} />
               <label htmlFor="sigungu">시군구</label>
-              <input {...register("sigungu")} defaultValue={userinfo.sigungu} />
+              <input
+                {...register("sigungu")}
+                defaultValue={userinfo?.sigungu}
+              />
             </div>
-            <label htmlFor="addr1">이미지</label>
+            <GapItems>
+              <label htmlFor="addr1">이미지</label>
+              <Span>(옵션) 최대 3장</Span>
+            </GapItems>
             <ImageUpload setValue={setValue} />
             <Button color="green" size="lg" $fullwidth>
               글 작성
