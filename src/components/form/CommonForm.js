@@ -32,9 +32,13 @@ export default function CommonForm({ handleCommonForm }) {
     try {
       const res = await axios.post("/auth/sms", data);
       if (data.phone === "") alert("휴대폰 번호를 입력하세요.");
-      if (res.data.success) console.log("Success Sending Your Phone Number");
+      if (res.data.success) {
+        console.log("Success Sending Your Phone Number");
+      } else {
+        console.log("Error sending phon number")
+      }
     } catch (err) {
-      console.log("Fail Sending Phone Number", err);
+      console.log("Error sending phon number", err);
     }
     setSendSMS(!sendSMS);
   };
@@ -52,7 +56,7 @@ export default function CommonForm({ handleCommonForm }) {
         setAuthComplete(!authComplete);
       } else alert("다시 인증하세요.");
     } catch (err) {
-      console.log("Fail Sending Phone Auth Code", err);
+      console.log("Error sending phone auth code", err);
     }
   };
 
@@ -162,9 +166,7 @@ export default function CommonForm({ handleCommonForm }) {
         <label htmlFor="sido">서울시</label>
         <input {...register("sido")} defaultValue="서울시" />
         <label htmlFor="sigungu">시군구</label>
-        <input {...register("sigungu")} defaultValue="서울시" />
-        <label htmlFor="usertype">유저타입</label>
-        <input {...register("usertype")} defaultValue="C" />
+        <input {...register("sigungu")} defaultValue="양천구" />
         <Button color="green" size="lg" $fullwidth>
           {isBuster ? "개인정보 입력(1 / 2)" : "회원가입"}
         </Button>

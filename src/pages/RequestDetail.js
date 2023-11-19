@@ -3,7 +3,6 @@ import Button from "../components/common/Button";
 import Badge from "../components/common/Badge";
 import formatDateTime from "../utils/formatDateTime";
 import { P, Span } from "../components/common/Text";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
@@ -35,7 +34,7 @@ export default function RequestDetail({ socket }) {
         setImage(data.Images);
       }
     } catch (err) {
-      console.error("Error on fetching request detail: ", err);
+      console.error("Error fetching request detail: ", err);
     }
   };
 
@@ -45,7 +44,7 @@ export default function RequestDetail({ socket }) {
       const data = res.data.data;
       setChatRoom(data);
     } catch (err) {
-      console.log("Error on getting room list", err);
+      console.log("Error getting room list", err);
     }
   };
 
@@ -63,9 +62,9 @@ export default function RequestDetail({ socket }) {
     };
     try {
       const res = await api.put(`/request/${reqid}`, data);
-      if (res.data.success) console.log("Success cancle request");
+      if (res.data.success) console.log("Success cancleling request");
     } catch (err) {
-      console.log("Cancle requset error", err);
+      console.log("Error canceling request", err);
     }
   };
 

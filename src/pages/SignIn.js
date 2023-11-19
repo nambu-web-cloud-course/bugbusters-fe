@@ -32,9 +32,11 @@ export default function SignIn() {
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("usertype", JSON.stringify(usertype));
         navigate("/request");
+      } else {
+        console.log("Error sign in");
       }
     } catch (err) {
-      console.log("Signin Erorr", err);
+      console.log("Error sign in", err);
     }
   };
 

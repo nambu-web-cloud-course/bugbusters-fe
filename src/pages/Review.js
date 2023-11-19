@@ -17,16 +17,17 @@ export default function Review() {
     try {
       const res = await api.put(`/trade/${tradeid}`, review);
       if (res.data.success)
-        console.log("Success on writing review", res.data.data);
+        console.log("Success writing review", res.data.data);
+      else console.log("Error writing review");
     } catch (err) {
-      console.log("Error on writing review");
+      console.log("Error writing review");
     }
   };
 
   return (
     <div className="Content">
       {/* 제출 후 완료 컴포넌트 보여주기 */}
-        <h1>리뷰</h1>
+      <h1>리뷰</h1>
       <form action="">
         <Container>
           <UserInfo />

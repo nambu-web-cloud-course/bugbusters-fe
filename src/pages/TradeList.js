@@ -29,9 +29,11 @@ export default function TradeList() {
       if (res.data.success) {
         const data = res.data.data;
         setData(data);
+      } else {
+        console.log("Error getting user request data");
       }
     } catch (err) {
-      console.log("Request Data Get Error", err);
+      console.log("Error getting user request data", err);
     }
   };
 
@@ -41,21 +43,23 @@ export default function TradeList() {
       const res = await api.get(`/chat?busterid=${userid}`);
       if (res.data.success) {
         const chatList = res.data.data;
-        const reqList = chatList.map(async (chat) => {
-          const res = await api.get(`/request/${chat.reqid}`);
-          if (res.data.success) {
-            return res.data.data;
-          }
-          return null;
-        });
+        const reqData = await Promise.all(
+          chatList.map(async (chat) => {
+            const res = await api.get(`/request/${chat.reqid}`);
+            return res.data.success ? res.data.data : null;
+          })
+        );
 
-        const reqData = await Promise.all(reqList);
-        const validReqData = reqData.filter((data) => data !== null);
+        const sortedData = reqData
+          .filter((data) => data !== null)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-        setData(validReqData);
+        setData(sortedData);
+      } else {
+        console.log("Error getting chat list");
       }
     } catch (err) {
-      console.log("Chat List Get Error", err);
+      console.log("Error getting chat list", err);
     }
   };
 
@@ -83,7 +87,6 @@ export default function TradeList() {
                   <LocationOnRoundedIcon fontSize="small" />
                   {item.sido} {item.sigungu}
                 </Badge>
-
                 <Badge>
                   <PersonRoundedIcon fontSize="small" />
                   {item.gender === "F"

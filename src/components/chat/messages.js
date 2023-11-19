@@ -5,9 +5,8 @@ import styled, { css } from "styled-components";
 import GapItems from "../common/GapItems";
 import Button from "../common/Button";
 import * as PortOne from "@portone/browser-sdk/v2";
-import { v4 as uuidv4 } from "uuid";
-import api from "../../api";
 import { useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 const BUSTER_BOT = "BugBusters_Official";
 

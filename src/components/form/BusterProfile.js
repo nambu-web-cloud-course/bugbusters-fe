@@ -31,10 +31,14 @@ export default function BusterProfile() {
     try {
       const res = await api.get(`/auth/buster?userid=${busterID}`);
       const data = res.data.data;
-      setData(data);
-      setImage(data.profile);
+      if (res.data.success) {
+        setData(data);
+        setImage(data.profile);
+      } else {
+        console.log("Error fetching buster profile");
+      }
     } catch (err) {
-      console.log("Buster Profile Fetching Error", err);
+      console.log("Error fetching buster profile", err);
     }
   };
 
@@ -47,9 +51,11 @@ export default function BusterProfile() {
         console.log("Buster Signup:", res.data);
         if (res.data.success) {
           navigate("/sign-in");
+        } else {
+          console.log("Error registering buster profile");
         }
       } catch (err) {
-        console.log("Buster Profile Submit Error", err);
+        console.log("Error registering buster profile", err);
       }
     }
     // 버스터 프로필 수정
@@ -59,9 +65,11 @@ export default function BusterProfile() {
         if (res.data.success) {
           alert("프로필 수정 완료");
           getData();
+        } else {
+          console.log("Error modifying buster profile");
         }
       } catch (err) {
-        console.log("Buster Profile Edit Error", err);
+        console.log("Error modifying buster profile", err);
       }
     }
   };
@@ -88,7 +96,7 @@ export default function BusterProfile() {
             {busterID ? (
               <img
                 style={{ width: "100px" }}
-                src={`http://localhost:8080/${img}`}
+                src={`http://localhost:8080/${img}`} 
                 alt="Profile"
               />
             ) : (

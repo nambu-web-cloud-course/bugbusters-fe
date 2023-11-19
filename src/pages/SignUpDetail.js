@@ -29,7 +29,7 @@ export default function SignUpDetail() {
         }
       }
     } catch (err) {
-      console.log("Common Form Submit Error", err);
+      console.log("Error submitting common form", err);
     }
   };
 
