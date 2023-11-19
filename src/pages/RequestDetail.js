@@ -90,7 +90,7 @@ export default function RequestDetail({ socket }) {
           <img
             key={img.id}
             style={{ width: "50%" }}
-            src={`http://localhost:8080/${img.img}`}
+            src={`${img.img}`}
           />
         ))}
         <p>{data.content}</p>
