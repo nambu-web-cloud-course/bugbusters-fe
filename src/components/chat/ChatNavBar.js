@@ -12,7 +12,7 @@ import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
 import api from "../../api";
 import Modal from "../common/Modal";
-import { Span } from "../common/Text";
+import { P, Span } from "../common/Text";
 import Badge from "../common/Badge";
 
 export default function ChatNavBar({ socket }) {
@@ -20,9 +20,11 @@ export default function ChatNavBar({ socket }) {
   const { register, handleSubmit } = useForm();
   const [rooms, setRooms] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const { chatroom } = useParams();
   const room = chatroom;
   const [trade, setTrade] = useState([]);
+  const [bustertrade, setBusterTrade] = useState([]);
   const [tradeid, setTradeID] = useState("");
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
@@ -57,6 +59,21 @@ export default function ChatNavBar({ socket }) {
       }
     } catch (err) {
       console.log("Error fetching trade data: ", err);
+    }
+  };
+
+  // 버스터 거래 내역
+  const getBusterTrade = async () => {
+    try {
+      const res = await api.get(`/trade?busterid=${busterid}`);
+      if (res.data.success) {
+        const data = res.data.data;
+        setBusterTrade(data);
+      } else {
+        console.log("Error fetching buster trade");
+      }
+    } catch (err) {
+      console.log("Error fetching buster trade", err);
     }
   };
 
@@ -132,7 +149,7 @@ export default function ChatNavBar({ socket }) {
       5: 0,
     };
 
-    trade.forEach((item) => {
+    bustertrade.forEach((item) => {
       if (item.state === "CP" && (item.rev1 || item.rev2 || item.rev3)) {
         counts[item.rev1]++;
         counts[item.rev2]++;
@@ -165,6 +182,9 @@ export default function ChatNavBar({ socket }) {
   };
 
   const handleModal = () => setShowModal(!showModal);
+  const handleProfileModal = () => {
+    setShowProfile(!showProfile);
+  };
 
   const leaveRoom = () => {
     if (window.confirm("정말 방을 나가시겠습니까?")) navigate("/chat");
@@ -183,7 +203,7 @@ export default function ChatNavBar({ socket }) {
 
     try {
       const res = await api.put(`/trade/${tradeid}`, finalprice);
-      if (res.data.succss) {
+      if (res.data.success) {
         console.log("Success sending payment request");
         handleModal();
         socket.emit("request_payment", {
@@ -209,8 +229,6 @@ export default function ChatNavBar({ socket }) {
     }
   };
 
-  const showBusterProfile = async () => {};
-
   const renderButton = (icon, label, onClick) => (
     <Button type="button" color="green" size="xs" outline onClick={onClick}>
       {icon}
@@ -223,7 +241,7 @@ export default function ChatNavBar({ socket }) {
       return renderButton(<CreditCardRoundedIcon />, "결제 요청", handleModal);
     return (
       <>
-        {renderButton(<FaceRoundedIcon />, "프로필 보기", showBusterProfile)}
+        {renderButton(<FaceRoundedIcon />, "프로필 보기", handleProfileModal)}
         {renderButton(<LocationOnRoundedIcon />, "주소 전송", sendAddress)}
         {renderButton(<CreateRoundedIcon />, "리뷰 작성", () =>
           navigate(`/review/${tradeid}`)
@@ -266,7 +284,7 @@ export default function ChatNavBar({ socket }) {
   // 버스터 프로필 정보
   useEffect(() => {
     getBusterProfile();
-    getTrade();
+    getBusterTrade();
   }, []);
 
   useEffect(() => {
@@ -299,9 +317,42 @@ export default function ChatNavBar({ socket }) {
               <ExitToAppRoundedIcon />
             </button>
           </GapItems>
-          {showModal && (
-            <Modal showModal={showModal} setShowProfile={handleModal}>
-              <h1>버스터 프로필</h1>
+          {showProfile && (
+            <Modal
+              showModal={showProfile}
+              setShowModal={handleProfileModal}
+              title="프로필"
+            >
+              <GapItems col="col" gap="2rem">
+                <GapItems col="col" left="left">
+                  <P $fontWeight="700">아이디</P>
+                  <p>{busterprofile?.userid}</p>
+                </GapItems>
+                <GapItems col="col" left="left">
+                  <P $fontWeight="700">리뷰</P>
+                  <GapItems>{showReview()}</GapItems>
+                </GapItems>
+                <GapItems col="col" left="left">
+                  <P $fontWeight="700">퇴치 건수</P>
+                  {completeTradeNum}건
+                </GapItems>
+                <GapItems col="col" left="left">
+                  <P $fontWeight="700">자기소개</P>
+                  <Span textColor="gray05">{busterprofile?.selfintro}</Span>
+                </GapItems>
+                <GapItems col="col" left="left">
+                  <P $fontWeight="700">기술</P>
+                  <p>{busterprofile?.tech}</p>
+                </GapItems>
+                <GapItems col="col" left="left">
+                  <P $fontWeight="700">퇴치 경험</P>
+                  <p>{busterprofile?.exp}</p>
+                </GapItems>
+                <GapItems col="col" left="left">
+                  <P $fontWeight="700">가장 잘 잡는 벌레</P>
+                  <p>{busterprofile?.fav}</p>
+                </GapItems>
+              </GapItems>
             </Modal>
           )}
         </GapItems>
