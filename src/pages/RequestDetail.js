@@ -95,15 +95,6 @@ export default function RequestDetail({ socket }) {
     setRoom(roomname);
   }, [reqid, req_userid, userid]);
 
-  // 나중에 버튼 비활성화
-  // useEffect(() => {
-  // Check the condition for disabling the button
-  //   console.log(chatroom[0], chatroom.userid, chatroom.busterid)
-  //   if (!chatroom.busterid && !chatroom.userid) {
-  //     setDisabledBtn(!disabledBtn);
-  //   }
-  // }, []);
-
   return (
     <div className="Content">
       <Container>
@@ -148,7 +139,7 @@ export default function RequestDetail({ socket }) {
             채팅하기
           </Button>
         ) : (
-          <Button onClick={cancelRequest} color="green" size="lg" $fullwidth>
+          <Button onClick={cancelRequest} color="green" size="lg" $fullwidth disabled={data.state !== "PR"}>
             요청 취소
           </Button>
         )}

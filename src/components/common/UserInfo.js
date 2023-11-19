@@ -1,8 +1,8 @@
-import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import Badge from "../common/Badge";
 import GapItems from "../common/GapItems";
 import { P, Span } from "../common/Text";
 import SentimentVeryDissatisfiedRoundedIcon from "@mui/icons-material/SentimentVeryDissatisfiedRounded";
+import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 
 export default function UserInfo({
   busterid,
@@ -12,9 +12,11 @@ export default function UserInfo({
   sigungu,
   content,
   price,
+  completeTrade,
 }) {
   return (
     <GapItems gap="1rem" left="left">
+
       <div
         style={{
           width: "3rem",
@@ -34,9 +36,11 @@ export default function UserInfo({
       <div>
         <GapItems>
           <P $fontWeight="700">
-            {usertype === "B" ? userid : busterid || "방을 나갔어요."}
+            {usertype === "B" ? userid : busterid || "알 수 없음"}
           </P>
-          <Span textColor="gray04">{content ? content.slice(0, 20) + "..." : ""}</Span>
+          <Span textColor="gray04">
+            {content ? content.slice(0, 20) + "..." : ""}
+          </Span>
         </GapItems>
         <GapItems>
           <Span textColor="darkgreen" $fontWeight="700">
@@ -46,6 +50,21 @@ export default function UserInfo({
             {sido || ""} {sigungu || ""}
           </Span>
         </GapItems>
+        {usertype === "C" && (
+          <>
+            <GapItems>
+              <Badge
+                textColor="darkgreen"
+                $fontWeight="500"
+                $bgColor="transparent"
+                $padding="0.5rem 0"
+              >
+                <BugReportRoundedIcon fontSize="small" />
+                퇴치 건수 {completeTrade}
+              </Badge>
+            </GapItems>
+          </>
+        )}
       </div>
     </GapItems>
   );
