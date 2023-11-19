@@ -3,7 +3,7 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Dropzone from "react-dropzone";
 import api from "../../api";
 
-export default function ImageUpload({ setValue }) {
+export default function ImageUpload({ id, userid, setValue }) {
   const [Images, setImages] = useState([]);
   const dropHandler = (files) => {
     let formData = new FormData();
@@ -14,14 +14,14 @@ export default function ImageUpload({ setValue }) {
     formData.append("file", files[0]);
 
     return api
-      .post("/image", formData, config)
+      .post(`/image?caller=${id}&userid=${userid}`, formData, config)
       .then((res) => {
         if (res.data.success) {
           console.log(res.data);
           setImages([...Images, res.data.filePath]);
 
           // Set the profile field value in the form
-          setValue("profile", [...Images, res.data.filePath]);
+          setValue("images", [...Images, res.data.filePath]);
         } else console.log("파일 저장 실패");
       });
   };
@@ -62,7 +62,7 @@ export default function ImageUpload({ setValue }) {
           <div key={index}>
             <img
               style={{ minWidth: "100px", width: "100px" }}
-              src={`http://localhost:8080/${image}`}
+              src={`${image}`}
             />
           </div>
         ))}
