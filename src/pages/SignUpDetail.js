@@ -4,6 +4,7 @@ import BusterProfile from "../components/form/BusterProfile";
 import CommonForm from "../components/form/CommonForm";
 import api from "../api";
 
+
 export default function SignUpDetail() {
   const { usertype } = useParams();
 

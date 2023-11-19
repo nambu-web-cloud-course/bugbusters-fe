@@ -17,6 +17,7 @@ import socket from "./socket";
 import Chat from "./components/chat/Chat";
 import ChatList from "./pages/ChatList";
 import Review from "./pages/Review"
+import NotFound from "./pages/NotFound"
 
 const App = () => {
   return (
@@ -42,7 +43,8 @@ const App = () => {
             <Route path="/buster" element={<BusterProfile />} />
             <Route path="/profile" element={<BusterProfile />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/review/:tradeid" element={<Review />} />
+            <Route path="/review/:tradeid" element={<Review />} />            
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </div>

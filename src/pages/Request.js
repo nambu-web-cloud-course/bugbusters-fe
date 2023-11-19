@@ -19,6 +19,7 @@ export default function Request() {
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [userinfo, setUserInfo] = useState([]);
   const {
     register,
     handleSubmit,
@@ -43,6 +44,17 @@ export default function Request() {
     }
   };
 
+  // 회원가입시 기입한 유저 정보 가져오기
+  const getUserInfo = async () => {
+    try {
+      const res = await api.get(`/auth?userid=${userid}`);
+      const data = res.data.data;
+      setUserInfo(data);
+    } catch (err) {
+      console.log("MyPage Edit Error", err);
+    }
+  };
+
   // 폼에 입력한 데이터 서버에 전송
   const onSubmit = async (data) => {
     try {
@@ -57,6 +69,7 @@ export default function Request() {
 
   useEffect(() => {
     getData();
+    getUserInfo();
   }, []);
 
   return (
@@ -109,12 +122,17 @@ export default function Request() {
             />
             <label htmlFor="content">요청사항</label>
             <textarea
-              {...register("content")}
-              defaultValue="요청사항"
+              {...register("content", { required: true })}
+              placeholder="벌레 종류, 나타난 위치 등 상세한 정보를 입력해주세요."
               id="content"
             />
             <label htmlFor="price">가격</label>
-            <input {...register("price")} defaultValue="10000" id="price" />
+            <input
+              {...register("price", { required: true })}
+              placeholder="최소 금액 10,000원"
+              min={10000}
+              id="price"
+            />
             <label htmlFor="gender">성별</label>
             <div className="select">
               <input
@@ -131,13 +149,23 @@ export default function Request() {
               <label htmlFor="M">남자</label>
             </div>
             <label htmlFor="addr1">주소</label>
-            <input {...register("addr1")} defaultValue="주소" />
+            <input
+              {...register("addr1", { required: true })}
+              defaultValue={userinfo.addr1}
+            />
             <label htmlFor="addr2">상세주소</label>
-            <input {...register("addr2")} defaultValue="상세주소" />
-            <label htmlFor="zipcode">우편번호</label>
-            <input {...register("zipcode")} defaultValue="12345" />
-            <label htmlFor="sigungu">시군구</label>
-            <input {...register("sigungu")} defaultValue="시군구" />
+            <input
+              {...register("addr2", { required: true })}
+              defaultValue={userinfo.addr2}
+            />
+            <div style={{ display: "none" }}>
+              <label htmlFor="zipcode">우편번호</label>
+              <input {...register("zipcode")} defaultValue={userinfo.zipcode} />
+              <label htmlFor="sido">시도</label>
+              <input {...register("sido")} defaultValue={userinfo.sido} />
+              <label htmlFor="sigungu">시군구</label>
+              <input {...register("sigungu")} defaultValue={userinfo.sigungu} />
+            </div>
             <label htmlFor="addr1">이미지</label>
             <ImageUpload setValue={setValue} />
             <Button color="green" size="lg" $fullwidth>

@@ -12,7 +12,6 @@ export default function UserInfo({
   sigungu,
   content,
   price,
-  room,
 }) {
   return (
     <GapItems gap="1rem" left="left">
@@ -31,41 +30,23 @@ export default function UserInfo({
           fontSize="large"
           color="disabled"
         />
-        {/* <img
-          alt="Profile"
-          style={{ width: "3rem", borderRadius: "0.25rem" }}
-        /> */}
       </div>
-      {/* 퇴치건수가 1개 이상일 경우 */}
       <div>
         <GapItems>
-          <P $fontWeight="700">{usertype === "B" ? userid : busterid}</P>
-          <Span textColor="gray04">{content} </Span>
+          <P $fontWeight="700">
+            {usertype === "B" ? userid : busterid || "방을 나갔어요."}
+          </P>
+          <Span textColor="gray04">{content ? content.slice(0, 20) : ""}</Span>
         </GapItems>
         <GapItems>
           <Span textColor="darkgreen" $fontWeight="700">
-            {price}원
+            {price ? `${price}원` : ""}
           </Span>
           <Span>
-            {sido} {sigungu}
+            {sido || ""} {sigungu || ""}
           </Span>
         </GapItems>
-        {usertype === "C" && (
-          <div>
-            <GapItems>
-              <Badge $bgColor="none" $padding="0.5rem 0">
-                <BugReportRoundedIcon fontSize="small" />
-                <span>퇴치건수 1</span>
-              </Badge>
-            </GapItems>
-            <GapItems>
-              <Badge>꼼꼼해요 1</Badge>
-              <Badge>빨라요 1</Badge>
-            </GapItems>
-          </div>
-        )}
       </div>
-      {/* 배지가 1개 이상일 경우 추가 */}
     </GapItems>
   );
 }

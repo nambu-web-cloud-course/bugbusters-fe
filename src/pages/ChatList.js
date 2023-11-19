@@ -91,15 +91,16 @@ export default function ChatList({ socket }) {
             >
               <Container>
                 <UserInfo
-                  room={room.room}
-                  busterid={room.busterid}
-                  userid={room.userid}
+                  room={room?.room}
+                  busterid={room?.busterid}
+                  userid={room?.userid}
                   sido={userinfo[idx]?.sido}
                   sigungu={userinfo[idx]?.sigungu}
                   content={request[idx]?.content}
                   price={request[idx]?.price}
                   usertype={usertype}
                 />
+                {/* 버스터 배지, 키워드 */}
                 <Span>{formatDateTime(room.createdAt)}</Span>
               </Container>
             </Link>

@@ -77,7 +77,6 @@ export default function ChatNavBar({ socket }) {
     }
   };
 
-
   useEffect(() => {
     setRooms(chatroom);
     getTrade();
@@ -181,8 +180,8 @@ export default function ChatNavBar({ socket }) {
             usertype={usertype}
             sido={userinfo?.sido}
             sigungu={userinfo?.sigungu}
-            content={request.content}
-            price={request.price}
+            content={request?.content}
+            price={request?.price}
           />
           <button onClick={leaveRoom}>
             <ExitToAppRoundedIcon />
