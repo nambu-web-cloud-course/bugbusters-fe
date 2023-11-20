@@ -3,7 +3,6 @@ import axios from "axios";
 const fetchClient = () => {
   const defaultOptions = {
     baseURL: "https://api-bugbusters.azurewebsites.net",
-    // baseURL: "http://localhost:8080",
   };
 
   // Create instance
