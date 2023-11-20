@@ -10,6 +10,7 @@ const PStyles = css`
 const SpanStyles = css`
   font-size: ${({ theme, fontSize }) =>
     theme.size.font[fontSize] || "0.875rem"};
+     font-weight: ${(props) => props.$fontWeight || 400};
   color: ${({ theme, textColor }) =>
     theme.color[textColor] || theme.color.gray03};
   text-align: ${(props) => props.$textAlign || "left"};

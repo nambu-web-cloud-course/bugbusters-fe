@@ -18,7 +18,7 @@ export default function SignIn() {
     try {
       const res = await api.post("/auth/sign-in", data);
       if (res.data.success) {
-        console.log("Sign in Success", res.data);
+        console.log("Sign in Success");
         const userid = res.data.userid;
         const token = res.data.token;
 
@@ -27,18 +27,16 @@ export default function SignIn() {
         console.log("usreInfo", userInfo);
         const usertype = userInfo.data.data.usertype;
 
-        console.log(
-          `User Info: userid: ${userid}, token: ${token}, usertype: ${usertype}`
-        );
-
         // 로컬 스토리지에 아이디, 토큰, 유저타입 저장 -> 나중에 객체로 합치기
         localStorage.setItem("userid", JSON.stringify(userid));
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("usertype", JSON.stringify(usertype));
         navigate("/request");
+      } else {
+        console.log("Error sign in");
       }
     } catch (err) {
-      console.log("Signin Erorr", err);
+      console.log("Error sign in", err);
     }
   };
 

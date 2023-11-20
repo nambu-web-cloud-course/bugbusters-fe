@@ -1,7 +1,5 @@
 import io from "socket.io-client";
 
-const socket = io("http://localhost:8080", {
-  withCredentials: true,
-});
+const socket = io("https://api-bugbusters.azurewebsites.net");
 
 export default socket;

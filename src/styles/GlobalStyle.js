@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
   .Content {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   .tabs {
@@ -159,6 +159,45 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.color.green};
     color:white;
   }
+
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]+label {
+  display: inline-flex;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  background: white;
+  border: 1px solid  ${({ theme }) => theme.color.green};
+  color: ${({ theme }) => theme.color.green};
+  transition: background 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.color.lightgreen};
+  }
+
+  &:disabled {
+    background: ${({ theme }) => theme.color.gray02};
+    color: ${({ theme }) => theme.color.gray03};
+    cursor: not-allowed;
+  }
+
+}
+
+input[type="checkbox"]:checked + label {
+  background: ${({ theme }) => theme.color.green};
+  color: white;
+
+  &:active {
+    background: ${({ theme }) => theme.color.darkgreen};
+  }
+}
+
 
 
 

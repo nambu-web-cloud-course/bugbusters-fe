@@ -1,37 +1,71 @@
-import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import Badge from "../common/Badge";
 import GapItems from "../common/GapItems";
 import { P, Span } from "../common/Text";
+import SentimentVeryDissatisfiedRoundedIcon from "@mui/icons-material/SentimentVeryDissatisfiedRounded";
+import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 
-export default function UserInfo({ busterid, userid, usertype, room }) {
+export default function UserInfo({
+  busterid,
+  userid,
+  usertype,
+  sido,
+  sigungu,
+  content,
+  price,
+  completeTrade,
+}) {
   return (
-    <GapItems>
+    <GapItems gap="1rem" left="left">
+
       <div
         style={{
           width: "3rem",
           height: "3rem",
           borderRadius: "0.25rem",
-          backgroundColor: "gray",
+          backgroundColor: "lightgray",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {/* <img
-          src="https://picsum.photos/200"
-          alt="Profile"
-          style={{ width: "3rem", borderRadius: "0.25rem" }}
-        /> */}
+        <SentimentVeryDissatisfiedRoundedIcon
+          fontSize="large"
+          color="disabled"
+        />
       </div>
-      {/* 퇴치건수가 1개 이상일 경우 */}
       <div>
-        <P $fontWeight="700">{usertype === "B" ? userid : busterid}</P>
         <GapItems>
-          {/* <Badge $bgColor="none" $padding="0.5rem 0">
-            <BugReportRoundedIcon fontSize="small" />
-            <span>퇴치건수 1</span>
-          </Badge> */}
-          <Span>서울시 양천구 OO동</Span>
+          <P $fontWeight="700">
+            {usertype === "B" ? userid : busterid || "알 수 없음"}
+          </P>
+          <Span textColor="gray04">
+            {content ? content.slice(0, 20) + "..." : ""}
+          </Span>
         </GapItems>
+        <GapItems>
+          <Span textColor="darkgreen" $fontWeight="700">
+            {price ? `${price}원` : ""}
+          </Span>
+          <Span>
+            {sido || ""} {sigungu || ""}
+          </Span>
+        </GapItems>
+        {usertype === "C" && (
+          <>
+            <GapItems>
+              <Badge
+                textColor="darkgreen"
+                $fontWeight="500"
+                $bgColor="transparent"
+                $padding="0.5rem 0"
+              >
+                <BugReportRoundedIcon fontSize="small" />
+                퇴치 건수 {completeTrade}
+              </Badge>
+            </GapItems>
+          </>
+        )}
       </div>
-      {/* 배지가 1개 이상일 경우 추가 */}
     </GapItems>
   );
 }

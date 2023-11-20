@@ -9,22 +9,29 @@ import api from "../api";
 export default function MyPage() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const [data, setData] = useState([]);
-  console.log("Myapge:", data);
+
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,  // Add this line
+    watch,
     formState: { errors },
   } = useForm();
 
   // 회원가입시 기입한 유저 정보 가져오기
   const getData = async () => {
     try {
-      const res = await api.get(
-        `/auth?userid=${userid}`
-      );
-      const data = res.data.data;
-      setData(data);
+      const res = await api.get(`/auth?userid=${userid}`);
+      const userData = res.data.data;
+      setData(userData);
+
+      // Set default values using setValue
+      setValue("phone", userData.phone);
+      setValue("addr1", userData.addr1);
+      setValue("addr2", userData.addr2);
+      setValue("zipcode", userData.zipcode);
+      setValue("sigungu", userData.sigungu);
     } catch (err) {
       console.log("MyPage Edit Error", err);
     }
@@ -38,11 +45,14 @@ export default function MyPage() {
   const onSubmit = async (data) => {
     try {
       const res = await api.put(`/auth/${userid}`, data);
-      if (res.data.success) alert("수정 성공")
+      if (res.data.success) alert("수정 성공");
     } catch (err) {
       console.log("MyPage Edit", err);
     }
   };
+
+  console.log(watch());
+
 
   return (
     <div className="Content">
@@ -52,7 +62,7 @@ export default function MyPage() {
           <label htmlFor="userid">아이디 </label>
           <input id="userid" value={data.userid} disabled />
           <label htmlFor="password">비밀번호</label>
-          <input id="password" value={data.password} disabled />
+          <input id="password" value={data.password} type="password" disabled />
           <label htmlFor="name">이름</label>
           <input id="name" value={data.name} disabled />
           <label htmlFor="birthdate">생년월일</label>
@@ -81,11 +91,13 @@ export default function MyPage() {
           <label htmlFor="addr1">주소</label>
           <input {...register("addr1")} defaultValue={data.addr1} />
           <label htmlFor="addr2">상세주소</label>
-          <input {...register("addr2")} defaultValue={data.addr2} />
-          <label htmlFor="zipcode">우편번호</label>
-          <input {...register("zipcode")} defaultValue={data.zipcode} />
-          <label htmlFor="sigungu">시군구</label>
-          <input {...register("sigungu")} defaultValue={data.sigungu} />
+            <input {...register("addr2")} defaultValue={data.addr2} />
+          <div style={{display: "none"}}>
+            <label htmlFor="zipcode">우편번호</label>
+            <input {...register("zipcode")} defaultValue={data.zipcode} />
+            <label htmlFor="sigungu">시군구</label>
+            <input {...register("sigungu")} defaultValue={data.sigungu} />
+          </div>
           <Button color="green" size="lg" $fullwidth>
             정보 수정
           </Button>
