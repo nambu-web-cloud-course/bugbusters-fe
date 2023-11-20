@@ -22,7 +22,7 @@ const Message = styled.div`
   margin-bottom: 1rem;
   padding: 1rem;
   ${(props) =>
-    props.isUser
+    props.$isUser
       ? css`
           background: ${({ theme }) => theme.color.lightgreen};
           color: ${({ theme }) => theme.color.darkgreen};
@@ -33,7 +33,7 @@ const Message = styled.div`
           color: black;
         `}
   ${(props) =>
-    props.isOfficial &&
+    props.$isOfficial &&
     css`
       background: white;
       border: 2px solid ${({ theme }) => theme.color.green};
@@ -91,8 +91,6 @@ export default function Messages({ socket }) {
       console.log("Error fetching trade data: ", err);
     }
   };
-
-  console.log("messagesRecieved", messagesRecieved);
 
   const payment = () => {
     const uuid = uuidv4();
@@ -174,21 +172,20 @@ export default function Messages({ socket }) {
     getFinalPrice();
   }, [tradeid]);
 
-  console.log(finalprice);
+  // console.log("messagesRecieved", messagesRecieved);
 
   return (
     <MessagesColumn ref={messagesColumnRef}>
       {messagesRecieved.map((msg, i) => (
         <Message
           key={i}
-          isUser={msg.userid === userid}
-          isOfficial={msg.userid === BUSTER_BOT}
+          $isUser={msg.userid === userid}
+          $isOfficial={msg.userid === BUSTER_BOT}
         >
-          <GapItems col="col" left="left">
+          <GapItems $col $left>
             {msg.userid === BUSTER_BOT && (
               <GapItems>
-                <P textColor="darkgreen">
-                  🪲
+                <P $textColor="darkgreen" $fontWeight="700">
                   {BUSTER_BOT}
                 </P>
               </GapItems>
@@ -197,7 +194,7 @@ export default function Messages({ socket }) {
             {usertype === "C" &&
               msg.message.includes("결제") &&
               msg.userid === BUSTER_BOT && (
-                <Button color="green" size="lg" onClick={payment}>
+                <Button $color="green" $size="lg" onClick={payment}>
                   {finalprice}원 결제하기
                 </Button>
               )}
@@ -205,8 +202,8 @@ export default function Messages({ socket }) {
               msg.message.includes("완료") &&
               msg.userid === BUSTER_BOT && (
                 <Button
-                  color="green"
-                  size="lg"
+                  $color="green"
+                  $size="lg"
                   onClick={() => {
                     navigate(`/review/${tradeid}`);
                   }}
@@ -214,7 +211,7 @@ export default function Messages({ socket }) {
                   리뷰 작성
                 </Button>
               )}
-            <Span textColor={msg.userid === userid ? "darkgreen" : "black"}>
+            <Span $textColor={msg.userid === userid ? "darkgreen" : "black"}>
               {formatDateTime(msg.createdAt)}
             </Span>
           </GapItems>

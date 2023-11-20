@@ -36,7 +36,7 @@ export default function SendMessage({ socket }) {
           value={message}
           onKeyDown={handleOnKeyDown}
         />
-        <Button color="green" size="lg" width="20%" onClick={sendMessage}>
+        <Button $color="green" $size="lg" $width="20%" onClick={sendMessage}>
           전송
         </Button>
       </GapItems>

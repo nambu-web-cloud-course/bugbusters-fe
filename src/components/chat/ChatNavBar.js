@@ -195,7 +195,7 @@ export default function ChatNavBar({ socket }) {
 
   // 상단바 버튼 액션
   const sendAddress = () => {
-    socket.emit("send_address", { userid, room, address });
+    socket.emit("send_address", { userid, room });
   };
 
   const requestPayment = async (data) => {
@@ -230,7 +230,7 @@ export default function ChatNavBar({ socket }) {
   };
 
   const renderButton = (icon, label, onClick) => (
-    <Button type="button" color="green" size="xs" outline onClick={onClick}>
+    <Button type="button" $color="green" $size="xs" $outline onClick={onClick}>
       {icon}
       {label}
     </Button>
@@ -298,9 +298,9 @@ export default function ChatNavBar({ socket }) {
 
   return (
     <div style={{ borderBottom: "1px solid lightgray" }}>
-      <GapItems col="col" style={{ marginBottom: "0.5rem" }}>
+      <GapItems $col="col" style={{ marginBottom: "0.5rem" }}>
         <GapItems>
-          <GapItems justify="space-between">
+          <GapItems style={{justifyContent: "space-between"}}>
             <Link to={`/request/${reqid}`}>
               <UserInfo
                 busterid={busterid}
@@ -323,32 +323,32 @@ export default function ChatNavBar({ socket }) {
               setShowModal={handleProfileModal}
               title="프로필"
             >
-              <GapItems col="col" gap="2rem">
-                <GapItems col="col" left="left">
+              <GapItems $col $gap="2rem">
+                <GapItems $col $left>
                   <P $fontWeight="700">아이디</P>
                   <p>{busterprofile?.userid}</p>
                 </GapItems>
-                <GapItems col="col" left="left">
+                <GapItems $col $left>
                   <P $fontWeight="700">리뷰</P>
                   <GapItems>{showReview()}</GapItems>
                 </GapItems>
-                <GapItems col="col" left="left">
+                <GapItems $col $left>
                   <P $fontWeight="700">퇴치 건수</P>
                   {completeTradeNum}건
                 </GapItems>
-                <GapItems col="col" left="left">
+                <GapItems $col $left>
                   <P $fontWeight="700">자기소개</P>
                   <Span textColor="gray05">{busterprofile?.selfintro}</Span>
                 </GapItems>
-                <GapItems col="col" left="left">
+                <GapItems $col $left>
                   <P $fontWeight="700">기술</P>
                   <p>{busterprofile?.tech}</p>
                 </GapItems>
-                <GapItems col="col" left="left">
+                <GapItems $col $left>
                   <P $fontWeight="700">퇴치 경험</P>
                   <p>{busterprofile?.exp}</p>
                 </GapItems>
-                <GapItems col="col" left="left">
+                <GapItems $col $left>
                   <P $fontWeight="700">가장 잘 잡는 벌레</P>
                   <p>{busterprofile?.fav}</p>
                 </GapItems>
@@ -365,7 +365,7 @@ export default function ChatNavBar({ socket }) {
             setShowModal={handleModal}
             title={"주문서"}
           >
-            <GapItems col="col" left="left">
+            <GapItems $col $left>
               <label htmlFor="price">최종금액</label>
               <GapItems>
                 <input
@@ -375,7 +375,7 @@ export default function ChatNavBar({ socket }) {
                 />
                 원
               </GapItems>
-              <Button color="green" size="lg" type="submit">
+              <Button $color="green" $size="lg" type="submit">
                 결제 요청
               </Button>
             </GapItems>
