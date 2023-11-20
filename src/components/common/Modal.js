@@ -14,7 +14,7 @@ const ModalWrapper = styled.div`
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: ${(props) => (props.show ? "block" : "none")};
+  display: ${(props) => (props.$show ? "block" : "none")};
   z-index: 2;
 `;
 
@@ -25,7 +25,7 @@ const ModalInner = styled.div`
 
 const ModalOverlay = styled.div`
   box-sizing: border-box;
-  display: ${(props) => (props.show ? "block" : "none")};
+  display: ${(props) => (props.$show ? "block" : "none")};
   position: fixed;
   top: 0;
   left: 0;
@@ -42,8 +42,8 @@ export default function Modal({ showModal, setShowModal, title, children }) {
 
   return (
     <div className="Content">
-      <ModalOverlay show={showModal} />
-      <ModalWrapper show={showModal}>
+      <ModalOverlay $show={showModal} />
+      <ModalWrapper $show={showModal}>
         <ModalInner>
           <button style={{ marginLeft: "auto" }}>
             <CloseRoundedIcon onClick={toggleModal} />

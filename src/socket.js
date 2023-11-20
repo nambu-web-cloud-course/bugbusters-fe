@@ -1,5 +1,5 @@
 import io from "socket.io-client";
 
-const socket = io("https://api-bugbusters.azurewebsites.net");
+const socket = io(process.env.REACT_APP_HOST);
 
 export default socket;

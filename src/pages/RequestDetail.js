@@ -99,11 +99,7 @@ export default function RequestDetail({ socket }) {
     <div className="Content">
       <Container>
         {image.map((img) => (
-          <img
-            key={img.id}
-            style={{ width: "50%" }}
-            src={`${img.img}`}
-          />
+          <img key={img.id} style={{ width: "50%" }} src={`${img.img}`} />
         ))}
         <p>{data.content}</p>
         <GapItems>
@@ -130,20 +126,26 @@ export default function RequestDetail({ socket }) {
         {usertype === "B" ? (
           <Button
             onClick={joinRoom}
-            color="green"
-            size="lg"
+            $color="green"
+            $size="lg"
             $fullwidth
             // disabled={disabledBtn}
           >
             채팅하기
           </Button>
         ) : (
-          <Button onClick={cancelRequest} color="green" size="lg" $fullwidth disabled={data.state !== "PR"}>
+          <Button
+            onClick={cancelRequest}
+            $color="green"
+            $size="lg"
+            $fullwidth
+            disabled={data.state !== "PR"}
+          >
             요청 취소
           </Button>
         )}
       </Container>
-      <Button onClick={goBack} color="green" size="lg" outline $fullwidth>
+      <Button onClick={goBack} $color="green" $size="lg" $outline $fullwidth>
         목록
       </Button>
     </div>

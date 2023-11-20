@@ -2,7 +2,7 @@ import axios from "axios";
 
 const fetchClient = () => {
   const defaultOptions = {
-    baseURL: "https://api-bugbusters.azurewebsites.net",
+    baseURL: process.env.REACT_APP_HOST,
   };
 
   // Create instance

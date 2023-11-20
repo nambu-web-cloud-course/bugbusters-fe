@@ -15,7 +15,7 @@ export default function Address({ address, setAddress }) {
   };
 
   return (
-    <Button color="green" size="lg" width="20%" onClick={handleClick}>
+    <Button $color="green" $size="lg" $width="20%" onClick={handleClick}>
       검색
     </Button>
   );

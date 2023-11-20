@@ -192,7 +192,7 @@ export default function Request() {
               <Span>(옵션) 최대 3장</Span>
             </GapItems>
             <ImageUpload id="request" userid={userid} setValue={setValue} />
-            <Button color="green" size="lg" $fullwidth>
+            <Button $color="green" $size="lg" $fullwidth>
               글 작성
             </Button>
           </Container>

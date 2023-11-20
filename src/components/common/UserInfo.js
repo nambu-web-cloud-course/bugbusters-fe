@@ -15,8 +15,7 @@ export default function UserInfo({
   completeTrade,
 }) {
   return (
-    <GapItems gap="1rem" left="left">
-
+    <GapItems $gap="1rem" $left>
       <div
         style={{
           width: "3rem",
@@ -38,12 +37,12 @@ export default function UserInfo({
           <P $fontWeight="700">
             {usertype === "B" ? userid : busterid || "알 수 없음"}
           </P>
-          <Span textColor="gray04">
+          <Span $textColor="gray04">
             {content ? content.slice(0, 20) + "..." : ""}
           </Span>
         </GapItems>
         <GapItems>
-          <Span textColor="darkgreen" $fontWeight="700">
+          <Span $textColor="darkgreen" $fontWeight="700">
             {price ? `${price}원` : ""}
           </Span>
           <Span>
@@ -54,7 +53,7 @@ export default function UserInfo({
           <>
             <GapItems>
               <Badge
-                textColor="darkgreen"
+                $textColor="darkgreen"
                 $fontWeight="500"
                 $bgColor="transparent"
                 $padding="0.5rem 0"

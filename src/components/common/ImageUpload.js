@@ -43,7 +43,6 @@ export default function ImageUpload({ id, userid, setValue }) {
               {...getRootProps()}
             >
               <input {...getInputProps()} />
-
               <AddRoundedIcon style={{ alignSelf: "center" }} />
             </div>
           </section>

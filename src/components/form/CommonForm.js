@@ -135,9 +135,9 @@ export default function CommonForm({ handleCommonForm }) {
             disabled={authComplete}
           />
           <Button
-            width="50%"
-            color="green"
-            size="lg"
+            $width="50%"
+            $color="green"
+            $size="lg"
             onClick={handleSubmit(handleSMS)}
             style={{ display: authComplete ? "none" : "block" }}
           >
@@ -155,9 +155,9 @@ export default function CommonForm({ handleCommonForm }) {
                 value={smsCode}
               />
               <Button
-                width="50%"
-                color="green"
-                size="lg"
+                $width="50%"
+                $color="green"
+                $size="lg"
                 onClick={handleSubmit(authCode)}
               >
                 인증
@@ -220,7 +220,7 @@ export default function CommonForm({ handleCommonForm }) {
           />
         </div>
 
-        <Button color="green" size="lg" $fullwidth>
+        <Button $color="green" $size="lg" $fullwidth>
           {isBuster ? "개인정보 입력(1 / 2)" : "회원가입"}
         </Button>
       </Container>

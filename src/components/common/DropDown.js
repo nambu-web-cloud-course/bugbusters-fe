@@ -1,8 +1,7 @@
 import { css, styled } from "styled-components";
 
-const DropMenu = styled.a`
-  padding: 1rem;
-  display: block;
+const DropMenu = styled.div`
+  display: flex;
   text-align: left;
 
   &:hover {

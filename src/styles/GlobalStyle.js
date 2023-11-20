@@ -21,7 +21,6 @@ const GlobalStyle = createGlobalStyle`
       display: flex;
     }
 
-
     a{
         text-decoration: none;
         color: inherit;

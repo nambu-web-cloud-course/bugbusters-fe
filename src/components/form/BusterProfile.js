@@ -235,7 +235,7 @@ export default function BusterProfile() {
           <P>{completeTrade}</P>
           <label htmlFor="review">리뷰</label>
           <GapItems>{showReview()}</GapItems>
-          <Button color="green" size="lg" $fullwidth>
+          <Button $color="green" $size="lg" $fullwidth>
             {busterid ? "프로필 수정" : "프로필 입력(2 / 2)"}
           </Button>
         </Container>

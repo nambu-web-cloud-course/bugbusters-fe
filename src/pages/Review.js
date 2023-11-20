@@ -93,7 +93,7 @@ export default function Review() {
                 <input type="checkbox" id="5" {...register("5")} />
                 <label htmlFor="5">💛 섬세해요</label>
               </GapItems>
-              <Button color="green" size="lg" fullwidth>
+              <Button $color="green" $size="lg" $fullwidth>
                 제출
               </Button>
             </Container>

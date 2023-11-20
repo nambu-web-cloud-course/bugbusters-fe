@@ -61,7 +61,7 @@ export default function SignIn() {
             id="password"
             $fullwidth
           />
-          <Button color="green" size="lg" $fullwidth>
+          <Button $color="green" $size="lg" $fullwidth>
             로그인
           </Button>
         </Container>

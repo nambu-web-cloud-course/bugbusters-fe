@@ -14,8 +14,7 @@ export default function MyPage() {
   const {
     register,
     handleSubmit,
-    setValue,  // Add this line
-    watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -50,9 +49,6 @@ export default function MyPage() {
       console.log("MyPage Edit", err);
     }
   };
-
-  console.log(watch());
-
 
   return (
     <div className="Content">
@@ -98,12 +94,12 @@ export default function MyPage() {
             <label htmlFor="sigungu">시군구</label>
             <input {...register("sigungu")} defaultValue={data.sigungu} />
           </div>
-          <Button color="green" size="lg" $fullwidth>
+          <Button $color="green" $size="lg" $fullwidth>
             정보 수정
           </Button>
         </Container>
       </form>
-      <Button color="green" size="lg" outline $fullwidth>
+      <Button $color="green" $size="lg" $outline $fullwidth>
         회원 탈퇴
       </Button>
     </div>

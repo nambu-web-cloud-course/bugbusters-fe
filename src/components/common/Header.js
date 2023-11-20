@@ -4,6 +4,8 @@ import { styled } from "styled-components";
 import { DropDown, DropMenu } from "./DropDown";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import { Span } from "./Text";
+
 const usertype = JSON.parse(localStorage.getItem("usertype"));
 
 const StyledHeader = styled.header`
@@ -16,7 +18,6 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: center;
 `;
-
 
 const InnerHeader = styled.div`
   width: 50rem;
@@ -99,7 +100,7 @@ export default function Header() {
                   }}
                   onClick={handleDropDown}
                 >
-                  <span style={{ fontWeight: 700 }}>{userid}</span>님
+                  <Span $fontWeight="700" $textColor="black">{userid}</Span>님
                   {showDropDown ? (
                     <KeyboardArrowUpRoundedIcon />
                   ) : (
@@ -109,16 +110,16 @@ export default function Header() {
                 {showDropDown ? (
                   <DropDown>
                     <DropMenu>
-                      <Link to="/mypage">마이페이지</Link>
+                      <Link style={{padding: "1rem", width: "100%"}}to="/mypage">마이페이지</Link>
                     </DropMenu>
                     {usertype === "B" ? (
                       <DropMenu>
-                        <Link to="/profile">프로필</Link>
+                        <Link style={{padding: "1rem", width: "100%"}} to="/profile">프로필</Link>
                       </DropMenu>
                     ) : (
                       ""
                     )}
-                    <DropMenu onClick={signOut} href="/landing">
+                    <DropMenu style={{padding: "1rem", width: "100%"}}  onClick={signOut} href="/landing">
                       로그아웃
                     </DropMenu>
                   </DropDown>

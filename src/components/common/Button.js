@@ -2,8 +2,8 @@ import styled, { css } from "styled-components";
 import { darken, lighten } from "polished";
 
 const colorStyles = css`
-  ${({ theme, color }) => {
-    const buttonColor = theme.color[color];
+  ${({ theme, $color }) => {
+    const buttonColor = theme.color[$color];
     return css`
       background: ${buttonColor};
       display: flex;
@@ -22,7 +22,7 @@ const colorStyles = css`
         color: ${theme.color.gray03};
       }
       ${(props) =>
-        props.outline &&
+        props.$outline &&
         css`
           color: ${buttonColor};
           background: white;
@@ -62,9 +62,9 @@ const sizes = {
 };
 
 const sizeStyles = css`
-  ${({ size }) => css`
-    padding: ${sizes[size].padding};
-    font-size: ${sizes[size].fontSize};
+  ${({ $size }) => css`
+    padding: ${sizes[$size].padding};
+    font-size: ${sizes[$size].fontSize};
   `}
 `;
 
@@ -80,7 +80,7 @@ const fullWidthStyle = css`
 const widthStyles = css`
   ${(props) =>
     css`
-      width: ${props.width};
+      width: ${props.$width};
       justify-content: center;
     `}
 `;
@@ -118,11 +118,11 @@ export default function Button({
 }) {
   return (
     <StyledButton
-      color={color}
-      size={size}
-      outline={outline}
+      $color={color}
+      $size={size}
+      $outline={outline}
       $fullwidth={fullwidth}
-      width={width}
+      $width={width}
       {...rest}
     >
       {children}
