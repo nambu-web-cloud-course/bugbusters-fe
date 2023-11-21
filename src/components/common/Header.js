@@ -6,14 +6,12 @@ import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRound
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Span } from "./Text";
 
-const usertype = JSON.parse(localStorage.getItem("usertype"));
-
 const StyledHeader = styled.header`
   top: 0;
   position: fixed;
   width: 100%;
   height: 3.5rem;
-  background-color: ${({ theme }) =>
+  background-color: ${({ theme, usertype }) =>
     usertype === "B" ? theme.color.lightgreen : "white"};
   display: flex;
   justify-content: center;
@@ -34,13 +32,11 @@ const Menu = styled.ul`
 `;
 
 export default function Header() {
+  const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const [isSignIn, setIsSignIn] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
-  const userid = JSON.parse(localStorage.getItem("userid"));
   const location = useLocation();
-
-
 
  // 로그아웃 함수
  const signOut = () => {
@@ -57,21 +53,20 @@ export default function Header() {
     // 유저 로그인 상태 체크
     const token = localStorage.getItem("token");
     setIsSignIn(token);
-  });
-
+  }, [location.pathname]);
 
   return (
-    <StyledHeader>
+    <StyledHeader usertype={usertype}>
       <InnerHeader>
         {/* left menu */}
         <div>
           <Menu>
             <li>
-              <Link to={isSignIn ? "/request" : "/landing"}>
-                <img width="120px" src="img/logo.png" alt="" />
+              <Link to={isSignIn ? "/request" : "/"}>
+                <img width="120px" src="img/logo.png" alt="logo.png" />
               </Link>
             </li>
-            {isSignIn ? (
+            {isSignIn && (
               <>
                 <li>
                   <Link to="/request">잡아줘요</Link>
@@ -80,9 +75,8 @@ export default function Header() {
                   <Link to="/trade-list">이용내역</Link>
                 </li>
               </>
-            ) : (
-              ""
-            )}
+            ) 
+            }
           </Menu>
         </div>
         {/* right menu */}
@@ -119,8 +113,8 @@ export default function Header() {
                     ) : (
                       ""
                     )}
-                    <DropMenu style={{padding: "1rem", width: "100%"}}  onClick={signOut} href="/landing">
-                      로그아웃
+                    <DropMenu onClick={signOut} >
+                      <Link style={{padding: "1rem", width: "100%"}} to="/">로그아웃</Link>
                     </DropMenu>
                   </DropDown>
                 ) : (
