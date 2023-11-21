@@ -6,7 +6,7 @@ import GapItems from "./GapItems";
 
 const ModalWrapper = styled.div`
   position: fixed;
-  width: 32rem;
+  width: ${props => props.$width? props.$width : "32rem"};
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -35,7 +35,7 @@ const ModalOverlay = styled.div`
   z-index: 1;
 `;
 
-export default function Modal({ showModal, setShowModal, title, children }) {
+export default function Modal({ showModal, setShowModal, title, children, $width }) {
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -43,7 +43,7 @@ export default function Modal({ showModal, setShowModal, title, children }) {
   return (
     <div className="Content">
       <ModalOverlay $show={showModal} />
-      <ModalWrapper $show={showModal}>
+      <ModalWrapper $show={showModal} $width={$width}>
         <ModalInner>
           <button style={{ marginLeft: "auto" }} onClick={toggleModal}>
             <CloseRoundedIcon />

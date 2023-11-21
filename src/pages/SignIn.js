@@ -18,9 +18,9 @@ export default function SignIn() {
     formState: { errors },
   } = useForm();
 
-  const handleModal = () => {
-    setShowModal(!showModal);
-  };
+  // const handleModal = () => {
+  //   setShowModal(!showModal);
+  // };
 
   const onSubmit = async (data) => {
     try {
@@ -29,11 +29,7 @@ export default function SignIn() {
         console.log("Sign in Success");
         const userid = res.data.userid;
         const token = res.data.token;
-
-        // 유저 타입 가져오기
-        const userInfo = await api.get(`/auth?userid=${userid}`);
-        console.log("usreInfo", userInfo);
-        const usertype = userInfo.data.data.usertype;
+        const usertype = res.data.usertype;
 
         // 로컬 스토리지에 아이디, 토큰, 유저타입 저장
         localStorage.setItem("userid", JSON.stringify(userid));
@@ -41,7 +37,7 @@ export default function SignIn() {
         localStorage.setItem("usertype", JSON.stringify(usertype));
         navigate("/request");
       } else {
-        handleModal();
+        setShowModal(!showModal);
         navigate("/sign-in");
       }
     } catch (err) {
@@ -85,16 +81,13 @@ export default function SignIn() {
             </GapItems>
           </GapItems>
           {showModal && (
-            <Modal showModal={showModal} setShowModal={setShowModal}>
-              <P>아이디 또는 비밀번호를 잘못 입력했습니다.</P>
-              <Button
-                $color="green"
-                $size="lg"
-                $fullwidth
-                onClick={handleModal()}
-              >
-                확인
-              </Button>
+            <Modal showModal={showModal} setShowModal={setShowModal} $width="24rem">
+              <GapItems $col $gap="3rem">
+                <P>아이디 또는 비밀번호를 잘못 입력했습니다.</P>
+                <Button $color="green" $size="lg" $width="50%">
+                  확인
+                </Button>
+              </GapItems>
             </Modal>
           )}
           <Button $color="green" $size="lg" $fullwidth>
