@@ -21,6 +21,7 @@ export default function BusterProfile() {
   const [completeTrade, setCompleteTrade] = useState("");
   const [reviews, setReviews] = useState([]);
   const [img, setImage] = useState([]);
+  const [selfintro, setSelfIntro] = useState(0);
   const navigate = useNavigate();
 
   const {
@@ -30,7 +31,7 @@ export default function BusterProfile() {
     watch,
     formState: { errors },
   } = useForm();
-console.log(watch())
+  console.log(watch());
 
   // 회원가입 후 프로필 수정을 위한 정보
   const getData = async () => {
@@ -142,6 +143,10 @@ console.log(watch())
     return badges;
   };
 
+  const onTextareaHandler = (e) => {
+    setSelfIntro(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
+  };
+
   // 버스터 프로필 정보 가져오기
   useEffect(() => {
     if (busterid) {
@@ -172,6 +177,7 @@ console.log(watch())
     showReview();
   }, [reviews]);
 
+  console.log(watch());
 
   return (
     <div className="Content">
@@ -191,49 +197,109 @@ console.log(watch())
             )}
             <ImageUpload id="profile" setValue={setValue} />
           </GapItems>
-          <label htmlFor="selfintro">자기소개</label>
-          <input
-            {...register("selfintro", { required: true })}
-            defaultValue={busterid ? data.selfintro : ""}
-            id="selfintro"
-            placeholder="소개글을 작성해주세요."
-            autoFocus
-          />
-          <label htmlFor="tech">기술</label>
-          <input
-            {...register("tech", { required: true })}
-            defaultValue={busterid ? data.tech : ""}
-            placeholder="나만의 벌레 잡는 기술! (예: 손으로 잡기, 에X킬라)"
-            id="tech"
-          />
-          <label htmlFor="exp">벌레 잡은 경험</label>
-          <input
-            {...register("exp", { required: true })}
-            defaultValue={busterid ? data.exp : ""}
-            placeholder="특별하게 기억 남는 벌레 잡은 경험은?"
-            id="exp"
-          />
-          <label htmlFor="fav">가장 잘 잡는 벌레</label>
-          <input
-            {...register("fav", { required: true })}
-            defaultValue={busterid ? data.fav : ""}
-            placeholder="이 벌레는 내가 제일 잘 잡아!"
-            id="fav"
-          />
-          <label htmlFor="accbank">은행</label>
-          <input
-            {...register("accbank", { required: true })}
-            defaultValue={busterid ? data.accbank : ""}
-            id="accbank"
-            placeholder="은행 선택"
-          />
-          <label htmlFor="accno">계좌번호</label>
-          <input
-            {...register("accno", { required: true })}
-            defaultValue={busterid ? data.accno : ""}
-            placeholder="계좌번호를 입력해주세요."
-            id="accno"
-          />
+          <GapItems $col $left>
+            <label htmlFor="selfintro">자기소개</label>
+            <GapItems>
+              <textarea
+                {...register("selfintro", {
+                  required: true,
+                  minLength: 10,
+                  maxLength: 200,
+                })}
+                onChange={onTextareaHandler}
+                defaultValue={busterid ? data.selfintro : ""}
+                id="selfintro"
+                placeholder="소개글을 작성해주세요."
+                autoFocus
+              />
+              {errors.selfintro?.type === "required" && (
+                <Span $textColor="alert">자기소개를 입력해주세요.</Span>
+              )}
+              {errors.selfintro?.type === "minLength" && (
+                <Span $textColor="alert">최소 10자 이상 입력해주세요.</Span>
+              )}
+              {errors.selfintro?.type === "maxLength" && (
+                <Span $textColor="alert">최대 글자수는 200자 입니다.</Span>
+              )}
+              <div style={{ marginLeft: "auto" }}>
+                <Span>{selfintro} / 200</Span>
+              </div>
+            </GapItems>
+          </GapItems>
+          <GapItems $col $left>
+            <label htmlFor="tech">기술</label>
+            <GapItems>
+              <input
+                {...register("tech", { required: true })}
+                defaultValue={busterid ? data.tech : ""}
+                placeholder="나만의 벌레 잡는 기술! (예: 손으로 잡기, 에X킬라)"
+                id="tech"
+              />
+              {errors.tech?.type === "required" && (
+                <Span $textColor="alert">기술을 입력해주세요.</Span>
+              )}
+            </GapItems>
+          </GapItems>
+          <GapItems $col $left>
+            <label htmlFor="exp">벌레 잡은 경험</label>
+            <GapItems>
+              <input
+                {...register("exp", { required: true })}
+                defaultValue={busterid ? data.exp : ""}
+                placeholder="특별하게 기억 남는 벌레 잡은 경험은?"
+                id="exp"
+              />
+              {errors.exp?.type === "required" && (
+                <Span $textColor="alert">벌레 잡은 경험을 입력해주세요.</Span>
+              )}
+            </GapItems>
+          </GapItems>
+          <GapItems $col $left>
+            <label htmlFor="fav">가장 잘 잡는 벌레</label>
+            <GapItems>
+              <input
+                {...register("fav", { required: true })}
+                defaultValue={busterid ? data.fav : ""}
+                placeholder="이 벌레는 내가 제일 잘 잡아!"
+                id="fav"
+              />
+              {errors.fav?.type === "required" && (
+                <Span $textColor="alert">
+                  가장 잘 잡는 벌레를 입력해주세요.
+                </Span>
+              )}
+            </GapItems>
+          </GapItems>
+          <GapItems $col $left>
+            <label htmlFor="accbank">계좌번호</label>
+            <GapItems>
+              <select
+                {...register("accbank", { required: true })}
+                defaultValue={busterid ? data.accbank : "카카오뱅크"}
+                id="accbank"
+                placeholder="은행 선택"
+              >
+                <option value="KA">카카오뱅크</option>
+                <option value="TS">토스뱅크</option>
+                <option value="KB">국민은행</option>
+                <option value="SH">신한은행</option>
+                <option value="NH">농협</option>
+                <option value="IB">기업은행</option>
+                <option value="HN">하나은행</option>
+                <option value="KY">케이뱅크</option>
+              </select>
+              <input
+                {...register("accno", { required: true })}
+                defaultValue={busterid ? data.accno : ""}
+                placeholder="계좌번호를 입력해주세요."
+                id="accno"
+                type="number"
+              />
+            </GapItems>
+          </GapItems>
+          {errors.tech?.type === "required" && (
+            <Span $textColor="alert">계좌번호를 입력해주세요.</Span>
+          )}
           {busterid && (
             <>
               <label htmlFor="review">퇴치건수</label>

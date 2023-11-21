@@ -145,22 +145,18 @@ export default function Request() {
                       required: true,
                       minLength: 10,
                       maxLength: 200,
-                      
                     })}
                     onChange={onTextareaHandler}
                     placeholder="최소 10자 이상 벌레 종류, 나타난 위치 등 상세한 정보를 입력해주세요."
                     id="content"
-                    
                   />
-                 
                   {errors.content?.type === "required" && (
-                    <Span $textColor="alert">요청사항을 입력하세요.</Span>
+                    <Span $textColor="alert">요청사항을 입력해주세요.</Span>
                   )}
                   {errors.content?.type === "minLength" && (
                     <Span $textColor="alert">최소 10자 이상 입력해주세요.</Span>
                   )}
-
-                  {errors.content?.type === "pattern" && (
+                  {errors.content?.type === "maxLength" && (
                     <Span $textColor="alert">최대 글자수는 200자 입니다.</Span>
                   )}
                    <div style={{ marginLeft: "auto" }}>
@@ -180,7 +176,7 @@ export default function Request() {
                     type="number"
                   />
                   {errors.price?.type === "required" && (
-                    <Span $textColor="alert">가격을 입력하세요.</Span>
+                    <Span $textColor="alert">가격을 입력해주세요.</Span>
                   )}
                   {errors.price?.type === "min" && (
                     <Span $textColor="alert">최소 금액은 10,000원입니다.</Span>

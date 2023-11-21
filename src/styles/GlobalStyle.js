@@ -92,6 +92,16 @@ const GlobalStyle = createGlobalStyle`
     display: flex;    
     }
 
+    select {
+      font-size: 0.9375rem;
+      background: ${({ theme }) => theme.color.gray01};
+      border: none;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      height: 3rem;
+      text-align: left;
+    }
+
     input {
     width: 100%;
     padding: 1rem;

@@ -151,7 +151,7 @@ export default function CommonForm({ handleCommonForm }) {
               placeholder="010-1234-5678"
               value={formatPhoneNumber(watch("phone"))}
               id="phone"
-              type="number"
+              type="tel"
               disabled={authComplete}
             />
             <Button
