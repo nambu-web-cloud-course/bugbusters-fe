@@ -44,13 +44,14 @@ const GlobalStyle = createGlobalStyle`
 
     h1 {
       font-size: 2.5rem;
+      line-height: 3rem;
       font-weight: 700;
       text-align: center;
     }
+
     h2 {
       font-size: 2rem
     }
-
 
     body{
         padding-top: 64px;

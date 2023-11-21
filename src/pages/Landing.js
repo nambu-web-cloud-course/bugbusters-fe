@@ -7,10 +7,9 @@ export default function Landing() {
   return (
     <div className="content">
       <div>
-        <h1>
-          징그러운 벌레, <br />
-          버스터가 잡아드려요!
-        </h1>
+        <h1>징그러운 벌레,</h1>
+        <h1>버스터가 잡아드려요!</h1>
+
         <GapItems>
           <img src="img/buster.png" alt="버스터.png" width="400px" />
           <GapItems $col>

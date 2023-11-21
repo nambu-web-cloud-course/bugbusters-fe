@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Address from "../common/Address";
 import Button from "../common/Button";
@@ -39,12 +39,12 @@ export default function CommonForm({ handleCommonForm }) {
       const res = await api.post("/auth/sms", data);
       if (data.phone === "") alert("휴대폰 번호를 입력하세요.");
       if (res.data.success) {
-        console.log("Success Sending Your Phone Number");
+        console.log("Success sending Phone Number");
       } else {
-        console.log("Error sending phon number");
+        console.log("Error sending phone number");
       }
     } catch (err) {
-      console.log("Error sending phon number", err);
+      console.log("Error sending phone number", err);
     }
     setSendSMS(!sendSMS);
   };
@@ -87,64 +87,86 @@ export default function CommonForm({ handleCommonForm }) {
   return (
     <form onSubmit={handleSubmit(handleCommonForm)}>
       <Container $size="sm">
-        <label htmlFor="userid">아이디</label>
-        <input
-          {...register("userid", { required: true })}
-          placeholder="아이디를 입력하세요."
-          id="userid"
-          autoFocus
-        />
-        {errors.userid?.type === "required" && (
-          <Span $textColor="alert">아이디를 입력하세요.</Span>
-        )}
-        <label htmlFor="password">비밀번호</label>
-        <input
-          {...register("password", { required: true })}
-          type="password"
-          placeholder="영문 대소문자 + 숫자 + 특수문자 8~20자리"
-          id="password"
-        />
-        {errors.password?.type === "required" && (
-          <Span $textColor="alert">비밀번호를 입력하세요.</Span>
-        )}
-        <label htmlFor="name">이름</label>
-        <input
-          {...register("name", { required: true })}
-          placeholder="이름을 입력하세요."
-          id="name"
-        />
-        {errors.name?.type === "required" && (
-          <Span $textColor="alert">이름을 입력하세요.</Span>
-        )}
-        <label htmlFor="birthdate">생년월일</label>
-        <input
-          {...register("birthdate", { required: true })}
-          placeholder="예) 19901231"
-          id="birthdate"
-        />
-        {errors.birthdate?.type === "required" && (
-          <Span $textColor="alert">생년월일을 입력하세요.</Span>
-        )}
-        <label htmlFor="phone">휴대폰번호</label>
-        <GapItems>
-          <input
-            {...register("phone", { required: true })}
-            maxLength={13}
-            placeholder="010-1234-5678"
-            value={formatPhoneNumber(watch("phone"))}
-            id="phone"
-            disabled={authComplete}
-          />
-
-          <Button
-            $width="50%"
-            $color="green"
-            $size="lg"
-            onClick={handleSubmit(handleSMS)}
-            style={{ display: authComplete ? "none" : "block" }}
-          >
-            인증번호 발송
-          </Button>
+        <GapItems $col $left>
+          <label htmlFor="userid">아이디</label>
+          <GapItems $col $left>
+            <input
+              {...register("userid", { required: true })}
+              placeholder="아이디를 입력하세요."
+              id="userid"
+              autoFocus
+            />
+            {errors.userid?.type === "required" && (
+              <Span $textColor="alert">아이디를 입력해주세요.</Span>
+            )}
+          </GapItems>
+        </GapItems>
+        <GapItems $col $left>
+          <label htmlFor="password">비밀번호</label>
+          <GapItems $col $left>
+            <input
+              {...register("password", { required: true })}
+              type="password"
+              placeholder="영문 대소문자 + 숫자 + 특수문자 8~20자리"
+              id="password"
+            />
+            {errors.password?.type === "required" && (
+              <Span $textColor="alert">비밀번호를 입력해주세요.</Span>
+            )}
+          </GapItems>
+        </GapItems>
+        <GapItems $col $left>
+          <label htmlFor="name">이름</label>
+          <GapItems $col $left>
+            <input
+              {...register("name", { required: true })}
+              placeholder="이름을 입력하세요."
+              id="name"
+            />
+            {errors.name?.type === "required" && (
+              <Span $textColor="alert">이름을 입력해주세요.</Span>
+            )}
+          </GapItems>
+        </GapItems>
+        <GapItems $col $left>
+          <label htmlFor="birthdate">생년월일</label>
+          <GapItems $col $left>
+            <input
+              {...register("birthdate", { required: true })}
+              placeholder="예) 19901231"
+              id="birthdate"
+              type="number"
+            />
+            {errors.birthdate?.type === "required" && (
+              <Span $textColor="alert">생년월일을 입력해주세요.</Span>
+            )}
+          </GapItems>
+        </GapItems>
+        <GapItems $col $left>
+          <label htmlFor="phone">휴대폰번호</label>
+          <GapItems>
+            <input
+              {...register("phone", { required: true })}
+              maxLength={13}
+              placeholder="010-1234-5678"
+              value={formatPhoneNumber(watch("phone"))}
+              id="phone"
+              type="number"
+              disabled={authComplete}
+            />
+            <Button
+              $width="50%"
+              $color="green"
+              $size="lg"
+              onClick={handleSubmit(handleSMS)}
+              style={{ display: authComplete ? "none" : "block" }}
+            >
+              인증번호 발송
+            </Button>
+          </GapItems>
+          {errors.phone?.type === "required" && (
+            <Span $textColor="alert">휴대폰 인증을 진행하세요.</Span>
+          )}
         </GapItems>
         {sendSMS ? (
           <form style={{ display: authComplete ? "none" : "block" }}>
@@ -152,6 +174,7 @@ export default function CommonForm({ handleCommonForm }) {
               <input
                 placeholder="인증번호를 입력하세요."
                 id="phone"
+                type="number"
                 onChange={handleChange}
                 maxLength={6}
                 value={smsCode}
@@ -167,58 +190,69 @@ export default function CommonForm({ handleCommonForm }) {
             </GapItems>
           </form>
         ) : null}
-        <label htmlFor="gender">성별</label>
-        <div className="select">
-          <input
-            {...register("gender", { required: true })}
-            value="F"
-            type="radio"
-            id="F"
-            defaultChecked
-          />
-          <label htmlFor="F">여자</label>
-          <input {...register("gender")} value="M" type="radio" id="M" />
-          <label htmlFor="M">남자</label>
-        </div>
-        <label htmlFor="addr1">주소</label>
-        <GapItems>
-          <input
-            {...register("addr1", { required: true })}
-            placeholder="주소를 입력하세요."
-            value={address?.address}
-            setValue={setAddressValue}
-          />
-          <Address address={address} setAddress={setAddress} />
+        <GapItems $col $left>
+          <label htmlFor="gender">성별</label>
+          <div className="select">
+            <input
+              {...register("gender", { required: true })}
+              value="F"
+              type="radio"
+              id="F"
+              defaultChecked
+            />
+            <label htmlFor="F">여자</label>
+            <input {...register("gender")} value="M" type="radio" id="M" />
+            <label htmlFor="M">남자</label>
+          </div>
         </GapItems>
-        {errors.addr1?.type === "required" && (
-          <Span $textColor="alert">주소를 입력하세요.</Span>
-        )}
-        <label htmlFor="addr2">상세주소</label>
-        <input
-          {...register("addr2", { required: true })}
-          placeholder="상세 주소를 입력하세요."
-        />
-        {errors.addr2?.type === "required" && (
-          <Span $textColor="alert">상세주소를 입력하세요.</Span>
-        )}
+        <GapItems $col $left>
+          <label htmlFor="addr1">주소</label>
+          <GapItems>
+            <input
+              {...register("addr1", { required: true })}
+              placeholder="주소를 입력하세요."
+              id="addr1"
+              value={address?.address}
+              setValue={setAddressValue}
+            />
+            <Address address={address} setAddress={setAddress} />
+          </GapItems>
+          {errors.addr1?.type === "required" && (
+            <Span $textColor="alert">주소를 입력해주세요.</Span>
+          )}
+        </GapItems>
+        <GapItems $col $left>
+          <label htmlFor="addr2">상세주소</label>
+          <input
+            {...register("addr2", { required: true })}
+            id="addr2"
+            placeholder="상세 주소를 입력하세요."
+          />
+          {errors.addr2?.type === "required" && (
+            <Span $textColor="alert">상세주소를 입력해주세요.</Span>
+          )}
+        </GapItems>
         <div style={{ display: "none" }}>
           <label htmlFor="zipcode">우편번호</label>
           <input
             setValue={setAddressValue}
             {...register("zipcode", { required: true })}
             value={address?.zonecode}
+            id="zipcode"
           />
           <label htmlFor="sido">시도</label>
           <input
             setValue={setAddressValue}
             {...register("sido", { required: true })}
             value={address?.sido}
+            id="sido"
           />
           <label htmlFor="sigungu">시군구</label>
           <input
             setValue={setAddressValue}
             {...register("sigungu", { required: true })}
             value={address?.sigungu}
+            id="sigungu"
           />
         </div>
 

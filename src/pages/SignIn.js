@@ -65,7 +65,7 @@ export default function SignIn() {
                 autoFocus
               />
               {errors.userid?.type === "required" && (
-                <Span $textColor="alert">아이디를 입력하세요.</Span>
+                <Span $textColor="alert">아이디를 입력해주세요.</Span>
               )}
             </GapItems>
           </GapItems>
@@ -80,7 +80,7 @@ export default function SignIn() {
                 $fullwidth
               />
               {errors.password?.type === "required" && (
-                <Span $textColor="alert">비밀번호를 입력하세요.</Span>
+                <Span $textColor="alert">비밀번호를 입력해주세요.</Span>
               )}
             </GapItems>
           </GapItems>
