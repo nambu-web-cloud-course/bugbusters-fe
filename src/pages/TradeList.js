@@ -9,13 +9,15 @@ import { useEffect, useState } from "react";
 import formatDateTime from "../utils/formatDateTime";
 import api from "../api";
 import GapItems from "../components/common/GapItems";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function TradeList() {
   const [selectedTab, setSelectedTab] = useState("PR");
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
-
+  const token = JSON.parse(localStorage.getItem("token"));
+  
+  const navigate = useNavigate();
   const handleTabSelect = (tab) => {
     setSelectedTab(tab);
   };
@@ -74,45 +76,51 @@ export default function TradeList() {
     : [];
 
   return (
-    <div className="Content">
-      <h1>이용내역</h1>
-      <Tabs onSelectTab={handleTabSelect} />
-      {filteredData && filteredData.length > 0 ? (
-        filteredData.map((item) => (
-          <Link to={`/request/${item.id}`} key={item.id}>
-            <Container>
-              <p>{item.content}</p>
-              <GapItems>
-                <Badge>
-                  <LocationOnRoundedIcon fontSize="small" />
-                  {item.sido} {item.sigungu}
-                </Badge>
-                <Badge>
-                  <PersonRoundedIcon fontSize="small" />
-                  {item.gender === "F"
-                    ? "여자"
-                    : item.gender === "M"
-                    ? "남자"
-                    : "성별무관"}
-                </Badge>
-                <Badge>
-                  <CreditCardRoundedIcon fontSize="small" />
-                  {item.price.toLocaleString()}
-                </Badge>
-              </GapItems>
-              {usertype === "C" ? (
-                <Span>{formatDateTime(item.createdAt)}</Span>
-              ) : (
-                <Span>
-                  {formatDateTime(item.createdAt)} 😨 작성자: {item.userid}
-                </Span>
-              )}
-            </Container>
-          </Link>
-        ))
+    <>
+      {token ? (
+        <div className="Content">
+          <h1>이용내역</h1>
+          <Tabs onSelectTab={handleTabSelect} />
+          {filteredData && filteredData.length > 0 ? (
+            filteredData.map((item) => (
+              <Link to={`/request/${item.id}`} key={item.id}>
+                <Container>
+                  <p>{item.content}</p>
+                  <GapItems>
+                    <Badge>
+                      <LocationOnRoundedIcon fontSize="small" />
+                      {item.sido} {item.sigungu}
+                    </Badge>
+                    <Badge>
+                      <PersonRoundedIcon fontSize="small" />
+                      {item.gender === "F"
+                        ? "여자"
+                        : item.gender === "M"
+                        ? "남자"
+                        : "성별무관"}
+                    </Badge>
+                    <Badge>
+                      <CreditCardRoundedIcon fontSize="small" />
+                      {item.price.toLocaleString()}
+                    </Badge>
+                  </GapItems>
+                  {usertype === "C" ? (
+                    <Span>{formatDateTime(item.createdAt)}</Span>
+                  ) : (
+                    <Span>
+                      {formatDateTime(item.createdAt)} 😨 작성자: {item.userid}
+                    </Span>
+                  )}
+                </Container>
+              </Link>
+            ))
+          ) : (
+            <Container>이용 내역이 없습니다.</Container>
+          )}
+        </div>
       ) : (
-        <Container>이용 내역이 없습니다.</Container>
+        navigate("/")
       )}
-    </div>
+    </>
   );
 }

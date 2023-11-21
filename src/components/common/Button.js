@@ -33,7 +33,7 @@ const colorStyles = css`
           }
         `}
       ${(props) =>
-        props.color === "lightgreen" &&
+        props.$color === "lightgreen" &&
         css`
           color: ${theme.color.darkgreen};
         `}

@@ -11,6 +11,7 @@ import { useState } from "react";
 export default function Review() {
   const { tradeid } = useParams();
   const [submitReview, setSubmitReview] = useState(false);
+  const token = JSON.parse(localStorage.getItem("token"));
   const navigate = useNavigate();
 
   const {
@@ -51,7 +52,9 @@ export default function Review() {
 
 
   return (
-    <div className="Content">
+    <>
+    {
+      token? (    <div className="Content">
       {submitReview ? (
         <Container>
           <h1>리뷰를 작성했습니다.</h1>
@@ -83,15 +86,15 @@ export default function Review() {
                   {...register("1")}
                   defaultChecked
                 />
-                <label htmlFor="1">💥 빨라요</label>
+                <label htmlFor="1">빨라요</label>
                 <input type="checkbox" id="2" {...register("2")} />
-                <label htmlFor="2">☺️ 침착해요</label>
+                <label htmlFor="2">침착해요</label>
                 <input type="checkbox" id="3" {...register("3")} />
-                <label htmlFor="3">🕑 시간을 잘 지켜요</label>
+                <label htmlFor="3">시간을 잘 지켜요</label>
                 <input type="checkbox" id="4" {...register("4")} />
-                <label htmlFor="4">🔍 꼼꼼해요</label>
+                <label htmlFor="4">꼼꼼해요</label>
                 <input type="checkbox" id="5" {...register("5")} />
-                <label htmlFor="5">💛 섬세해요</label>
+                <label htmlFor="5">섬세해요</label>
               </GapItems>
               <Button $color="green" $size="lg" $fullwidth>
                 제출
@@ -100,6 +103,11 @@ export default function Review() {
           </form>
         </>
       )}
-    </div>
+    </div>)
+      : (navigate("/"))
+    }
+    </>
+
+
   );
 }

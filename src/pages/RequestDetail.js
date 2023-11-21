@@ -21,6 +21,7 @@ export default function RequestDetail({ socket }) {
 
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
+  const token = JSON.parse(localStorage.getItem("token"));
   const { id } = useParams();
   const reqid = parseInt(id); // 요청 아이디
   const req_userid = data.userid; // 요청한 유저 아이디
@@ -96,58 +97,65 @@ export default function RequestDetail({ socket }) {
   }, [reqid, req_userid, userid]);
 
   return (
-    <div className="Content">
-      <Container>
-        {image.map((img) => (
-          <img key={img.id} style={{ width: "50%" }} src={`${img.img}`} />
-        ))}
-        <p>{data.content}</p>
-        <GapItems>
-          <Badge>
-            <LocationOnRoundedIcon fontSize="small" />
-            {data.sido} {data.sigungu}
-          </Badge>
-          <Badge>
-            <PersonRoundedIcon fontSize="small" />
-            {data.gender === "F"
-              ? "여자"
-              : data.gender === "M"
-              ? "남자"
-              : "성별무관"}
-          </Badge>
-          <Badge>
-            <CreditCardRoundedIcon fontSize="small" />
-            {data.price?.toLocaleString()}원
-          </Badge>
-        </GapItems>
-        <Span>
-          {formatDateTime(data.createdAt)} | 작성자: {data.userid}
-        </Span>
-        {usertype === "B" ? (
-          <Button
-            onClick={joinRoom}
-            $color="green"
-            $size="lg"
-            $fullwidth
-            // disabled={disabledBtn}
-          >
-            채팅하기
+    <>
+    {
+      token? (
+        <div className="Content">
+          <Container>
+            {image.map((img) => (
+              <img key={img.id} style={{ width: "50%" }} src={`${img.img}`} />
+            ))}
+            <p>{data.content}</p>
+            <GapItems>
+              <Badge>
+                <LocationOnRoundedIcon fontSize="small" />
+                {data.sido} {data.sigungu}
+              </Badge>
+              <Badge>
+                <PersonRoundedIcon fontSize="small" />
+                {data.gender === "F"
+                  ? "여자"
+                  : data.gender === "M"
+                  ? "남자"
+                  : "성별무관"}
+              </Badge>
+              <Badge>
+                <CreditCardRoundedIcon fontSize="small" />
+                {data.price?.toLocaleString()}원
+              </Badge>
+            </GapItems>
+            <Span>
+              {formatDateTime(data.createdAt)} | 작성자: {data.userid}
+            </Span>
+            {usertype === "B" ? (
+              <Button
+                onClick={joinRoom}
+                $color="green"
+                $size="lg"
+                $fullwidth
+                // disabled={disabledBtn}
+              >
+                채팅하기
+              </Button>
+            ) : (
+              <Button
+                onClick={cancelRequest}
+                $color="green"
+                $size="lg"
+                $fullwidth
+                disabled={data.state !== "PR"}
+              >
+                요청 취소
+              </Button>
+            )}
+          </Container>
+          <Button onClick={goBack} $color="green" $size="lg" $outline $fullwidth>
+            목록
           </Button>
-        ) : (
-          <Button
-            onClick={cancelRequest}
-            $color="green"
-            $size="lg"
-            $fullwidth
-            disabled={data.state !== "PR"}
-          >
-            요청 취소
-          </Button>
-        )}
-      </Container>
-      <Button onClick={goBack} $color="green" $size="lg" $outline $fullwidth>
-        목록
-      </Button>
-    </div>
+        </div>)
+      : (navigate("/"))
+    }
+    </>
+
   );
 }

@@ -1,7 +1,7 @@
 import Container from "../components/common/Container";
 import UserInfo from "../components/common/UserInfo";
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Span } from "../components/common/Text";
 import formatDateTime from "../utils/formatDateTime";
 import api from "../api";
@@ -11,6 +11,8 @@ import GapItems from "../components/common/GapItems";
 export default function ChatList({ socket }) {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
   const [chatroom, setChatRoom] = useState([]);
   const [userinfo, setUserInfo] = useState([]);
   const [request, setRequest] = useState([]);
@@ -152,37 +154,43 @@ export default function ChatList({ socket }) {
   };
 
   return (
-    <div className="Content">
-      <h1>채팅</h1>
-      {chatroom.length > 0 ? (
-        chatroom
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .map((room, idx) => (
-            <Link
-              to={`/chat/${room.room}`}
-              key={room.room}
-              onClick={() => handleList(room.room)}
-            >
-              <Container>
-                <UserInfo
-                  room={room?.room}
-                  busterid={room?.busterid}
-                  userid={room?.userid}
-                  sido={userinfo[idx]?.sido}
-                  sigungu={userinfo[idx]?.sigungu}
-                  content={request[idx]?.content}
-                  price={request[idx]?.price}
-                  usertype={usertype}
-                  completeTrade={completeTrade}
-                />
-                <GapItems>{showReview()}</GapItems>
-                <Span>{formatDateTime(room.createdAt)}</Span>
-              </Container>
-            </Link>
-          ))
+    <>
+      {token ? (
+        <div className="Content">
+          <h1>채팅</h1>
+          {chatroom.length > 0 ? (
+            chatroom
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((room, idx) => (
+                <Link
+                  to={`/chat/${room.room}`}
+                  key={room.room}
+                  onClick={() => handleList(room.room)}
+                >
+                  <Container>
+                    <UserInfo
+                      room={room?.room}
+                      busterid={room?.busterid}
+                      userid={room?.userid}
+                      sido={userinfo[idx]?.sido}
+                      sigungu={userinfo[idx]?.sigungu}
+                      content={request[idx]?.content}
+                      price={request[idx]?.price}
+                      usertype={usertype}
+                      completeTrade={completeTrade}
+                    />
+                    <GapItems>{showReview()}</GapItems>
+                    <Span>{formatDateTime(room.createdAt)}</Span>
+                  </Container>
+                </Link>
+              ))
+          ) : (
+            <Container>채팅 방이 없습니다.</Container>
+          )}
+        </div>
       ) : (
-        <Container>채팅 방이 없습니다.</Container>
+        navigate("/")
       )}
-    </div>
+    </>
   );
 }

@@ -144,22 +144,28 @@ export default function BusterProfile() {
 
   // 버스터 프로필 정보 가져오기
   useEffect(() => {
+    if (busterid) {
     getData();
     getTrade();
+    }
   }, []);
 
   useEffect(() => {
-    setValue("selfintro", data?.selfintro);
-    setValue("tech", data?.tech);
-    setValue("exp", data?.exp);
-    setValue("fav", data?.fav);
-    setValue("accbank", data?.accbank);
-    setValue("accno", data?.accno);
+    if(busterid) {
+      setValue("selfintro", data?.selfintro);
+      setValue("tech", data?.tech);
+      setValue("exp", data?.exp);
+      setValue("fav", data?.fav);
+      setValue("accbank", data?.accbank);
+      setValue("accno", data?.accno);
+    }
   }, [data]);
 
   useEffect(() => {
-    getCompleteTrade();
-    getReviews();
+    if(busterid) {
+      getCompleteTrade();
+      getReviews();
+    }
   }, [trade]);
 
   useEffect(() => {

@@ -17,6 +17,7 @@ import api from "../api";
 export default function Request() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
+  const token = JSON.parse(localStorage.getItem("token"));
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [userinfo, setUserInfo] = useState({});
@@ -83,7 +84,9 @@ export default function Request() {
   }, []);
 
   return (
-    <div className="Content">
+    <>
+    {
+      token? (    <div className="Content">
       <h1>잡아줘요</h1>
       {usertype === "B" ? (
         // 버스터
@@ -198,6 +201,10 @@ export default function Request() {
           </Container>
         </form>
       )}
-    </div>
+    </div>)
+      : (navigate("/"))
+    }
+    </>
+
   );
 }
