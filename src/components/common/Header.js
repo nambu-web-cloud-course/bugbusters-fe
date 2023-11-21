@@ -43,6 +43,7 @@ export default function Header() {
   localStorage.removeItem("userid");
   localStorage.removeItem("usertype");
   localStorage.removeItem("token");
+  handleDropDown()
 };
   // 드롭다운 메뉴 보이기
   const handleDropDown = () => {
@@ -103,11 +104,11 @@ export default function Header() {
                 </li>
                 {showDropDown ? (
                   <DropDown>
-                    <DropMenu>
+                    <DropMenu onClick={handleDropDown}>
                       <Link style={{padding: "1rem", width: "100%"}}to="/mypage">마이페이지</Link>
                     </DropMenu>
                     {usertype === "B" ? (
-                      <DropMenu>
+                      <DropMenu onClick={handleDropDown}>
                         <Link style={{padding: "1rem", width: "100%"}} to="/profile">프로필</Link>
                       </DropMenu>
                     ) : (

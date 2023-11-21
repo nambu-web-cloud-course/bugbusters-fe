@@ -14,6 +14,7 @@ const size = {
 };
 
 const color = {
+  alert: "#CD1E13",
   darkgreen: "#385D1A",
   green: "#82CD2B",
   lightgreen: "#DDF0BD",

@@ -45,8 +45,8 @@ export default function Modal({ showModal, setShowModal, title, children }) {
       <ModalOverlay $show={showModal} />
       <ModalWrapper $show={showModal}>
         <ModalInner>
-          <button style={{ marginLeft: "auto" }}>
-            <CloseRoundedIcon onClick={toggleModal} />
+          <button style={{ marginLeft: "auto" }} onClick={toggleModal}>
+            <CloseRoundedIcon />
           </button>
           <h1>{title}</h1>
           {children}

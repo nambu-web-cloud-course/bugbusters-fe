@@ -30,6 +30,7 @@ export default function BusterProfile() {
     watch,
     formState: { errors },
   } = useForm();
+console.log(watch())
 
   // 회원가입 후 프로필 수정을 위한 정보
   const getData = async () => {
@@ -61,7 +62,6 @@ export default function BusterProfile() {
     }
   };
 
-  // 나중에 분리
   const handleBusterProfile = async (data) => {
     // 회원가입 - 버스터 프로필 등록
     if (!busterid) {
@@ -145,13 +145,13 @@ export default function BusterProfile() {
   // 버스터 프로필 정보 가져오기
   useEffect(() => {
     if (busterid) {
-    getData();
-    getTrade();
+      getData();
+      getTrade();
     }
   }, []);
 
   useEffect(() => {
-    if(busterid) {
+    if (busterid) {
       setValue("selfintro", data?.selfintro);
       setValue("tech", data?.tech);
       setValue("exp", data?.exp);
@@ -162,7 +162,7 @@ export default function BusterProfile() {
   }, [data]);
 
   useEffect(() => {
-    if(busterid) {
+    if (busterid) {
       getCompleteTrade();
       getReviews();
     }
@@ -171,6 +171,7 @@ export default function BusterProfile() {
   useEffect(() => {
     showReview();
   }, [reviews]);
+
 
   return (
     <div className="Content">
@@ -186,11 +187,7 @@ export default function BusterProfile() {
           <label htmlFor="profile">프로필</label>
           <GapItems>
             {busterid && (
-              <img
-                style={{ width: "100px" }}
-                src={`${img}`}
-                alt="Profile"
-              />
+              <img style={{ width: "100px" }} src={`${img}`} alt="Profile" />
             )}
             <ImageUpload id="profile" setValue={setValue} />
           </GapItems>
@@ -237,10 +234,14 @@ export default function BusterProfile() {
             placeholder="계좌번호를 입력해주세요."
             id="accno"
           />
-          <label htmlFor="review">퇴치건수</label>
-          <P>{completeTrade}</P>
-          <label htmlFor="review">리뷰</label>
-          <GapItems>{showReview()}</GapItems>
+          {busterid && (
+            <>
+              <label htmlFor="review">퇴치건수</label>
+              <P>{completeTrade}</P>
+              <label htmlFor="review">리뷰</label>
+              <GapItems>{showReview()}</GapItems>
+            </>
+          )}
           <Button $color="green" $size="lg" $fullwidth>
             {busterid ? "프로필 수정" : "프로필 입력(2 / 2)"}
           </Button>

@@ -4,7 +4,6 @@ import BusterProfile from "../components/form/BusterProfile";
 import CommonForm from "../components/form/CommonForm";
 import api from "../api";
 
-
 export default function SignUpDetail() {
   const { usertype } = useParams();
 
@@ -22,6 +21,7 @@ export default function SignUpDetail() {
         // usertype 무서버일 경우
         if (!isBuster) {
           navigate("/sign-in");
+          
         }
         // usertype 버스터일 경우
         else {

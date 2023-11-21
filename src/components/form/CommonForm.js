@@ -6,7 +6,7 @@ import Container from "../common/Container";
 import GapItems from "../common/GapItems";
 import { useState, useEffect } from "react";
 import api from "../../api";
-
+import { Span, P } from "../common/Text";
 
 export default function CommonForm({ handleCommonForm }) {
   // URL의 usertype 파라미터 가져오기
@@ -28,7 +28,6 @@ export default function CommonForm({ handleCommonForm }) {
     setValue,
     formState: { errors },
   } = useForm();
-
 
   const handleChange = (e) => {
     setSMSCode(e.target.value);
@@ -90,50 +89,53 @@ export default function CommonForm({ handleCommonForm }) {
       <Container $size="sm">
         <label htmlFor="userid">아이디</label>
         <input
-          {...register("userid", 
-          // { required: true }
-          )}
+          {...register("userid", { required: true })}
           placeholder="아이디를 입력하세요."
           id="userid"
           autoFocus
         />
+        {errors.userid?.type === "required" && (
+          <Span $textColor="alert">아이디를 입력하세요.</Span>
+        )}
         <label htmlFor="password">비밀번호</label>
         <input
-          {...register("password",
-          //  { required: true }
-           )}
+          {...register("password", { required: true })}
           type="password"
-          placeholder="영문, 숫자, 특수문자 포함 8~16자리"
+          placeholder="영문 대소문자 + 숫자 + 특수문자 8~20자리"
           id="password"
         />
+        {errors.password?.type === "required" && (
+          <Span $textColor="alert">비밀번호를 입력하세요.</Span>
+        )}
         <label htmlFor="name">이름</label>
         <input
-          {...register("name", 
-          // { required: true }
-          )}
+          {...register("name", { required: true })}
           placeholder="이름을 입력하세요."
           id="name"
         />
+        {errors.name?.type === "required" && (
+          <Span $textColor="alert">이름을 입력하세요.</Span>
+        )}
         <label htmlFor="birthdate">생년월일</label>
         <input
-          {...register("birthdate", 
-          // { required: true }
-          )}
+          {...register("birthdate", { required: true })}
           placeholder="예) 19901231"
           id="birthdate"
         />
+        {errors.birthdate?.type === "required" && (
+          <Span $textColor="alert">생년월일을 입력하세요.</Span>
+        )}
         <label htmlFor="phone">휴대폰번호</label>
         <GapItems>
           <input
-            {...register("phone", 
-            // { required: true }
-            )}
+            {...register("phone", { required: true })}
             maxLength={13}
             placeholder="010-1234-5678"
             value={formatPhoneNumber(watch("phone"))}
             id="phone"
             disabled={authComplete}
           />
+
           <Button
             $width="50%"
             $color="green"
@@ -168,7 +170,7 @@ export default function CommonForm({ handleCommonForm }) {
         <label htmlFor="gender">성별</label>
         <div className="select">
           <input
-            {...register("gender")}
+            {...register("gender", { required: true })}
             value="F"
             type="radio"
             id="F"
@@ -181,41 +183,41 @@ export default function CommonForm({ handleCommonForm }) {
         <label htmlFor="addr1">주소</label>
         <GapItems>
           <input
-            {...register("addr1",
-            //  { required: true }
-             )}
+            {...register("addr1", { required: true })}
             placeholder="주소를 입력하세요."
             value={address?.address}
             setValue={setAddressValue}
           />
           <Address address={address} setAddress={setAddress} />
         </GapItems>
+        {errors.addr1?.type === "required" && (
+          <Span $textColor="alert">주소를 입력하세요.</Span>
+        )}
         <label htmlFor="addr2">상세주소</label>
         <input
-          {...register("addr2",
-          //  { required: true }
-           )}
+          {...register("addr2", { required: true })}
           placeholder="상세 주소를 입력하세요."
         />
+        {errors.addr2?.type === "required" && (
+          <Span $textColor="alert">상세주소를 입력하세요.</Span>
+        )}
         <div style={{ display: "none" }}>
           <label htmlFor="zipcode">우편번호</label>
           <input
             setValue={setAddressValue}
-            {...register("zipcode", 
-            // { required: true }
-            )}
+            {...register("zipcode", { required: true })}
             value={address?.zonecode}
           />
           <label htmlFor="sido">시도</label>
           <input
             setValue={setAddressValue}
-            {...register("sido")}
+            {...register("sido", { required: true })}
             value={address?.sido}
           />
           <label htmlFor="sigungu">시군구</label>
           <input
             setValue={setAddressValue}
-            {...register("sigungu")}
+            {...register("sigungu", { required: true })}
             value={address?.sigungu}
           />
         </div>
