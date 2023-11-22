@@ -17,6 +17,11 @@ export default function Request() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const token = JSON.parse(localStorage.getItem("token"));
+  const [filter, setFilter] = useState({
+    gender: "A",
+    sigungu: "",
+    price: 1,
+  });
   const navigate = useNavigate();
 
   const [data, setData] = useState([]);
@@ -31,14 +36,11 @@ export default function Request() {
     formState: { errors },
   } = useForm();
 
-  const getData = async (data) => {
-    const gender = data?.gender || "A"
-    const sigungu = data.sigungu || "강남구"
-    const price = data.price || 1
-    console.log(gender, sigungu, price)
+  const getData = async (filter) => {
     try {
-      // ?gender=F&sigungu=강남구&price=1
-      const res = await api.get("/request");
+      const res = await api.get(
+        `/request?gender=${filter?.gender}&sigungu=${filter?.sigungu}&price=${filter?.price}`
+      );
       if (res.data.success) {
         const reqData = res.data.data;
         const filteredData = reqData.filter((data) => data.state === "PR");
@@ -86,14 +88,36 @@ export default function Request() {
   const onTextareaHandler = (e) => {
     setContentLength(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
   };
-  
+
+
+  const handleGender = (e) => {
+    setFilter({
+      ...filter,
+      gender: e.target.value,
+    });
+  };
+  const handleSigungu = (e) => {
+    setFilter({
+      ...filter,
+      sigungu: e.target.value,
+    });
+  };
+  const handlePrice = (e) => {
+    setFilter({
+      ...filter,
+      price: e.target.value,
+    });
+  };
 
   useEffect(() => {
-    if (usertype === "B") getData();
-    else getUserInfo();
+    usertype === "B" && getData(filter);
+    console.log("get filter data")
+  }, [filter]);
+
+  useEffect(() => {
+    usertype === "C" && getUserInfo();
   }, []);
 
-  console.log(watch())
   return (
     <>
       {token ? (
@@ -101,20 +125,17 @@ export default function Request() {
           <h1>잡아줘요</h1>
           {usertype === "B" && (
             <GapItems>
-              <select
-                {...register("gender")}
-                id="gender"
-                defaultValue="A"
-                >
+              <select onChange={handleGender} id="gender" defaultValue="A">
                 <option value="A">성별무관</option>
                 <option value="F">여성</option>
                 <option value="M">남성</option>
               </select>
               <select
-               {...register("sigungu")}
-               id="sigungu"
-               defaultValue="강남구"
-               >
+                onChange={handleSigungu}
+                id="sigungu"
+                defaultValue=""
+              >
+                <option value="">전체</option>
                 <option value="강남구">강남구</option>
                 <option value="강동구">강동구</option>
                 <option value="강서구">강서구</option>
@@ -141,11 +162,7 @@ export default function Request() {
                 <option value="중구">중구</option>
                 <option value="중랑구">중랑구</option>
               </select>
-              <select 
-               {...register("price")}
-               id="price"
-               defaultValue="1"
-               >
+              <select onChange={handlePrice} id="price" defaultValue="1">
                 <option value="1">1만원대</option>
                 <option value="2">2만원대</option>
                 <option value="3">3만원대</option>
@@ -156,7 +173,8 @@ export default function Request() {
           )}
           {usertype === "B" ? (
             data.length > 0 ? (
-              data.map((item) => (
+              <GapItems $col>
+              {data.map((item) => (
                 // 각 컨테이너 클릭시 상세페이지로 이동
                 <Link to={`/request/${item.id}`} key={item.id}>
                   <Container key={item.id}>
@@ -184,7 +202,8 @@ export default function Request() {
                     </Span>
                   </Container>
                 </Link>
-              ))
+              ))}
+              </GapItems>
             ) : (
               <Container>요청사항이 없습니다.</Container>
             )

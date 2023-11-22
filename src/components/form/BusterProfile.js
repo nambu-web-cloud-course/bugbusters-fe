@@ -77,11 +77,11 @@ export default function BusterProfile() {
     }
   };
 
-  const onSelfIntroChange = (e) => {
+  const handleSelfIntro = (e) => {
     setSelfIntro(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
   };
 
-  const onExpChange = (e) => {
+  const handleExp = (e) => {
     setExp(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
   };
 
@@ -126,7 +126,7 @@ export default function BusterProfile() {
                 required: true,
                 minLength: 10,
               })}
-              onChange={onSelfIntroChange}
+              onChange={handleSelfIntro}
               defaultValue={busterid ? data.selfintro : ""}
               id="selfintro"
               placeholder="소개글을 작성해주세요. (최소 10자 이상)"
@@ -165,7 +165,7 @@ export default function BusterProfile() {
                 required: true,
                 minLength: 10,
               })}
-              onChange={onExpChange}
+              onChange={handleExp}
               defaultValue={busterid ? data.exp : ""}
               placeholder="특별하게 기억에 남는 벌레 잡은 경험을 작성해주세요. (최소 10자 이상)"
               id="exp"

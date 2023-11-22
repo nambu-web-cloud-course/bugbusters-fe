@@ -10,6 +10,7 @@ import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
+import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import api from "../../api";
 import Modal from "../common/Modal";
 import { P, Span } from "../common/Text";
@@ -227,10 +228,34 @@ export default function ChatNavBar({ socket }) {
               setShowModal={handleProfileModal}
               title="프로필"
             >
-              <GapItems $col $gap="2rem">
-                <GapItems $col $left>
-                  <P $fontWeight="700">아이디</P>
-                  <p>{busterprofile?.userid}</p>
+              <GapItems $col $gap="1rem">
+                <GapItems>
+                  <img
+                    style={{ width: "100px" }}
+                    src={`${busterprofile?.profile}`}
+                    alt="Profile"
+                  />
+                  <GapItems $col $left>
+                    <GapItems>
+                      <P $fontWeight="700">아이디</P>
+                      <p>{busterprofile?.userid}</p>
+                    </GapItems>
+                    <GapItems>
+                      <P $fontWeight="700">지역</P>
+                      <p>{userinfo?.sido}{" "}{userinfo?.sigungu}</p>
+                    </GapItems>
+                    <GapItems>
+                      <Badge
+                        $textColor="darkgreen"
+                        $fontWeight="500"
+                        $bgColor="transparent"
+                        $padding="0"
+                      >
+                        <BugReportRoundedIcon fontSize="small" />
+                        퇴치 건수 {busterprofile?.tradecount}
+                      </Badge>
+                    </GapItems>
+                  </GapItems>
                 </GapItems>
                 <GapItems $col $left>
                   <P $fontWeight="700">리뷰</P>
@@ -263,12 +288,8 @@ export default function ChatNavBar({ socket }) {
                   </GapItems>
                 </GapItems>
                 <GapItems $col $left>
-                  <P $fontWeight="700">퇴치 건수</P>
-                  {busterprofile?.tradecount}건
-                </GapItems>
-                <GapItems $col $left>
                   <P $fontWeight="700">자기소개</P>
-                  <Span>{busterprofile?.selfintro}</Span>
+                  <p>{busterprofile?.selfintro}</p>
                 </GapItems>
                 <GapItems $col $left>
                   <P $fontWeight="700">기술</P>
