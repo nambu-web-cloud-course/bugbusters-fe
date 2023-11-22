@@ -33,6 +33,8 @@ export default function CommonForm({ handleCommonForm }) {
     setSMSCode(e.target.value);
   };
 
+  console.log(watch())
+
   // 서버에 휴대폰번호 전송 - 서버는 받은 번호로 인증번호 6자리를 포함한 문자 전송
   const handleSMS = async (data) => {
     try {
@@ -133,9 +135,11 @@ export default function CommonForm({ handleCommonForm }) {
           <GapItems $col $left>
             <input
               {...register("birthdate", { required: true })}
-              placeholder="예) 19901231"
               id="birthdate"
-              type="number"
+              type="date"
+              data-placeholder="생년월일을 입력해주세요."
+              required
+              aria-require="true"
             />
             {errors.birthdate?.type === "required" && (
               <Span $textColor="alert">생년월일을 입력해주세요.</Span>

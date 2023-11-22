@@ -77,12 +77,17 @@ const GlobalStyle = createGlobalStyle`
 
     textarea {
       background: ${({ theme }) => theme.color.gray01};
-      height: 12.5rem;
+      height: 12rem;
       font-size: 0.9375rem;
       padding: 1rem;
       border-radius: 0.5rem;
       border: none;
     }
+
+    textarea::placeholder {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
     label {
       font-weight: 700;
       display: block;
@@ -133,6 +138,32 @@ const GlobalStyle = createGlobalStyle`
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
    }
+
+   input[type=date]::-webkit-datetime-edit-text {
+    -webkit-appearance: none;
+    display: none;
+}
+input[type=date]::-webkit-datetime-edit-month-field{
+    -webkit-appearance: none;
+    display: none;
+}
+input[type=date]::-webkit-datetime-edit-day-field {
+    -webkit-appearance: none;
+    display: none;
+}
+input[type=date]::-webkit-datetime-edit-year-field {
+    -webkit-appearance: none;
+    display: none;
+}
+
+input[type="date"]::before {content:attr(data-placeholder);width:100%}
+input[type="date"]:focus::before,
+input[type="date"]:valid::before {display:none}
+
+input[type="date"]::placeholder {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
     .tabs input[type=radio]+label{
     display: inline-block;
     cursor: pointer;

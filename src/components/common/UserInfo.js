@@ -11,8 +11,7 @@ export default function UserInfo({
   sido,
   sigungu,
   content,
-  price,
-  completeTrade,
+  price
 }) {
   return (
     <GapItems $gap="1rem" $left>
@@ -59,7 +58,7 @@ export default function UserInfo({
                 $padding="0.5rem 0"
               >
                 <BugReportRoundedIcon fontSize="small" />
-                퇴치 건수 {completeTrade}
+                {/* 퇴치 건수 {completeTrade} */}
               </Badge>
             </GapItems>
           </>

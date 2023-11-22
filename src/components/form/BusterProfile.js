@@ -17,11 +17,9 @@ export default function BusterProfile() {
   // 회원가입한 버스터 아이디
   const busterid = JSON.parse(localStorage.getItem("userid"));
   const [data, setData] = useState([]);
-  const [trade, setTrade] = useState([]);
-  const [completeTrade, setCompleteTrade] = useState("");
-  const [reviews, setReviews] = useState([]);
   const [img, setImage] = useState([]);
   const [selfintro, setSelfIntro] = useState(0);
+  const [exp, setExp] = useState(0);
   const navigate = useNavigate();
 
   const {
@@ -31,7 +29,6 @@ export default function BusterProfile() {
     watch,
     formState: { errors },
   } = useForm();
-  console.log(watch());
 
   // 회원가입 후 프로필 수정을 위한 정보
   const getData = async () => {
@@ -46,20 +43,6 @@ export default function BusterProfile() {
       }
     } catch (err) {
       console.log("Error fetching buster profile", err);
-    }
-  };
-
-  const getTrade = async () => {
-    try {
-      const res = await api.get(`/trade?busterid=${busterid}`);
-      if (res.data.success) {
-        const data = res.data.data;
-        setTrade(data);
-      } else {
-        console.log("Error fetching trade");
-      }
-    } catch (err) {
-      console.log("Error fetching trade", err);
     }
   };
 
@@ -94,65 +77,17 @@ export default function BusterProfile() {
     }
   };
 
-  const getCompleteTrade = () => {
-    const arr = [];
-    trade.map((item) => {
-      item.state === "CP" && arr.push(item);
-    });
-    setCompleteTrade(arr.length);
-  };
-
-  const getReviews = () => {
-    let counts = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-    };
-
-    trade.forEach((item) => {
-      if (item.state === "CP" && (item.rev1 || item.rev2 || item.rev3)) {
-        counts[item.rev1]++;
-        counts[item.rev2]++;
-        counts[item.rev3]++;
-      }
-    });
-
-    setReviews(counts);
-  };
-
-  const showReview = () => {
-    const reviewCodes = {
-      1: "빨라요",
-      2: "침착해요",
-      3: "시간을 잘 지켜요",
-      4: "꼼꼼해요",
-      5: "섬세해요",
-    };
-
-    const badges = [];
-    for (const keyword in reviews) {
-      if (reviews[keyword] === 0) continue;
-      badges.push(
-        <Badge
-          key={keyword}
-        >{`${reviewCodes[keyword]} ${reviews[keyword]}`}</Badge>
-      );
-    }
-    return badges;
-  };
-
-  const onTextareaHandler = (e) => {
+  const onSelfIntroChange = (e) => {
     setSelfIntro(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
+  };
+
+  const onExpChange = (e) => {
+    setExp(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
   };
 
   // 버스터 프로필 정보 가져오기
   useEffect(() => {
-    if (busterid) {
-      getData();
-      getTrade();
-    }
+    busterid && getData();
   }, []);
 
   useEffect(() => {
@@ -165,19 +100,6 @@ export default function BusterProfile() {
       setValue("accno", data?.accno);
     }
   }, [data]);
-
-  useEffect(() => {
-    if (busterid) {
-      getCompleteTrade();
-      getReviews();
-    }
-  }, [trade]);
-
-  useEffect(() => {
-    showReview();
-  }, [reviews]);
-
-  console.log(watch());
 
   return (
     <div className="Content">
@@ -199,32 +121,27 @@ export default function BusterProfile() {
           </GapItems>
           <GapItems $col $left>
             <label htmlFor="selfintro">자기소개</label>
-            <GapItems>
-              <textarea
-                {...register("selfintro", {
-                  required: true,
-                  minLength: 10,
-                  maxLength: 200,
-                })}
-                onChange={onTextareaHandler}
-                defaultValue={busterid ? data.selfintro : ""}
-                id="selfintro"
-                placeholder="소개글을 작성해주세요."
-                autoFocus
-              />
-              {errors.selfintro?.type === "required" && (
-                <Span $textColor="alert">자기소개를 입력해주세요.</Span>
-              )}
-              {errors.selfintro?.type === "minLength" && (
-                <Span $textColor="alert">최소 10자 이상 입력해주세요.</Span>
-              )}
-              {errors.selfintro?.type === "maxLength" && (
-                <Span $textColor="alert">최대 글자수는 200자 입니다.</Span>
-              )}
-              <div style={{ marginLeft: "auto" }}>
-                <Span>{selfintro} / 200</Span>
-              </div>
-            </GapItems>
+            <textarea
+              {...register("selfintro", {
+                required: true,
+                minLength: 10,
+              })}
+              onChange={onSelfIntroChange}
+              defaultValue={busterid ? data.selfintro : ""}
+              id="selfintro"
+              placeholder="소개글을 작성해주세요. (최소 10자 이상)"
+              autoFocus
+              maxLength={200}
+            />
+            {errors.selfintro?.type === "required" && (
+              <Span $textColor="alert">자기소개를 입력해주세요.</Span>
+            )}
+            {errors.selfintro?.type === "minLength" && (
+              <Span $textColor="alert">최소 10자 이상 입력해주세요.</Span>
+            )}
+            <div style={{ marginLeft: "auto" }}>
+              <Span>{selfintro} / 200</Span>
+            </div>
           </GapItems>
           <GapItems $col $left>
             <label htmlFor="tech">기술</label>
@@ -234,6 +151,7 @@ export default function BusterProfile() {
                 defaultValue={busterid ? data.tech : ""}
                 placeholder="나만의 벌레 잡는 기술! (예: 손으로 잡기, 에X킬라)"
                 id="tech"
+                maxLength={20}
               />
               {errors.tech?.type === "required" && (
                 <Span $textColor="alert">기술을 입력해주세요.</Span>
@@ -242,17 +160,23 @@ export default function BusterProfile() {
           </GapItems>
           <GapItems $col $left>
             <label htmlFor="exp">벌레 잡은 경험</label>
-            <GapItems>
-              <input
-                {...register("exp", { required: true })}
-                defaultValue={busterid ? data.exp : ""}
-                placeholder="특별하게 기억 남는 벌레 잡은 경험은?"
-                id="exp"
-              />
-              {errors.exp?.type === "required" && (
-                <Span $textColor="alert">벌레 잡은 경험을 입력해주세요.</Span>
-              )}
-            </GapItems>
+            <textarea
+              {...register("exp", {
+                required: true,
+                minLength: 10,
+              })}
+              onChange={onExpChange}
+              defaultValue={busterid ? data.exp : ""}
+              placeholder="특별하게 기억에 남는 벌레 잡은 경험을 작성해주세요. (최소 10자 이상)"
+              id="exp"
+              maxLength={200}
+            />
+            {errors.exp?.type === "required" && (
+              <Span $textColor="alert">벌레 잡은 경험을 입력해주세요.</Span>
+            )}
+            <div style={{ marginLeft: "auto" }}>
+              <Span>{exp} / 200</Span>
+            </div>
           </GapItems>
           <GapItems $col $left>
             <label htmlFor="fav">가장 잘 잡는 벌레</label>
@@ -262,6 +186,7 @@ export default function BusterProfile() {
                 defaultValue={busterid ? data.fav : ""}
                 placeholder="이 벌레는 내가 제일 잘 잡아!"
                 id="fav"
+                maxLength={20}
               />
               {errors.fav?.type === "required" && (
                 <Span $textColor="alert">
@@ -302,10 +227,32 @@ export default function BusterProfile() {
           )}
           {busterid && (
             <>
-              <label htmlFor="review">퇴치건수</label>
-              <P>{completeTrade}</P>
+              <label htmlFor="tradecount">퇴치건수</label>
+              <P>{data.tradecount}건</P>
               <label htmlFor="review">리뷰</label>
-              <GapItems>{showReview()}</GapItems>
+              <GapItems $wrap>
+                {data.revcode1 > 0 ? <Badge>빨라요 {data.revcode1}</Badge> : ""}
+                {data.revcode2 > 0 ? (
+                  <Badge>침착해요 {data.revcode1}</Badge>
+                ) : (
+                  ""
+                )}
+                {data.revcode3 > 0 ? (
+                  <Badge>시간을 잘 지켜요 {data.revcode1}</Badge>
+                ) : (
+                  ""
+                )}
+                {data.revcode4 > 0 ? (
+                  <Badge>꼼꼼해요 {data.revcode1}</Badge>
+                ) : (
+                  ""
+                )}
+                {data.revcode5 > 0 ? (
+                  <Badge>터프해요 {data.revcode1}</Badge>
+                ) : (
+                  ""
+                )}
+              </GapItems>
             </>
           )}
           <Button $color="green" $size="lg" $fullwidth>

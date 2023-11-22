@@ -31,7 +31,6 @@ export default function Request() {
     formState: { errors },
   } = useForm();
 
-  // 모든 요청 데이터 가져오기
   const getData = async () => {
     try {
       const res = await api.get("/request");
