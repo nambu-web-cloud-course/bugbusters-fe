@@ -9,6 +9,7 @@ const ModalWrapper = styled.div`
   width: ${props => props.$width? props.$width : "32rem"};
   top: 50%;
   left: 50%;
+  overflow: hidden;
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 20px;

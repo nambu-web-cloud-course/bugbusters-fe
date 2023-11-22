@@ -158,32 +158,35 @@ export default function ChatList({ socket }) {
       {token ? (
         <div className="Content">
           <h1>채팅</h1>
+
           {chatroom.length > 0 ? (
-            chatroom
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-              .map((room, idx) => (
-                <Link
-                  to={`/chat/${room.room}`}
-                  key={room.room}
-                  onClick={() => handleList(room.room)}
-                >
-                  <Container>
-                    <UserInfo
-                      room={room?.room}
-                      busterid={room?.busterid}
-                      userid={room?.userid}
-                      sido={userinfo[idx]?.sido}
-                      sigungu={userinfo[idx]?.sigungu}
-                      content={request[idx]?.content}
-                      price={request[idx]?.price}
-                      usertype={usertype}
-                      completeTrade={completeTrade}
-                    />
-                    <GapItems>{showReview()}</GapItems>
-                    <Span>{formatDateTime(room.createdAt)}</Span>
-                  </Container>
-                </Link>
-              ))
+            <GapItems $col $left>
+              {chatroom
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((room, idx) => (
+                  <Link
+                    to={`/chat/${room.room}`}
+                    key={room.room}
+                    onClick={() => handleList(room.room)}
+                  >
+                    <Container>
+                      <UserInfo
+                        room={room?.room}
+                        busterid={room?.busterid}
+                        userid={room?.userid}
+                        sido={userinfo[idx]?.sido}
+                        sigungu={userinfo[idx]?.sigungu}
+                        content={request[idx]?.content}
+                        price={request[idx]?.price}
+                        usertype={usertype}
+                        completeTrade={completeTrade}
+                      />
+                      <GapItems>{showReview()}</GapItems>
+                      <Span>{formatDateTime(room.createdAt)}</Span>
+                    </Container>
+                  </Link>
+                ))}
+            </GapItems>
           ) : (
             <Container>채팅 방이 없습니다.</Container>
           )}

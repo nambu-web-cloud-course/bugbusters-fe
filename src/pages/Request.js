@@ -7,7 +7,6 @@ import ImageUpload from "../components/common/ImageUpload";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
-import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
 import GapItems from "../components/common/GapItems";
 import Badge from "../components/common/Badge";
 import formatDateTime from "../utils/formatDateTime";
@@ -18,7 +17,42 @@ export default function Request() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const token = JSON.parse(localStorage.getItem("token"));
+  const [filter, setFilter] = useState({
+    gender: "A",
+    sigungu: "",
+    price: 1,
+  });
+  
+  const sigunguArr = [
+    "강남구",
+    "강동구",
+    "강서구",
+    "강북구",
+    "관악구",
+    "광진구",
+    "구로구",
+    "금천구",
+    "노원구",
+    "동대문구",
+    "도봉구",
+    "동작구",
+    "마포구",
+    "서대문구",
+    "성동구",
+    "성북구",
+    "서초구",
+    "송파구",
+    "영등포구",
+    "용산구",
+    "양천구",
+    "은평구",
+    "종로구",
+    "중구",
+    "중랑구",
+  ];
+
   const navigate = useNavigate();
+
   const [data, setData] = useState([]);
   const [userinfo, setUserInfo] = useState({});
   const [contentLength, setContentLength] = useState(0);
@@ -31,10 +65,11 @@ export default function Request() {
     formState: { errors },
   } = useForm();
 
-  // 모든 요청 데이터 가져오기
-  const getData = async () => {
+  const getData = async (filter) => {
     try {
-      const res = await api.get("/request");
+      const res = await api.get(
+        `/request?gender=${filter?.gender}&sigungu=${filter?.sigungu}&price=${filter?.price}`
+      );
       if (res.data.success) {
         const reqData = res.data.data;
         const filteredData = reqData.filter((data) => data.state === "PR");
@@ -83,9 +118,32 @@ export default function Request() {
     setContentLength(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
   };
 
+  const handleGender = (e) => {
+    setFilter({
+      ...filter,
+      gender: e.target.value,
+    });
+  };
+  const handleSigungu = (e) => {
+    setFilter({
+      ...filter,
+      sigungu: e.target.value,
+    });
+  };
+  const handlePrice = (e) => {
+    setFilter({
+      ...filter,
+      price: e.target.value,
+    });
+  };
+
   useEffect(() => {
-    if (usertype === "B") getData();
-    else getUserInfo();
+    usertype === "B" && getData(filter);
+    console.log("get filter data");
+  }, [filter]);
+
+  useEffect(() => {
+    usertype === "C" && getUserInfo();
   }, []);
 
   return (
@@ -93,38 +151,62 @@ export default function Request() {
       {token ? (
         <div className="Content">
           <h1>잡아줘요</h1>
+          <GapItems $col $gap="1rem">
+          {usertype === "B" && (
+            <GapItems>
+              <select onChange={handleGender} id="gender" defaultValue="A">
+                <option value="A">성별무관</option>
+                <option value="F">여성</option>
+                <option value="M">남성</option>
+              </select>
+              <select onChange={handleSigungu} id="sigungu" defaultValue="">
+                <option value="">전체</option>
+                {sigunguArr.map((sigungu) => (
+                  <option value={sigungu}>{sigungu}</option>
+                ))}
+              </select>
+              <select onChange={handlePrice} id="price" defaultValue="1">
+                <option value="1">1만원대</option>
+                <option value="2">2만원대</option>
+                <option value="3">3만원대</option>
+                <option value="4">4만원대</option>
+                <option value="5">5만원 이상</option>
+              </select>
+            </GapItems>
+          )}
           {usertype === "B" ? (
-            // 버스터
             data.length > 0 ? (
-              data.map((item) => (
-                // 각 컨테이너 클릭시 상세페이지로 이동
-                <Link to={`/request/${item.id}`} key={item.id}>
-                  <Container key={item.id}>
-                    <p>{item.content}</p>
-                    <GapItems>
-                      <Badge>
-                        <LocationOnRoundedIcon fontSize="small" />
-                        {item.sido} {item.sigungu}
-                      </Badge>
-                      <Badge>
-                        <PersonRoundedIcon fontSize="small" />
-                        {item.gender === "F"
-                          ? "여자"
-                          : item.gender === "M"
-                          ? "남자"
-                          : "성별무관"}
-                      </Badge>
-                      <Badge>
-                        <CreditCardRoundedIcon fontSize="small" />
-                        {item.price.toLocaleString()}
-                      </Badge>
-                    </GapItems>
-                    <Span>
-                      {formatDateTime(item.createdAt)} | 작성자: {item.userid}
-                    </Span>
-                  </Container>
-                </Link>
-              ))
+              <GapItems $col>
+                {data.map((item) => (
+                  // 각 컨테이너 클릭시 상세페이지로 이동
+                  <Link to={`/request/${item.id}`} key={item.id}>
+                    <Container key={item.id}>
+                      <p>{item.content}</p>
+                      <GapItems>
+                        <Badge>
+                          <LocationOnRoundedIcon fontSize="small" />
+                          {item.sido} {item.sigungu}
+                        </Badge>
+                        <Badge>
+                          <PersonRoundedIcon fontSize="small" />
+                          {item.gender === "F"
+                            ? "여자"
+                            : item.gender === "M"
+                            ? "남자"
+                            : "성별무관"}
+                        </Badge>
+                        <Badge>
+                          <CreditCardRoundedIcon fontSize="small" />
+                          {item.price.toLocaleString()}
+                        </Badge>
+                      </GapItems>
+                      <Span>
+                        {formatDateTime(item.createdAt)} | 작성자: {item.userid}
+                      </Span>
+                    </Container>
+                  </Link>
+                ))}
+              </GapItems>
             ) : (
               <Container>요청사항이 없습니다.</Container>
             )
@@ -159,7 +241,7 @@ export default function Request() {
                   {errors.content?.type === "maxLength" && (
                     <Span $textColor="alert">최대 글자수는 200자 입니다.</Span>
                   )}
-                   <div style={{ marginLeft: "auto" }}>
+                  <div style={{ marginLeft: "auto" }}>
                     <Span>{contentLength} / 200</Span>
                   </div>
                 </GapItems>
@@ -211,6 +293,7 @@ export default function Request() {
                 </GapItems>
                 <GapItems $col $left>
                   <label htmlFor="addr1">주소</label>
+                  <Span>버스터의 요청 목록에서 지역, 구까지 보입니다.</Span>
                   <input
                     {...register("addr1", { required: true })}
                     defaultValue={userinfo?.addr1}
@@ -254,6 +337,7 @@ export default function Request() {
               </Container>
             </form>
           )}
+          </GapItems>
         </div>
       ) : (
         navigate("/")

@@ -10,6 +10,7 @@ import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
+import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import api from "../../api";
 import Modal from "../common/Modal";
 import { P, Span } from "../common/Text";
@@ -24,17 +25,13 @@ export default function ChatNavBar({ socket }) {
   const { chatroom } = useParams();
   const room = chatroom;
   const [trade, setTrade] = useState([]);
-  const [bustertrade, setBusterTrade] = useState([]);
   const [tradeid, setTradeID] = useState("");
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const [request, setRequest] = useState([]);
   const [userinfo, setUserInfo] = useState([]);
-  const [address, setAddress] = useState("");
-  const [completeTradeNum, setCompleteTradeNum] = useState("");
   const [busterprofile, setupBusterProfile] = useState([]);
-  const [reviews, setReviews] = useState([]);
 
   // URL 파라미터 아이디
   const reqid = chatroom.split("_")[0];
@@ -45,7 +42,6 @@ export default function ChatNavBar({ socket }) {
   const getTrade = async () => {
     try {
       const res = await api.get("/trade");
-
       if (res.data.success) {
         const commonTrades = res.data.data.filter(
           (trade) =>
@@ -59,21 +55,6 @@ export default function ChatNavBar({ socket }) {
       }
     } catch (err) {
       console.log("Error fetching trade data: ", err);
-    }
-  };
-
-  // 버스터 거래 내역
-  const getBusterTrade = async () => {
-    try {
-      const res = await api.get(`/trade?busterid=${busterid}`);
-      if (res.data.success) {
-        const data = res.data.data;
-        setBusterTrade(data);
-      } else {
-        console.log("Error fetching buster trade");
-      }
-    } catch (err) {
-      console.log("Error fetching buster trade", err);
     }
   };
 
@@ -104,28 +85,6 @@ export default function ChatNavBar({ socket }) {
     }
   };
 
-  const getAddress = async () => {
-    try {
-      const res = await api.get(`/auth?userid=${muserverid}`);
-      if (res.data.success) {
-        const addr = res.data.data.addr2;
-        setAddress(addr);
-      } else {
-        console.log("Error fetching address");
-      }
-    } catch (err) {
-      console.log("Error fetching address: ", err);
-    }
-  };
-
-  const getCompleteTradeNum = () => {
-    const arr = [];
-    trade.map((item) => {
-      item.state === "CP" && arr.push(item);
-    });
-    setCompleteTradeNum(arr.length);
-  };
-
   const getBusterProfile = async () => {
     try {
       const res = await api.get(`/auth/buster?userid=${busterid}`);
@@ -138,47 +97,6 @@ export default function ChatNavBar({ socket }) {
     } catch (err) {
       console.log("Error fetching buster profile", err);
     }
-  };
-
-  const getReviews = () => {
-    let counts = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-    };
-
-    bustertrade.forEach((item) => {
-      if (item.state === "CP" && (item.rev1 || item.rev2 || item.rev3)) {
-        counts[item.rev1]++;
-        counts[item.rev2]++;
-        counts[item.rev3]++;
-      }
-    });
-
-    setReviews(counts);
-  };
-
-  const showReview = () => {
-    const reviewCodes = {
-      1: "빨라요",
-      2: "침착해요",
-      3: "시간을 잘 지켜요",
-      4: "꼼꼼해요",
-      5: "섬세해요",
-    };
-
-    const badges = [];
-    for (const keyword in reviews) {
-      if (reviews[keyword] === 0) continue;
-      badges.push(
-        <Badge
-          key={keyword}
-        >{`${reviewCodes[keyword]} ${reviews[keyword]}`}</Badge>
-      );
-    }
-    return badges;
   };
 
   const handleModal = () => setShowModal(!showModal);
@@ -272,8 +190,6 @@ export default function ChatNavBar({ socket }) {
     getTrade();
     getUserInfo();
     getReqData();
-    getAddress();
-    getCompleteTradeNum();
   }, []);
 
   useEffect(() => {
@@ -281,26 +197,15 @@ export default function ChatNavBar({ socket }) {
     if (tid) setTradeID(tid);
   }, [trade]);
 
-  // 버스터 프로필 정보
   useEffect(() => {
-    getBusterProfile();
-    getBusterTrade();
+    usertype === "C" && getBusterProfile();
   }, []);
-
-  useEffect(() => {
-    getCompleteTradeNum();
-    getReviews();
-  }, [trade]);
-
-  useEffect(() => {
-    showReview();
-  }, [reviews]);
 
   return (
     <div style={{ borderBottom: "1px solid lightgray" }}>
       <GapItems $col="col" style={{ marginBottom: "0.5rem" }}>
         <GapItems>
-          <GapItems style={{justifyContent: "space-between"}}>
+          <GapItems style={{ justifyContent: "space-between" }}>
             <Link to={`/request/${reqid}`}>
               <UserInfo
                 busterid={busterid}
@@ -323,22 +228,68 @@ export default function ChatNavBar({ socket }) {
               setShowModal={handleProfileModal}
               title="프로필"
             >
-              <GapItems $col $gap="2rem">
-                <GapItems $col $left>
-                  <P $fontWeight="700">아이디</P>
-                  <p>{busterprofile?.userid}</p>
+              <GapItems $col $gap="1rem">
+                <GapItems>
+                  <img
+                    style={{ width: "100px" }}
+                    src={`${busterprofile?.profile}`}
+                    alt="Profile"
+                  />
+                  <GapItems $col $left>
+                    <GapItems>
+                      <P $fontWeight="700">아이디</P>
+                      <p>{busterprofile?.userid}</p>
+                    </GapItems>
+                    <GapItems>
+                      <P $fontWeight="700">지역</P>
+                      <p>{userinfo?.sido}{" "}{userinfo?.sigungu}</p>
+                    </GapItems>
+                    <GapItems>
+                      <Badge
+                        $textColor="darkgreen"
+                        $fontWeight="500"
+                        $bgColor="transparent"
+                        $padding="0"
+                      >
+                        <BugReportRoundedIcon fontSize="small" />
+                        퇴치 건수 {busterprofile?.tradecount}
+                      </Badge>
+                    </GapItems>
+                  </GapItems>
                 </GapItems>
                 <GapItems $col $left>
                   <P $fontWeight="700">리뷰</P>
-                  <GapItems>{showReview()}</GapItems>
-                </GapItems>
-                <GapItems $col $left>
-                  <P $fontWeight="700">퇴치 건수</P>
-                  {completeTradeNum}건
+                  <GapItems $wrap>
+                    {busterprofile?.revcode1 > 0 ? (
+                      <Badge>빨라요 {busterprofile?.revcode1}</Badge>
+                    ) : (
+                      ""
+                    )}
+                    {busterprofile?.revcode2 > 0 ? (
+                      <Badge>침착해요 {busterprofile?.revcode1}</Badge>
+                    ) : (
+                      ""
+                    )}
+                    {busterprofile?.revcode3 > 0 ? (
+                      <Badge>시간을 잘 지켜요 {busterprofile?.revcode1}</Badge>
+                    ) : (
+                      ""
+                    )}
+                    {busterprofile?.revcode4 > 0 ? (
+                      <Badge>꼼꼼해요 {busterprofile?.revcode1}</Badge>
+                    ) : (
+                      ""
+                    )}
+                    {busterprofile?.revcode5 > 0 ? (
+                      <Badge>터프해요 {busterprofile?.revcode1}</Badge>
+                    ) : (
+                      ""
+                    )}
+                  </GapItems>
                 </GapItems>
                 <GapItems $col $left>
                   <P $fontWeight="700">자기소개</P>
-                  <Span textColor="gray05">{busterprofile?.selfintro}</Span>
+                  <p>{busterprofile?.selfintro}</p>
                 </GapItems>
                 <GapItems $col $left>
                   <P $fontWeight="700">기술</P>
