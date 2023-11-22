@@ -38,13 +38,13 @@ export default function Header() {
   const [showDropDown, setShowDropDown] = useState(false);
   const location = useLocation();
 
- // 로그아웃 함수
- const signOut = () => {
-  localStorage.removeItem("userid");
-  localStorage.removeItem("usertype");
-  localStorage.removeItem("token");
-  handleDropDown()
-};
+  // 로그아웃 함수
+  const signOut = () => {
+    localStorage.removeItem("userid");
+    localStorage.removeItem("usertype");
+    localStorage.removeItem("token");
+    handleDropDown();
+  };
   // 드롭다운 메뉴 보이기
   const handleDropDown = () => {
     setShowDropDown(!showDropDown);
@@ -63,7 +63,7 @@ export default function Header() {
         <div>
           <Menu>
             <li>
-              <Link to={isSignIn ? "/request" : "/"}>
+              <Link to="/">
                 <img width="120px" src="img/logo.png" alt="logo.png" />
               </Link>
             </li>
@@ -76,8 +76,7 @@ export default function Header() {
                   <Link to="/trade-list">이용내역</Link>
                 </li>
               </>
-            ) 
-            }
+            )}
           </Menu>
         </div>
         {/* right menu */}
@@ -95,7 +94,10 @@ export default function Header() {
                   }}
                   onClick={handleDropDown}
                 >
-                  <Span $fontWeight="700" $textColor="black">{userid}</Span>님
+                  <Span $fontWeight="700" $textColor="black">
+                    {userid}
+                  </Span>
+                  님
                   {showDropDown ? (
                     <KeyboardArrowUpRoundedIcon />
                   ) : (
@@ -105,17 +107,29 @@ export default function Header() {
                 {showDropDown ? (
                   <DropDown>
                     <DropMenu onClick={handleDropDown}>
-                      <Link style={{padding: "1rem", width: "100%"}}to="/mypage">마이페이지</Link>
+                      <Link
+                        style={{ padding: "1rem", width: "100%" }}
+                        to="/mypage"
+                      >
+                        마이페이지
+                      </Link>
                     </DropMenu>
                     {usertype === "B" ? (
                       <DropMenu onClick={handleDropDown}>
-                        <Link style={{padding: "1rem", width: "100%"}} to="/profile">프로필</Link>
+                        <Link
+                          style={{ padding: "1rem", width: "100%" }}
+                          to="/profile"
+                        >
+                          프로필
+                        </Link>
                       </DropMenu>
                     ) : (
                       ""
                     )}
-                    <DropMenu onClick={signOut} >
-                      <Link style={{padding: "1rem", width: "100%"}} to="/">로그아웃</Link>
+                    <DropMenu onClick={signOut}>
+                      <Link style={{ padding: "1rem", width: "100%" }} to="/">
+                        로그아웃
+                      </Link>
                     </DropMenu>
                   </DropDown>
                 ) : (

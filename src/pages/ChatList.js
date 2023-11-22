@@ -158,7 +158,6 @@ export default function ChatList({ socket }) {
       {token ? (
         <div className="Content">
           <h1>채팅</h1>
-
           {chatroom.length > 0 ? (
             <GapItems $col $left>
               {chatroom

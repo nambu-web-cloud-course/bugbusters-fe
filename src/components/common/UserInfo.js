@@ -11,7 +11,8 @@ export default function UserInfo({
   sido,
   sigungu,
   content,
-  price
+  price,
+  tradecount,
 }) {
   return (
     <GapItems $gap="1rem" $left>
@@ -32,37 +33,37 @@ export default function UserInfo({
         />
       </div>
       <div>
-        <GapItems>
-          <P $fontWeight="700">
-            {usertype === "B" ? userid : busterid || "알 수 없음"}
-          </P>
-          <Span $textColor="gray04">
-            {content ? content.slice(0, 20) + "..." : ""}
-          </Span>
-        </GapItems>
-        <GapItems>
-          <Span $textColor="darkgreen" $fontWeight="700">
-            {price ? `${price}원` : ""}
-          </Span>
-          <Span>
-            {sido || ""} {sigungu || ""}
-          </Span>
-        </GapItems>
-        {usertype === "C" && (
-          <>
-            <GapItems>
+        <GapItems $col $left>
+          <GapItems>
+            <P $fontWeight="700">
+              {usertype === "B" ? userid : busterid || "알 수 없음"}
+            </P>
+            <Span $textColor="gray04">
+              {content ? content.slice(0, 20) + "..." : ""}
+            </Span>
+          </GapItems>
+          <GapItems>
+            {usertype === "B" ? (
+              <Span $textColor="darkgreen" $fontWeight="700">
+                {price ? `${price}원` : ""}
+              </Span>
+            ) : (
               <Badge
                 $textColor="darkgreen"
                 $fontWeight="500"
                 $bgColor="transparent"
-                $padding="0.5rem 0"
+                $padding="0"
               >
                 <BugReportRoundedIcon fontSize="small" />
-                {/* 퇴치 건수 {completeTrade} */}
+                퇴치 건수 {tradecount ? tradecount : 0}
               </Badge>
-            </GapItems>
-          </>
-        )}
+            )}
+            <Span $textColor="gray02">|</Span>
+            <Span>
+              {sido || ""} {sigungu || ""}
+            </Span>
+          </GapItems>
+        </GapItems>
       </div>
     </GapItems>
   );

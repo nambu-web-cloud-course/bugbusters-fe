@@ -35,7 +35,7 @@ export default function SignIn() {
         localStorage.setItem("userid", JSON.stringify(userid));
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("usertype", JSON.stringify(usertype));
-        navigate("/request");
+        navigate("/");
       } else {
         setShowModal(!showModal);
         navigate("/sign-in");

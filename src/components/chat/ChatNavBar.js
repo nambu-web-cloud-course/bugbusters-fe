@@ -215,7 +215,7 @@ export default function ChatNavBar({ socket }) {
                 sigungu={userinfo?.sigungu}
                 content={request?.content}
                 price={request?.price}
-                completeTrade={completeTrade}
+                tradecount={userinfo?.tradecount}
               />
             </Link>
             <button onClick={leaveRoom}>
