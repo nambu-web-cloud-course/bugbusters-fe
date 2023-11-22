@@ -22,6 +22,7 @@ export default function Request() {
     sigungu: "",
     price: 1,
   });
+  
   const sigunguArr = [
     "강남구",
     "강동구",
