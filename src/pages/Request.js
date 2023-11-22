@@ -7,7 +7,6 @@ import ImageUpload from "../components/common/ImageUpload";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
-import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
 import GapItems from "../components/common/GapItems";
 import Badge from "../components/common/Badge";
 import formatDateTime from "../utils/formatDateTime";
@@ -19,6 +18,7 @@ export default function Request() {
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const token = JSON.parse(localStorage.getItem("token"));
   const navigate = useNavigate();
+
   const [data, setData] = useState([]);
   const [userinfo, setUserInfo] = useState({});
   const [contentLength, setContentLength] = useState(0);
@@ -31,8 +31,13 @@ export default function Request() {
     formState: { errors },
   } = useForm();
 
-  const getData = async () => {
+  const getData = async (data) => {
+    const gender = data?.gender || "A"
+    const sigungu = data.sigungu || "강남구"
+    const price = data.price || 1
+    console.log(gender, sigungu, price)
     try {
+      // ?gender=F&sigungu=강남구&price=1
       const res = await api.get("/request");
       if (res.data.success) {
         const reqData = res.data.data;
@@ -81,19 +86,75 @@ export default function Request() {
   const onTextareaHandler = (e) => {
     setContentLength(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
   };
+  
 
   useEffect(() => {
     if (usertype === "B") getData();
     else getUserInfo();
   }, []);
 
+  console.log(watch())
   return (
     <>
       {token ? (
         <div className="Content">
           <h1>잡아줘요</h1>
+          {usertype === "B" && (
+            <GapItems>
+              <select
+                {...register("gender")}
+                id="gender"
+                defaultValue="A"
+                >
+                <option value="A">성별무관</option>
+                <option value="F">여성</option>
+                <option value="M">남성</option>
+              </select>
+              <select
+               {...register("sigungu")}
+               id="sigungu"
+               defaultValue="강남구"
+               >
+                <option value="강남구">강남구</option>
+                <option value="강동구">강동구</option>
+                <option value="강서구">강서구</option>
+                <option value="강북구">강북구</option>
+                <option value="관악구">관악구</option>
+                <option value="광진구">광진구</option>
+                <option value="구로구">구로구</option>
+                <option value="금천구">금천구</option>
+                <option value="노원구">노원구</option>
+                <option value="동대문구">동대문구</option>
+                <option value="도봉구">도봉구</option>
+                <option value="동작구">동작구</option>
+                <option value="마포구">마포구</option>
+                <option value="서대문구">서대문구</option>
+                <option value="성동구">성동구</option>
+                <option value="성북구">성북구</option>
+                <option value="서초구">서초구</option>
+                <option value="송파구">송파구</option>
+                <option value="영등포구">영등포구</option>
+                <option value="용산구">용산구</option>
+                <option value="양천구">양천구</option>
+                <option value="은평구">은평구</option>
+                <option value="종로구">종로구</option>
+                <option value="중구">중구</option>
+                <option value="중랑구">중랑구</option>
+              </select>
+              <select 
+               {...register("price")}
+               id="price"
+               defaultValue="1"
+               >
+                <option value="1">1만원대</option>
+                <option value="2">2만원대</option>
+                <option value="3">3만원대</option>
+                <option value="4">4만원대</option>
+                <option value="5">5만원 이상</option>
+              </select>
+            </GapItems>
+          )}
           {usertype === "B" ? (
-            // 버스터
             data.length > 0 ? (
               data.map((item) => (
                 // 각 컨테이너 클릭시 상세페이지로 이동
@@ -158,7 +219,7 @@ export default function Request() {
                   {errors.content?.type === "maxLength" && (
                     <Span $textColor="alert">최대 글자수는 200자 입니다.</Span>
                   )}
-                   <div style={{ marginLeft: "auto" }}>
+                  <div style={{ marginLeft: "auto" }}>
                     <Span>{contentLength} / 200</Span>
                   </div>
                 </GapItems>
@@ -210,6 +271,7 @@ export default function Request() {
                 </GapItems>
                 <GapItems $col $left>
                   <label htmlFor="addr1">주소</label>
+                  <Span>버스터의 요청 목록에서 지역, 구까지 보입니다.</Span>
                   <input
                     {...register("addr1", { required: true })}
                     defaultValue={userinfo?.addr1}

@@ -17,7 +17,6 @@ export default function RequestDetail({ socket }) {
   const [image, setImage] = useState([]);
   const [room, setRoom] = useState(""); // 방 이름
   const [chatroom, setChatRoom] = useState([]); // 채팅방 정보
-  // const [disabledBtn, setDisabledBtn] = useState(false);
 
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
@@ -102,9 +101,11 @@ export default function RequestDetail({ socket }) {
       token? (
         <div className="Content">
           <Container>
+            <GapItems>
             {image.map((img) => (
               <img key={img.id} style={{ width: "50%" }} src={`${img.img}`} />
             ))}
+            </GapItems>
             <p>{data.content}</p>
             <GapItems>
               <Badge>
@@ -133,7 +134,6 @@ export default function RequestDetail({ socket }) {
                 $color="green"
                 $size="lg"
                 $fullwidth
-                // disabled={disabledBtn}
               >
                 채팅하기
               </Button>
