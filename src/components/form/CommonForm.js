@@ -17,6 +17,7 @@ export default function CommonForm({ handleCommonForm }) {
   const [address, setAddress] = useState({});
 
   // SMS 인증 코드
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [sendSMS, setSendSMS] = useState(false);
   const [smsCode, setSMSCode] = useState("");
   const [authComplete, setAuthComplete] = useState(false);
@@ -29,17 +30,36 @@ export default function CommonForm({ handleCommonForm }) {
     formState: { errors },
   } = useForm();
 
-  const handleChange = (e) => {
+  const handleCodeChange = (e) => {
     setSMSCode(e.target.value);
   };
 
-  console.log(watch())
+  const handlePhoneNumber = (e) => {
+    const inputValue = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+
+    // Format the phone number as "XXX-XXXX-XXXX"
+    const formattedValue = inputValue.replace(
+      /(\d{3})(\d{4})(\d{4})/,
+      "$1-$2-$3"
+    );
+
+    setPhoneNumber(formattedValue);
+    setValue("phone", formattedValue); // Update the value in the form data
+  };
+
+  const formatPhoneNumber = (phoneNumber) => {
+    return phoneNumber
+      ? phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+      : "";
+  };
 
   // 서버에 휴대폰번호 전송 - 서버는 받은 번호로 인증번호 6자리를 포함한 문자 전송
-  const handleSMS = async (data) => {
+  const handleSMS = async (phoneNumber) => {
+    const data = {
+      phone: phoneNumber,
+    };
     try {
       const res = await api.post("/auth/sms", data);
-      if (data.phone === "") alert("휴대폰 번호를 입력하세요.");
       if (res.data.success) {
         console.log("Success sending Phone Number");
       } else {
@@ -52,27 +72,22 @@ export default function CommonForm({ handleCommonForm }) {
   };
 
   // 문자로 받은 코드 서버에 보내기
-  const authCode = async (data) => {
+  const authCode = async (phone) => {
     const code = parseInt(smsCode);
     try {
       const res = await api.post("/auth/code", {
-        data,
+        phone,
         code,
       });
       if (res.data.success) {
         alert("인증 성공");
         setAuthComplete(!authComplete);
-      } else alert("다시 인증하세요.");
+      } else if (res.data.message === "Expired" && !res.data.success) {
+        alert("유효시간이 지났습니다. 다시 인증해주세요.");
+      } else alert("잘못된 인증 번호입니다. 다시 인증해주세요.");
     } catch (err) {
       console.log("Error sending phone auth code", err);
     }
-  };
-
-  // 자동 하이픈 생성 함수
-  const formatPhoneNumber = (phoneNumber) => {
-    return phoneNumber
-      ? phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
-      : "";
   };
 
   const setAddressValue = () => {
@@ -152,7 +167,8 @@ export default function CommonForm({ handleCommonForm }) {
             <input
               {...register("phone", { required: true })}
               maxLength={13}
-              placeholder="010-1234-5678"
+              placeholder="'-' 빼고 입력"
+              onChange={handlePhoneNumber}
               value={formatPhoneNumber(watch("phone"))}
               id="phone"
               type="tel"
@@ -162,38 +178,40 @@ export default function CommonForm({ handleCommonForm }) {
               $width="50%"
               $color="green"
               $size="lg"
-              onClick={handleSubmit(handleSMS)}
+              onClick={() => handleSMS(phoneNumber)}
               style={{ display: authComplete ? "none" : "block" }}
+              disabled={!watch("phone")}
             >
               인증번호 발송
             </Button>
           </GapItems>
           {errors.phone?.type === "required" && (
-            <Span $textColor="alert">휴대폰 인증을 진행하세요.</Span>
+            <Span $textColor="alert">휴대폰 인증을 진행해주세요.</Span>
           )}
         </GapItems>
-        {sendSMS ? (
-          <form style={{ display: authComplete ? "none" : "block" }}>
-            <GapItems>
-              <input
-                placeholder="인증번호를 입력하세요."
-                id="phone"
-                type="number"
-                onChange={handleChange}
-                maxLength={6}
-                value={smsCode}
-              />
-              <Button
-                $width="50%"
-                $color="green"
-                $size="lg"
-                onClick={handleSubmit(authCode)}
-              >
-                인증
-              </Button>
-            </GapItems>
-          </form>
-        ) : null}
+        {/* {sendSMS && ( */}
+        <div style={{ display: authComplete ? "none" : "block" }}
+      >
+          <GapItems>
+            <input
+              placeholder="인증번호를 입력하세요."
+              id="phone"
+              onChange={handleCodeChange}
+              maxLength={6}
+              value={smsCode}
+            />
+            <Button
+              $width="50%"
+              $color="green"
+              $size="lg"
+              type="button"
+              onClick={() => authCode(phoneNumber)}
+            >
+              인증
+            </Button>
+          </GapItems>
+        </div>
+        {/* )} */}
         <GapItems $col $left>
           <label htmlFor="gender">성별</label>
           <div className="select">
@@ -219,7 +237,7 @@ export default function CommonForm({ handleCommonForm }) {
               value={address?.address}
               setValue={setAddressValue}
             />
-            <Address address={address} setAddress={setAddress} />
+            <Address setAddress={setAddress} />
           </GapItems>
           {errors.addr1?.type === "required" && (
             <Span $textColor="alert">주소를 입력해주세요.</Span>
@@ -259,7 +277,6 @@ export default function CommonForm({ handleCommonForm }) {
             id="sigungu"
           />
         </div>
-
         <Button $color="green" $size="lg" $fullwidth>
           {isBuster ? "개인정보 입력(1 / 2)" : "회원가입"}
         </Button>

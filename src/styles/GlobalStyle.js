@@ -146,23 +146,6 @@ const GlobalStyle = createGlobalStyle`
     border-bottom-right-radius: 8px;
    }
 
-   input[type=date]::-webkit-datetime-edit-text {
-    -webkit-appearance: none;
-    display: none;
-}
-input[type=date]::-webkit-datetime-edit-month-field{
-    -webkit-appearance: none;
-    display: none;
-}
-input[type=date]::-webkit-datetime-edit-day-field {
-    -webkit-appearance: none;
-    display: none;
-}
-input[type=date]::-webkit-datetime-edit-year-field {
-    -webkit-appearance: none;
-    display: none;
-}
-
 input[type="date"]::before {content:attr(data-placeholder);width:100%}
 input[type="date"]:focus::before,
 input[type="date"]:valid::before {display:none}
