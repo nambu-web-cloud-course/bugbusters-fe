@@ -98,8 +98,15 @@ const GlobalStyle = createGlobalStyle`
     }
 
     select {
+    -webkit-appearance:none; 
+    -moz-appearance:none;
+    appearance:none;
+    }
+
+    select {
       font-size: 0.9375rem;
-      background: ${({ theme }) => theme.color.gray01};
+      background-color: ${({ theme }) => theme.color.gray01};
+      background:url('../img/icon_select_arrow.png') no-repeat right 24px;
       border: none;
       border-radius: 0.5rem;
       padding: 1rem;

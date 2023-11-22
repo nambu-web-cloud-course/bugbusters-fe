@@ -22,6 +22,34 @@ export default function Request() {
     sigungu: "",
     price: 1,
   });
+  const sigunguArr = [
+    "강남구",
+    "강동구",
+    "강서구",
+    "강북구",
+    "관악구",
+    "광진구",
+    "구로구",
+    "금천구",
+    "노원구",
+    "동대문구",
+    "도봉구",
+    "동작구",
+    "마포구",
+    "서대문구",
+    "성동구",
+    "성북구",
+    "서초구",
+    "송파구",
+    "영등포구",
+    "용산구",
+    "양천구",
+    "은평구",
+    "종로구",
+    "중구",
+    "중랑구",
+  ];
+
   const navigate = useNavigate();
 
   const [data, setData] = useState([]);
@@ -89,7 +117,6 @@ export default function Request() {
     setContentLength(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
   };
 
-
   const handleGender = (e) => {
     setFilter({
       ...filter,
@@ -111,7 +138,7 @@ export default function Request() {
 
   useEffect(() => {
     usertype === "B" && getData(filter);
-    console.log("get filter data")
+    console.log("get filter data");
   }, [filter]);
 
   useEffect(() => {
@@ -123,6 +150,7 @@ export default function Request() {
       {token ? (
         <div className="Content">
           <h1>잡아줘요</h1>
+          <GapItems $col $gap="1rem">
           {usertype === "B" && (
             <GapItems>
               <select onChange={handleGender} id="gender" defaultValue="A">
@@ -130,37 +158,11 @@ export default function Request() {
                 <option value="F">여성</option>
                 <option value="M">남성</option>
               </select>
-              <select
-                onChange={handleSigungu}
-                id="sigungu"
-                defaultValue=""
-              >
+              <select onChange={handleSigungu} id="sigungu" defaultValue="">
                 <option value="">전체</option>
-                <option value="강남구">강남구</option>
-                <option value="강동구">강동구</option>
-                <option value="강서구">강서구</option>
-                <option value="강북구">강북구</option>
-                <option value="관악구">관악구</option>
-                <option value="광진구">광진구</option>
-                <option value="구로구">구로구</option>
-                <option value="금천구">금천구</option>
-                <option value="노원구">노원구</option>
-                <option value="동대문구">동대문구</option>
-                <option value="도봉구">도봉구</option>
-                <option value="동작구">동작구</option>
-                <option value="마포구">마포구</option>
-                <option value="서대문구">서대문구</option>
-                <option value="성동구">성동구</option>
-                <option value="성북구">성북구</option>
-                <option value="서초구">서초구</option>
-                <option value="송파구">송파구</option>
-                <option value="영등포구">영등포구</option>
-                <option value="용산구">용산구</option>
-                <option value="양천구">양천구</option>
-                <option value="은평구">은평구</option>
-                <option value="종로구">종로구</option>
-                <option value="중구">중구</option>
-                <option value="중랑구">중랑구</option>
+                {sigunguArr.map((sigungu) => (
+                  <option value={sigungu}>{sigungu}</option>
+                ))}
               </select>
               <select onChange={handlePrice} id="price" defaultValue="1">
                 <option value="1">1만원대</option>
@@ -174,35 +176,35 @@ export default function Request() {
           {usertype === "B" ? (
             data.length > 0 ? (
               <GapItems $col>
-              {data.map((item) => (
-                // 각 컨테이너 클릭시 상세페이지로 이동
-                <Link to={`/request/${item.id}`} key={item.id}>
-                  <Container key={item.id}>
-                    <p>{item.content}</p>
-                    <GapItems>
-                      <Badge>
-                        <LocationOnRoundedIcon fontSize="small" />
-                        {item.sido} {item.sigungu}
-                      </Badge>
-                      <Badge>
-                        <PersonRoundedIcon fontSize="small" />
-                        {item.gender === "F"
-                          ? "여자"
-                          : item.gender === "M"
-                          ? "남자"
-                          : "성별무관"}
-                      </Badge>
-                      <Badge>
-                        <CreditCardRoundedIcon fontSize="small" />
-                        {item.price.toLocaleString()}
-                      </Badge>
-                    </GapItems>
-                    <Span>
-                      {formatDateTime(item.createdAt)} | 작성자: {item.userid}
-                    </Span>
-                  </Container>
-                </Link>
-              ))}
+                {data.map((item) => (
+                  // 각 컨테이너 클릭시 상세페이지로 이동
+                  <Link to={`/request/${item.id}`} key={item.id}>
+                    <Container key={item.id}>
+                      <p>{item.content}</p>
+                      <GapItems>
+                        <Badge>
+                          <LocationOnRoundedIcon fontSize="small" />
+                          {item.sido} {item.sigungu}
+                        </Badge>
+                        <Badge>
+                          <PersonRoundedIcon fontSize="small" />
+                          {item.gender === "F"
+                            ? "여자"
+                            : item.gender === "M"
+                            ? "남자"
+                            : "성별무관"}
+                        </Badge>
+                        <Badge>
+                          <CreditCardRoundedIcon fontSize="small" />
+                          {item.price.toLocaleString()}
+                        </Badge>
+                      </GapItems>
+                      <Span>
+                        {formatDateTime(item.createdAt)} | 작성자: {item.userid}
+                      </Span>
+                    </Container>
+                  </Link>
+                ))}
               </GapItems>
             ) : (
               <Container>요청사항이 없습니다.</Container>
@@ -334,6 +336,7 @@ export default function Request() {
               </Container>
             </form>
           )}
+          </GapItems>
         </div>
       ) : (
         navigate("/")
