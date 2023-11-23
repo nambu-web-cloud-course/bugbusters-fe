@@ -8,7 +8,11 @@ import { useState, useEffect } from "react";
 import api from "../../api";
 import { Span, P } from "../common/Text";
 
-export default function CommonForm({ handleCommonForm }) {
+export default function CommonForm({
+  handleCommonForm,
+  authComplete,
+  setAuthComplete,
+}) {
   // URL의 usertype 파라미터 가져오기
   const { usertype } = useParams();
   const isBuster = usertype === "buster" ? true : false;
@@ -17,10 +21,10 @@ export default function CommonForm({ handleCommonForm }) {
   const [address, setAddress] = useState({});
 
   // SMS 인증 코드
+  const [time, setTime] = useState("3:00");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [sendSMS, setSendSMS] = useState(false);
   const [smsCode, setSMSCode] = useState("");
-  const [authComplete, setAuthComplete] = useState(false);
 
   const {
     register,
@@ -53,6 +57,31 @@ export default function CommonForm({ handleCommonForm }) {
       : "";
   };
 
+  useEffect(() => {
+    if (sendSMS) {
+      let minute = 3;
+      let second = 0;
+
+      const setCodeTime = setInterval(() => {
+        if (second === 0) {
+          second = 59;
+          minute -= 1;
+        } else {
+          second -= 1;
+        }
+
+        if (minute === 0 && second === 0) {
+          clearInterval(setCodeTime);
+          alert("유효시간이 만료됐습니다. 인증을 다시 진행해주세요.");
+        }
+
+        setTime(`${minute}:${second < 10 ? "0" : ""}${second}`);
+      }, 1000);
+
+      return () => clearInterval(setCodeTime);
+    }
+  }, [sendSMS]);
+
   // 서버에 휴대폰번호 전송 - 서버는 받은 번호로 인증번호 6자리를 포함한 문자 전송
   const handleSMS = async (phoneNumber) => {
     const data = {
@@ -62,6 +91,7 @@ export default function CommonForm({ handleCommonForm }) {
       const res = await api.post("/auth/sms", data);
       if (res.data.success) {
         console.log("Success sending Phone Number");
+        // countTime
       } else {
         console.log("Error sending phone number");
       }
@@ -108,7 +138,10 @@ export default function CommonForm({ handleCommonForm }) {
           <label htmlFor="userid">아이디</label>
           <GapItems $col $left>
             <input
-              {...register("userid", { required: true })}
+              {...register("userid", { 
+                required: true 
+              
+              })}
               placeholder="아이디를 입력하세요."
               id="userid"
               autoFocus
@@ -152,7 +185,7 @@ export default function CommonForm({ handleCommonForm }) {
               {...register("birthdate", { required: true })}
               id="birthdate"
               type="date"
-              data-placeholder="생년월일을 입력해주세요."
+              data-placeholder="생년월일을 입력하세요."
               required
               aria-require="true"
             />
@@ -189,29 +222,29 @@ export default function CommonForm({ handleCommonForm }) {
             <Span $textColor="alert">휴대폰 인증을 진행해주세요.</Span>
           )}
         </GapItems>
-        {/* {sendSMS && ( */}
-        <div style={{ display: authComplete ? "none" : "block" }}
-      >
-          <GapItems>
-            <input
-              placeholder="인증번호를 입력하세요."
-              id="phone"
-              onChange={handleCodeChange}
-              maxLength={6}
-              value={smsCode}
-            />
-            <Button
-              $width="50%"
-              $color="green"
-              $size="lg"
-              type="button"
-              onClick={() => authCode(phoneNumber)}
-            >
-              인증
-            </Button>
-          </GapItems>
-        </div>
-        {/* )} */}
+        {sendSMS && (
+          <div style={{ display: authComplete ? "none" : "block" }}>
+            <GapItems>
+              <input
+                placeholder="인증번호를 입력하세요."
+                id="phone"
+                onChange={handleCodeChange}
+                maxLength={6}
+                value={smsCode}
+              />
+              <Button
+                $width="50%"
+                $color="green"
+                $size="lg"
+                type="button"
+                onClick={() => authCode(phoneNumber)}
+              >
+                인증
+              </Button>
+            </GapItems>
+            <Span $textColor="alert">{time}</Span>
+          </div>
+        )}
         <GapItems $col $left>
           <label htmlFor="gender">성별</label>
           <div className="select">
