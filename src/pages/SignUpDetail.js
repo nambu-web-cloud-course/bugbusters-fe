@@ -17,7 +17,7 @@ export default function SignUpDetail() {
       // 마지막 점검 후 활성화
       // if (!authComplete) {
       //   alert("휴대폰 인증을 진행해주세요.");
-      //   return; 
+      //   return;
       // }
       const res = await api.post("/auth/sign-up", data);
       if (res.data.success) {
@@ -37,18 +37,20 @@ export default function SignUpDetail() {
   };
 
   return (
-    <div className="Content">
-      <h1>{isBuster ? "버스터" : "무서버"} 회원가입</h1>
-      {submitCommonForm ? (
-        ""
-      ) : (
-        <CommonForm
-          handleCommonForm={handleCommonForm}
-          authComplete={authComplete}
-          setAuthComplete={setAuthComplete}
-        />
-      )}
-      {submitCommonForm && isBuster ? <BusterProfile /> : ""}
+    <div className="Wrapper">
+      <div className="Content">
+        <h1>{isBuster ? "버스터" : "무서버"} 회원가입</h1>
+        {submitCommonForm ? (
+          ""
+        ) : (
+          <CommonForm
+            handleCommonForm={handleCommonForm}
+            authComplete={authComplete}
+            setAuthComplete={setAuthComplete}
+          />
+        )}
+        {submitCommonForm && isBuster ? <BusterProfile /> : ""}
+      </div>
     </div>
   );
 }

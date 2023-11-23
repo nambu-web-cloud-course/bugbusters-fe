@@ -7,22 +7,23 @@ import { useNavigate } from "react-router-dom";
 
 export default function Chat({ socket }) {
   const token = localStorage.getItem("token");
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   return (
     <>
-    {
-      token? (
-        <Container>
-      <ChatNavBar socket={socket} />
-      <div>
-        <Messages socket={socket} />
-        <SendMessage socket={socket} />
-      </div>
-    </Container>
-      ) : (navigate("/"))
-    }
+      {token ? (
+        <div className="Wrapper">
+          <Container>
+            <ChatNavBar socket={socket} />
+            <div>
+              <Messages socket={socket} />
+              <SendMessage socket={socket} />
+            </div>
+          </Container>
+        </div>
+      ) : (
+        navigate("/")
+      )}
     </>
-    
   );
 }

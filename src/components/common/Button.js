@@ -17,6 +17,9 @@ const colorStyles = css`
       &:active {
         background: ${darken(0.1, buttonColor)};
       }
+      &:focus {
+        background: ${darken(0.1, buttonColor)};
+      }
       &:disabled {
         background: ${theme.color.gray02};
         color: ${theme.color.gray03};
@@ -42,6 +45,10 @@ const colorStyles = css`
 `;
 
 const sizes = {
+  xl: {
+    padding: "1rem 1.5rem",
+    fontSize: "1.25rem",
+  },
   lg: {
     padding: "1rem",
     fontSize: "1rem",
@@ -104,8 +111,6 @@ const StyledButton = styled.button`
 
   ${fullWidthStyle}
 `;
-
-// 이미지 버튼 추가
 
 export default function Button({
   children,

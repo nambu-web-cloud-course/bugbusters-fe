@@ -19,6 +19,7 @@ import ChatList from "./pages/ChatList";
 import Review from "./pages/Review"
 import NotFound from "./pages/NotFound"
 
+
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -28,7 +29,6 @@ const App = () => {
           <Header />
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/landing" element={<Landing />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/sign-up/:usertype" element={<SignUpDetail />} />
@@ -46,6 +46,7 @@ const App = () => {
             <Route path="/review/:tradeid/:busterid" element={<Review />} />            
             <Route path="*" element={<NotFound />} />
           </Routes>
+          
         </Router>
       </div>
     </ThemeProvider>

@@ -5,6 +5,7 @@ import { DropDown, DropMenu } from "./DropDown";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Span } from "./Text";
+import Logo from "./Logo";
 
 const StyledHeader = styled.header`
   top: 0;
@@ -15,6 +16,8 @@ const StyledHeader = styled.header`
     usertype === "B" ? theme.color.lightgreen : "white"};
   display: flex;
   justify-content: center;
+  box-shadow: ${({ usertype }) =>
+    usertype === "B" ? "0" : "0 0 6px rgba(0, 0, 0, 0.1)"};
 `;
 
 const InnerHeader = styled.div`
@@ -64,7 +67,7 @@ export default function Header() {
           <Menu>
             <li>
               <Link to="/">
-                <img width="120px" src="img/logo.png" alt="logo.png" />
+                <Logo  />
               </Link>
             </li>
             {isSignIn && (
