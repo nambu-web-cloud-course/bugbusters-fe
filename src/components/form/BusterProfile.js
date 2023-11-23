@@ -9,6 +9,7 @@ import api from "../../api";
 import Badge from "../common/Badge";
 import { Span, P } from "../common/Text";
 
+
 export default function BusterProfile() {
   // 프로필 작성 중인 버스터 아이디
   const url = new URL(window.location.href);
@@ -218,7 +219,6 @@ export default function BusterProfile() {
                 defaultValue={busterid ? data.accno : ""}
                 placeholder="계좌번호를 입력해주세요."
                 id="accno"
-                type="number"
               />
             </GapItems>
           </GapItems>

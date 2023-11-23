@@ -12,11 +12,13 @@ export default function MyPage() {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const token = JSON.parse(localStorage.getItem("token"));
   const [data, setData] = useState([]);
+  const [address, setAddress] = useState({});
+  const [time, setTime] = useState("3:00");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [sendSMS, setSendSMS] = useState(false);
   const [smsCode, setSMSCode] = useState("");
-  const [authComplete, setAuthComplete] = useState(false);
-  const [address, setAddress] = useState({});
   const [modifyPhone, setModifyPhone] = useState(false);
+  const [authComplete, setAuthComplete] = useState(false);
 
   const navigate = useNavigate();
   const {
@@ -29,6 +31,28 @@ export default function MyPage() {
 
   const handleChange = (e) => {
     setSMSCode(e.target.value);
+  };
+
+  const handleCodeChange = (e) => {
+    setSMSCode(e.target.value);
+  };
+
+  const handlePhoneNumber = (e) => {
+    const inputValue = e.target.value.replace(/[^0-9]/g, "");
+
+    const formattedValue = inputValue.replace(
+      /(\d{3})(\d{4})(\d{4})/,
+      "$1-$2-$3"
+    );
+
+    setPhoneNumber(formattedValue);
+    setValue("phone", formattedValue);
+  };
+
+  const formatPhoneNumber = (phoneNumber) => {
+    return phoneNumber
+      ? phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+      : "";
   };
 
   // 회원가입시 기입한 유저 정보 가져오기
@@ -47,12 +71,16 @@ export default function MyPage() {
     }
   };
 
-  const handleSMS = async (data) => {
+  // 서버에 휴대폰번호 전송 - 서버는 받은 번호로 인증번호 6자리를 포함한 문자 전송
+  const handleSMS = async (phoneNumber) => {
+    const data = {
+      phone: phoneNumber,
+    };
     try {
       const res = await api.post("/auth/sms", data);
-      if (data.phone === "") alert("휴대폰 번호를 입력하세요.");
       if (res.data.success) {
         console.log("Success sending Phone Number");
+        // countTime
       } else {
         console.log("Error sending phone number");
       }
@@ -62,17 +90,21 @@ export default function MyPage() {
     setSendSMS(!sendSMS);
   };
 
-  const authCode = async (data) => {
+  // 문자로 받은 코드 서버에 보내기
+  const authCode = async (phone) => {
     const code = parseInt(smsCode);
     try {
       const res = await api.post("/auth/code", {
-        data,
+        phone,
         code,
       });
+      console.log(res.data);
       if (res.data.success) {
         alert("인증 성공");
         setAuthComplete(!authComplete);
-      } else alert("다시 인증하세요.");
+      } else if (res.data.message === "Expired" && !res.data.success) {
+        alert("유효시간이 지났습니다. 다시 인증해주세요.");
+      } else alert("잘못된 인증 번호입니다. 다시 인증해주세요.");
     } catch (err) {
       console.log("Error sending phone auth code", err);
     }
@@ -85,12 +117,6 @@ export default function MyPage() {
     } catch (err) {
       console.log("MyPage Edit", err);
     }
-  };
-
-  const formatPhoneNumber = (phoneNumber) => {
-    return phoneNumber
-      ? phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
-      : "";
   };
 
   const setAddressValue = () => {
@@ -106,6 +132,31 @@ export default function MyPage() {
   useEffect(() => {
     setAddressValue();
   }, [address]);
+
+  useEffect(() => {
+    if (sendSMS) {
+      let minute = 3;
+      let second = 0;
+
+      const setCodeTime = setInterval(() => {
+        if (second === 0) {
+          second = 59;
+          minute -= 1;
+        } else {
+          second -= 1;
+        }
+
+        if (minute === 0 && second === 0) {
+          clearInterval(setCodeTime);
+          alert("유효시간이 만료됐습니다. 인증을 다시 진행해주세요.");
+        }
+
+        setTime(`${minute}:${second < 10 ? "0" : ""}${second}`);
+      }, 1000);
+
+      return () => clearInterval(setCodeTime);
+    }
+  }, [sendSMS]);
 
   return (
     <>
@@ -134,10 +185,11 @@ export default function MyPage() {
                     {...register("phone", { required: true })}
                     maxLength={13}
                     placeholder="'-' 빼고 입력"
+                    onChange={handlePhoneNumber}
                     value={formatPhoneNumber(watch("phone"))}
                     id="phone"
                     type="tel"
-                    disabled={!modifyPhone}
+                    disabled={authComplete}
                   />
                   {modifyPhone ? (
                     <Button
@@ -168,13 +220,13 @@ export default function MyPage() {
                   <Span $textColor="alert">휴대폰 인증을 진행해주세요.</Span>
                 )}
               </GapItems>
-              {sendSMS ? (
-                <form style={{ display: authComplete ? "none" : "block" }}>
+              {sendSMS && (
+                <div style={{ display: authComplete ? "none" : "block" }}>
                   <GapItems>
                     <input
                       placeholder="인증번호를 입력하세요."
                       id="phone"
-                      onChange={handleChange}
+                      onChange={handleCodeChange}
                       maxLength={6}
                       value={smsCode}
                     />
@@ -182,13 +234,15 @@ export default function MyPage() {
                       $width="50%"
                       $color="green"
                       $size="lg"
-                      onClick={handleSubmit(authCode)}
+                      type="button"
+                      onClick={() => authCode(phoneNumber)}
                     >
                       인증
                     </Button>
                   </GapItems>
-                </form>
-              ) : null}
+                  <Span $textColor="alert">{time}</Span>
+                </div>
+              )}
               <label htmlFor="birthdate">성별</label>
               <div className="select">
                 <input

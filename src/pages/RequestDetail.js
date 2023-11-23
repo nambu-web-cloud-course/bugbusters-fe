@@ -115,9 +115,9 @@ export default function RequestDetail({ socket }) {
               <Badge>
                 <PersonRoundedIcon fontSize="small" />
                 {data.gender === "F"
-                  ? "여자"
+                  ? "여성"
                   : data.gender === "M"
-                  ? "남자"
+                  ? "남성"
                   : "성별무관"}
               </Badge>
               <Badge>
