@@ -13,25 +13,39 @@ export default function UserInfo({
   content,
   price,
   tradecount,
+  profile,
 }) {
+  const formattedPrice = price ? price.toLocaleString() : 0;
+
   return (
     <GapItems $gap="1rem" $left>
-      <div
-        style={{
-          width: "3rem",
-          height: "3rem",
-          borderRadius: "0.25rem",
-          backgroundColor: "lightgray",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <SentimentVeryDissatisfiedRoundedIcon
-          fontSize="large"
-          color="disabled"
-        />
-      </div>
+      {usertype === "B" ? (
+        <div
+          style={{
+            width: "3rem",
+            height: "3rem",
+            borderRadius: "0.25rem",
+            backgroundColor: "lightgray",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <SentimentVeryDissatisfiedRoundedIcon
+            fontSize="large"
+            color="disabled"
+          />
+        </div>
+      ) : (
+        <div>
+          <img
+            style={{ width: "3.5rem" }}
+            src={`${profile}`}
+            alt="Profile"
+          />
+        </div>
+      )}
+
       <div>
         <GapItems $col $left>
           <GapItems>
@@ -45,7 +59,7 @@ export default function UserInfo({
           <GapItems>
             {usertype === "B" ? (
               <Span $textColor="darkgreen" $fontWeight="700">
-                {price ? `${price}원` : ""}
+                 {formattedPrice}원
               </Span>
             ) : (
               <Badge

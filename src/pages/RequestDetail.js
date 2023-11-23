@@ -143,7 +143,8 @@ export default function RequestDetail({ socket }) {
                 $color="green"
                 $size="lg"
                 $fullwidth
-                disabled={data.state !== "PR"}
+                style={{display: data.state !== "PR"? "none" : "block"}}
+                
               >
                 요청 취소
               </Button>

@@ -162,7 +162,7 @@ export default function ChatNavBar({ socket }) {
         {renderButton(<FaceRoundedIcon />, "프로필 보기", handleProfileModal)}
         {renderButton(<LocationOnRoundedIcon />, "주소 전송", sendAddress)}
         {renderButton(<CreateRoundedIcon />, "리뷰 작성", () =>
-          navigate(`/review/${tradeid}`)
+          navigate(`/review/${tradeid}/${busterid}`)
         )}
         {renderButton(<CheckRoundedIcon />, "거래완료", completeTrade)}
       </>
@@ -216,6 +216,7 @@ export default function ChatNavBar({ socket }) {
                 content={request?.content}
                 price={request?.price}
                 tradecount={userinfo?.tradecount}
+                profile={busterprofile?.profile}
               />
             </Link>
             <button onClick={leaveRoom}>
@@ -242,7 +243,9 @@ export default function ChatNavBar({ socket }) {
                     </GapItems>
                     <GapItems>
                       <P $fontWeight="700">지역</P>
-                      <p>{userinfo?.sido}{" "}{userinfo?.sigungu}</p>
+                      <p>
+                        {userinfo?.sido} {userinfo?.sigungu}
+                      </p>
                     </GapItems>
                     <GapItems>
                       <Badge

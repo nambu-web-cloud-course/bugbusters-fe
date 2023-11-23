@@ -7,7 +7,8 @@ import GapItems from "../common/GapItems";
 import { useState, useEffect } from "react";
 import api from "../../api";
 import { Span, P } from "../common/Text";
-
+import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
+import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 export default function CommonForm({
   handleCommonForm,
   authComplete,
@@ -25,6 +26,8 @@ export default function CommonForm({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [sendSMS, setSendSMS] = useState(false);
   const [smsCode, setSMSCode] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordType, setPasswordType] = useState("password");
 
   const {
     register,
@@ -39,16 +42,15 @@ export default function CommonForm({
   };
 
   const handlePhoneNumber = (e) => {
-    const inputValue = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    const inputValue = e.target.value.replace(/[^0-9]/g, ""); 
 
-    // Format the phone number as "XXX-XXXX-XXXX"
     const formattedValue = inputValue.replace(
       /(\d{3})(\d{4})(\d{4})/,
       "$1-$2-$3"
     );
 
     setPhoneNumber(formattedValue);
-    setValue("phone", formattedValue); // Update the value in the form data
+    setValue("phone", formattedValue);
   };
 
   const formatPhoneNumber = (phoneNumber) => {
@@ -109,6 +111,7 @@ export default function CommonForm({
         phone,
         code,
       });
+      console.log(res.data)
       if (res.data.success) {
         alert("인증 성공");
         setAuthComplete(!authComplete);
@@ -118,6 +121,11 @@ export default function CommonForm({
     } catch (err) {
       console.log("Error sending phone auth code", err);
     }
+  };
+
+  const setPassword = () => {
+    setShowPassword(!showPassword);
+    showPassword ? setPasswordType("password") : setPasswordType("text");
   };
 
   const setAddressValue = () => {
@@ -138,30 +146,75 @@ export default function CommonForm({
           <label htmlFor="userid">아이디</label>
           <GapItems $col $left>
             <input
-              {...register("userid", { 
-                required: true 
-              
+              {...register("userid", {
+                required: {
+                  value: true,
+                  message: "아이디를 입력해주세요.",
+                },
+                pattern: {
+                  value: /^[A-Za-z0-9]+$/,
+                  message: "영문 또는 숫자만 입력해주세요.",
+                },
+                minLength: {
+                  value: 4,
+                  message: "최소 4자 이상 입력해주세요.",
+                },
+                maxLength: {
+                  value: 15,
+                  message: "최대 15자까지 입력 가능합니다.",
+                },
               })}
               placeholder="아이디를 입력하세요."
               id="userid"
               autoFocus
             />
-            {errors.userid?.type === "required" && (
-              <Span $textColor="alert">아이디를 입력해주세요.</Span>
+            {errors.userid && (
+              <Span $textColor="alert">{errors.userid.message}</Span>
             )}
           </GapItems>
         </GapItems>
         <GapItems $col $left>
           <label htmlFor="password">비밀번호</label>
           <GapItems $col $left>
-            <input
-              {...register("password", { required: true })}
-              type="password"
-              placeholder="영문 대소문자 + 숫자 + 특수문자 8~20자리"
-              id="password"
-            />
-            {errors.password?.type === "required" && (
-              <Span $textColor="alert">비밀번호를 입력해주세요.</Span>
+            <GapItems>
+              <input
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "비밀번호를 입력해주세요.",
+                  },
+                  pattern: {
+                    value:
+                      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])/,
+                    message: "영문 + 숫자 + 특수문자를 입력해주세요.",
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "최소 8자 이상 입력해주세요.",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "최대 20자까지 입력 가능합니다.",
+                  },
+                })}
+                type={passwordType}
+                placeholder="영문 + 숫자 + 특수문자 8~20자리"
+                id="password"
+              />
+              <button
+                type="button"
+                onClick={setPassword}
+                style={{ color: "gray" }}
+              >
+                {showPassword ? (
+                  <VisibilityOffRoundedIcon fontSize="small" />
+                ) : (
+                  <RemoveRedEyeRoundedIcon fontSize="small" />
+                )}
+              </button>
+            </GapItems>
+            {errors.password && (
+              <Span $textColor="alert">{errors.password.message}</Span>
             )}
           </GapItems>
         </GapItems>
@@ -214,6 +267,7 @@ export default function CommonForm({
               onClick={() => handleSMS(phoneNumber)}
               style={{ display: authComplete ? "none" : "block" }}
               disabled={!watch("phone")}
+              type="button"
             >
               인증번호 발송
             </Button>

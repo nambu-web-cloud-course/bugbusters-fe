@@ -14,10 +14,11 @@ export default function SignUpDetail() {
   // 공통 회원가입 폼 제출
   const handleCommonForm = async (data) => {
     try {
-      if (!authComplete) {
-        alert("휴대폰 인증을 진행해주세요.");
-        return; 
-      }
+      // 마지막 점검 후 활성화
+      // if (!authComplete) {
+      //   alert("휴대폰 인증을 진행해주세요.");
+      //   return; 
+      // }
       const res = await api.post("/auth/sign-up", data);
       if (res.data.success) {
         // usertype 무서버일 경우
@@ -34,7 +35,7 @@ export default function SignUpDetail() {
       console.log("Error submitting common form", err);
     }
   };
-  
+
   return (
     <div className="Content">
       <h1>{isBuster ? "버스터" : "무서버"} 회원가입</h1>

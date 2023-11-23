@@ -139,7 +139,6 @@ export default function Request() {
 
   useEffect(() => {
     usertype === "B" && getData(filter);
-    console.log("get filter data");
   }, [filter]);
 
   useEffect(() => {
@@ -229,7 +228,7 @@ export default function Request() {
                       maxLength: 200,
                     })}
                     onChange={onTextareaHandler}
-                    placeholder="최소 10자 이상 벌레 종류, 나타난 위치 등 상세한 정보를 입력해주세요."
+                    placeholder="(최소 10자 이상) 벌레 종류, 나타난 위치 등 상세한 정보를 입력해주세요."
                     id="content"
                   />
                   {errors.content?.type === "required" && (

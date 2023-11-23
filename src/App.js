@@ -43,7 +43,7 @@ const App = () => {
             <Route path="/buster" element={<BusterProfile />} />
             <Route path="/profile" element={<BusterProfile />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/review/:tradeid" element={<Review />} />            
+            <Route path="/review/:tradeid/:busterid" element={<Review />} />            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

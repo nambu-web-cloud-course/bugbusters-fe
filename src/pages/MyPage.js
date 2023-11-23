@@ -107,8 +107,6 @@ export default function MyPage() {
     setAddressValue();
   }, [address]);
 
-  console.log(watch());
-
   return (
     <>
       {token ? (
