@@ -14,11 +14,18 @@ export default function SignUpDetail() {
   // 공통 회원가입 폼 제출
   const handleCommonForm = async (data) => {
     try {
+      
       // 마지막 점검 후 활성화
       // if (!authComplete) {
       //   alert("휴대폰 인증을 진행해주세요.");
       //   return;
       // }
+      const isExist = await api.get(`/auth/isexist?userid=${data.userid}`);
+      console.log(isExist.data);
+      if(isExist.data.success) {
+        alert("중복된 아이디입니다.")
+        return;
+      }
       const res = await api.post("/auth/sign-up", data);
       if (res.data.success) {
         // usertype 무서버일 경우

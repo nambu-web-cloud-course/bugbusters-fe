@@ -16,9 +16,7 @@ export default function ChatList({ socket }) {
   const [chatroom, setChatRoom] = useState([]);
   const [userinfo, setUserInfo] = useState([]);
   const [request, setRequest] = useState([]);
-  const [trade, setTrade] = useState([]);
-  const [completeTrade, setCompleteTrade] = useState("");
-  const [reviews, setReviews] = useState([]);
+  const [busterprofile, setBusterProfile] = useState([]);
 
   const getChatRoom = async () => {
     const typeid = usertype === "B" ? "busterid" : "userid";
@@ -51,17 +49,23 @@ export default function ChatList({ socket }) {
     }
   };
 
-  const getTrade = async () => {
+  const getBusterProfile = async () => {
     try {
-      const res = await api.get(`/trade?userid=${userid}`);
-      if (res.data.success) {
-        const data = res.data.data;
-        setTrade(data);
-      } else {
-        console.log("Error fetching trade");
+      const busters = [];
+      for (let i = 0; i < chatroom.length; i++) {
+        if (chatroom[i] && chatroom[i].busterid) {
+          const res = await api.get(`/auth/buster?userid=${chatroom[i].busterid}`);
+          if (res.data.success) {
+            const data = res.data.data;
+            busters.push(data);
+          } else {
+            console.log("Error fetching buster profile");
+          }
+        }
       }
+      setBusterProfile(busters);
     } catch (err) {
-      console.log("Error fetching trade", err);
+      console.log("Error fetching buster profile", err);
     }
   };
 
@@ -79,79 +83,19 @@ export default function ChatList({ socket }) {
       console.log("Error getting userinfo", err);
     }
   };
-
-  const getCompleteTrade = () => {
-    const arr = [];
-    trade.map((item) => {
-      item.state === "CP" && arr.push(item);
-    });
-    setCompleteTrade(arr.length);
-  };
-
-  const getReviews = () => {
-    let counts = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-    };
-
-    trade.forEach((item) => {
-      if (item.state === "CP" && (item.rev1 || item.rev2 || item.rev3)) {
-        counts[item.rev1]++;
-        counts[item.rev2]++;
-        counts[item.rev3]++;
-      }
-    });
-
-    setReviews(counts);
-  };
-
-  const showReview = () => {
-    const reviewCodes = {
-      1: "빨라요",
-      2: "침착해요",
-      3: "시간을 잘 지켜요",
-      4: "꼼꼼해요",
-      5: "섬세해요",
-    };
-
-    const badges = [];
-    for (const keyword in reviews) {
-      if (reviews[keyword] === 0) continue;
-      badges.push(
-        <Badge
-          key={keyword}
-        >{`${reviewCodes[keyword]} ${reviews[keyword]}`}</Badge>
-      );
-    }
-    return badges;
+  const handleList = (room) => {
+    socket.emit("join_room", { userid, room });
   };
 
   useEffect(() => {
     getChatRoom();
-    getTrade();
   }, []);
-
-  useEffect(() => {
-    getCompleteTrade();
-    getReviews();
-  }, [trade]);
-
-  useEffect(() => {
-    showReview();
-  }, [reviews]);
 
   useEffect(() => {
     getUserInfo();
     getReqData();
+    getBusterProfile();
   }, [chatroom]);
-
-  const handleList = (room) => {
-    // 수정 필요 ...?
-    socket.emit("join_room", { userid, room });
-  };
 
   return (
     <>
@@ -179,9 +123,9 @@ export default function ChatList({ socket }) {
                           content={request[idx]?.content}
                           price={request[idx]?.price}
                           usertype={usertype}
-                          completeTrade={completeTrade}
+                          tradecount={busterprofile[idx]?.tradecount}
+                          profile={busterprofile[idx]?.profile}
                         />
-                        <GapItems>{showReview()}</GapItems>
                         <Span>{formatDateTime(room.createdAt)}</Span>
                       </Container>
                     </Link>

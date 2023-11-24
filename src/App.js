@@ -26,7 +26,7 @@ const App = () => {
       <div className="App">
         <Router>
           <GlobalStyle />
-          <Header />
+          <Header socket={socket}/>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/sign-in" element={<SignIn />} />

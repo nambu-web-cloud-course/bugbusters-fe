@@ -55,6 +55,7 @@ export default function Landing() {
   const [revCode, setRevCode] = useState(1);
   const [keyword, setKeyword] = useState(["빠른", "침착한", "친절한", "꼼꼼한", "터프한"]);
   const REV_CODE = "revcode" + revCode
+  
   const getBestBuster = async () => {
     try {
       const res = await api.get("/best");

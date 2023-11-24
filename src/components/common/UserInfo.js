@@ -45,7 +45,6 @@ export default function UserInfo({
           />
         </div>
       )}
-
       <div>
         <GapItems $col $left>
           <GapItems>
@@ -53,7 +52,7 @@ export default function UserInfo({
               {usertype === "B" ? userid : busterid || "알 수 없음"}
             </P>
             <Span $textColor="gray04">
-              {content ? content.slice(0, 20) + "..." : ""}
+            {content && content.length > 20 ? content.slice(0, 20) + "..." : content}
             </Span>
           </GapItems>
           <GapItems>

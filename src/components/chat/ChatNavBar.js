@@ -31,7 +31,15 @@ export default function ChatNavBar({ socket }) {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const [request, setRequest] = useState([]);
   const [userinfo, setUserInfo] = useState([]);
-  const [busterprofile, setupBusterProfile] = useState([]);
+  const [busterprofile, setBusterProfile] = useState([]);
+  const [reviews, setReviews] = useState([
+    {rev: "revcode1",keyword: "빠른"},
+    {rev: "revcode2",keyword: "침착한"},
+    {rev: "revcode3",keyword: "친절한"},
+    {rev: "revcode4",keyword: "꼼꼼한"},
+    {rev: "revcode5",keyword: "터프한"},
+  ]);
+  
 
   // URL 파라미터 아이디
   const reqid = chatroom.split("_")[0];
@@ -90,7 +98,7 @@ export default function ChatNavBar({ socket }) {
       const res = await api.get(`/auth/buster?userid=${busterid}`);
       if (res.data.success) {
         const data = res.data.data;
-        setupBusterProfile(data);
+        setBusterProfile(data);
       } else {
         console.log("Error fetching buster profile");
       }
@@ -168,6 +176,16 @@ export default function ChatNavBar({ socket }) {
       </>
     );
   };
+
+  const showReview = () => {
+    return (
+      reviews.map((data, idx) => (
+        busterprofile?.[data.rev] > 0 && (
+          <Badge key={idx}>{data.keyword} {busterprofile?.[data.rev]}</Badge>
+        ) 
+      ))
+    )
+  }
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -262,33 +280,7 @@ export default function ChatNavBar({ socket }) {
                 </GapItems>
                 <GapItems $col $left>
                   <P $fontWeight="700">리뷰</P>
-                  <GapItems $wrap>
-                    {busterprofile?.revcode1 > 0 ? (
-                      <Badge>빨라요 {busterprofile?.revcode1}</Badge>
-                    ) : (
-                      ""
-                    )}
-                    {busterprofile?.revcode2 > 0 ? (
-                      <Badge>침착해요 {busterprofile?.revcode1}</Badge>
-                    ) : (
-                      ""
-                    )}
-                    {busterprofile?.revcode3 > 0 ? (
-                      <Badge>시간을 잘 지켜요 {busterprofile?.revcode1}</Badge>
-                    ) : (
-                      ""
-                    )}
-                    {busterprofile?.revcode4 > 0 ? (
-                      <Badge>꼼꼼해요 {busterprofile?.revcode1}</Badge>
-                    ) : (
-                      ""
-                    )}
-                    {busterprofile?.revcode5 > 0 ? (
-                      <Badge>터프해요 {busterprofile?.revcode1}</Badge>
-                    ) : (
-                      ""
-                    )}
-                  </GapItems>
+                  <GapItems $wrap>{showReview()}</GapItems>
                 </GapItems>
                 <GapItems $col $left>
                   <P $fontWeight="700">자기소개</P>

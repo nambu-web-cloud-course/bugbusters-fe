@@ -6,6 +6,8 @@ import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRound
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Span } from "./Text";
 import Logo from "./Logo";
+import GapItems from "../common/GapItems";
+import api from "../../api";
 
 const StyledHeader = styled.header`
   top: 0;
@@ -16,9 +18,8 @@ const StyledHeader = styled.header`
     usertype === "B" ? theme.color.lightgreen : "white"};
   display: flex;
   justify-content: center;
-  box-shadow: ${({ usertype }) =>
-    usertype === "B" ? "0" : "0 0 6px rgba(0, 0, 0, 0.1)"};
-    z-index: 999;
+  box-shadow: ${({ usertype }) => (usertype === "B" ? "0" : "0 0 6px rgba(0, 0, 0, 0.1)")};
+  z-index: 999;
 `;
 
 const InnerHeader = styled.div`
@@ -35,11 +36,20 @@ const Menu = styled.ul`
   gap: 1rem;
 `;
 
-export default function Header() {
+const Alarm = styled.span`
+  padding: 0.4rem 0.6rem;
+  border-radius: 100rem;
+  background-color: ${({ theme }) => theme.color.green};
+  color: white;
+  font-size: 0.8rem;
+`;
+
+export default function Header({ socket }) {
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const [isSignIn, setIsSignIn] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
+  const [newroom, setNewRoom] = useState("");
   const location = useLocation();
 
   // 로그아웃 함수
@@ -54,11 +64,27 @@ export default function Header() {
     setShowDropDown(!showDropDown);
   };
 
+  const getNewRoom = async () => {
+    try {
+      const res = await api.get(`/chat/new?userid=${userid}`);
+      if (res.data.success) {
+        const roomdata = res.data.data;
+        setNewRoom(roomdata);
+      }
+    } catch (err) {
+      console.log("Error getting new room", err);
+    }
+  };
+
   useEffect(() => {
     // 유저 로그인 상태 체크
     const token = localStorage.getItem("token");
     setIsSignIn(token);
   }, [location.pathname]);
+
+  useEffect(() => {
+    getNewRoom();
+  }, []);
 
   return (
     <StyledHeader usertype={usertype}>
@@ -68,7 +94,7 @@ export default function Header() {
           <Menu>
             <li>
               <Link to="/">
-                <Logo  />
+                <Logo />
               </Link>
             </li>
             {isSignIn && (
@@ -88,9 +114,12 @@ export default function Header() {
           <Menu>
             {isSignIn ? (
               <>
-                <li>
-                  <Link to="/chat">채팅</Link>
-                </li>
+                <GapItems>
+                  {newroom > 0 && <Alarm>{newroom}</Alarm>}
+                  <li>
+                    <Link to="/chat">채팅</Link>
+                  </li>
+                </GapItems>
                 <li
                   style={{
                     display: "flex",
@@ -102,28 +131,18 @@ export default function Header() {
                     {userid}
                   </Span>
                   님
-                  {showDropDown ? (
-                    <KeyboardArrowUpRoundedIcon />
-                  ) : (
-                    <KeyboardArrowDownRoundedIcon />
-                  )}
+                  {showDropDown ? <KeyboardArrowUpRoundedIcon /> : <KeyboardArrowDownRoundedIcon />}
                 </li>
                 {showDropDown ? (
                   <DropDown>
                     <DropMenu onClick={handleDropDown}>
-                      <Link
-                        style={{ padding: "1rem", width: "100%" }}
-                        to="/mypage"
-                      >
+                      <Link style={{ padding: "1rem", width: "100%" }} to="/mypage">
                         마이페이지
                       </Link>
                     </DropMenu>
                     {usertype === "B" ? (
                       <DropMenu onClick={handleDropDown}>
-                        <Link
-                          style={{ padding: "1rem", width: "100%" }}
-                          to="/profile"
-                        >
+                        <Link style={{ padding: "1rem", width: "100%" }} to="/profile">
                           프로필
                         </Link>
                       </DropMenu>

@@ -172,8 +172,6 @@ export default function Messages({ socket }) {
     getFinalPrice();
   }, [tradeid]);
 
-  // console.log("messagesRecieved", messagesRecieved);
-
   return (
     <MessagesColumn ref={messagesColumnRef}>
       {messagesRecieved.map((msg, i) => (
