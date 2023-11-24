@@ -132,7 +132,7 @@ export default function RequestDetail({ socket }) {
               <Span>
                 {formatDateTime(data.createdAt)} | 작성자: {data.userid}
               </Span>
-              {usertype === "B" ? (
+              {usertype === "B" && data.state === "PR" ? (
                 <Button onClick={joinRoom} $color="green" $size="lg" $fullwidth>
                   채팅하기
                 </Button>

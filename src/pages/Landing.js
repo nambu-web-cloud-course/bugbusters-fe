@@ -279,7 +279,7 @@ export default function Landing() {
             </GapItems>
             <GapItems $gap="1rem">
               {busterProfile.map((buster) => (
-                <Card key={buster.id}>
+                <Card key={buster?.id}>
                   <img style={{ width: "50px" }} src={`${buster?.profile}`} />
                   <P $textColor="darkgreen" $fontSize="lg" $fontWeight="600">
                     {buster?.userid}
@@ -298,10 +298,10 @@ export default function Landing() {
           <GapItems $col $gap="3rem 0">
             <h1>이만큼이나 잡았어요</h1>
             <GapItems $gap="2rem">
-              {bestBuster.map((buster) => (
-                <Card key={buster.id}>
-                  <Rank>{buster.id}</Rank>
-                  <img style={{ width: "50px" }} src={`${buster.profile}`} />
+              {bestBuster.map((buster, idx) => (
+                <Card key={buster?.id}>
+                  <Rank>{idx + 1}</Rank>
+                  <img style={{ width: "50px" }} src={`${buster?.profile}`} />
                   <P $textColor="darkgreen" $fontSize="lg" $fontWeight="600">
                     {buster?.userid}
                   </P>
