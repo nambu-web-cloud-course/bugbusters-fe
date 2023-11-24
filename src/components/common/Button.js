@@ -18,7 +18,7 @@ const colorStyles = css`
         background: ${darken(0.1, buttonColor)};
       }
       &:focus {
-        background: ${darken(0.1, buttonColor)};
+        background: #C8E793;
       }
       &:disabled {
         background: ${theme.color.gray02};

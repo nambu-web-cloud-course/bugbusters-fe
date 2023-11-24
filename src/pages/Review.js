@@ -125,11 +125,11 @@ export default function Review() {
                       <input type="checkbox" id="2" {...register("2")} />
                       <label htmlFor="2">침착해요</label>
                       <input type="checkbox" id="3" {...register("3")} />
-                      <label htmlFor="3">시간을 잘 지켜요</label>
+                      <label htmlFor="3">친절해요</label>
                       <input type="checkbox" id="4" {...register("4")} />
                       <label htmlFor="4">꼼꼼해요</label>
                       <input type="checkbox" id="5" {...register("5")} />
-                      <label htmlFor="5">섬세해요</label>
+                      <label htmlFor="5">터프해요</label>
                     </GapItems>
                     <Button $color="green" $size="lg" $fullwidth>
                       제출

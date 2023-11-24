@@ -18,6 +18,7 @@ const StyledHeader = styled.header`
   justify-content: center;
   box-shadow: ${({ usertype }) =>
     usertype === "B" ? "0" : "0 0 6px rgba(0, 0, 0, 0.1)"};
+    z-index: 999;
 `;
 
 const InnerHeader = styled.div`

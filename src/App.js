@@ -45,8 +45,7 @@ const App = () => {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/review/:tradeid/:busterid" element={<Review />} />            
             <Route path="*" element={<NotFound />} />
-          </Routes>
-          
+          </Routes>        
         </Router>
       </div>
     </ThemeProvider>
