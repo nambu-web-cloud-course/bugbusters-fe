@@ -9,8 +9,6 @@ import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import api from "../api";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Tabs from "../components/common/Tabs";
-import BusterProfile from "../components/form/BusterProfile";
 
 const Section = styled.section`
   display: flex;
@@ -35,7 +33,6 @@ const Card = styled.div`
   flex-direction: column;
   align-items: center;
   width: 14rem;
-  height: 12rem;
   gap: 0.5rem;
 `;
 
@@ -54,11 +51,10 @@ const Rank = styled.span`
 
 export default function Landing() {
   const [bestBuster, setBestBuster] = useState([]);
-  const [busterProfile, setBusterProfile] = useState([]);
   const [rankByReview, setRankByReview] = useState([]);
   const [revCode, setRevCode] = useState(1);
   const [keyword, setKeyword] = useState(["빠른", "침착한", "친절한", "꼼꼼한", "터프한"]);
-
+  const REV_CODE = "revcode" + revCode
   const getBestBuster = async () => {
     try {
       const res = await api.get("/best");
@@ -79,22 +75,6 @@ export default function Landing() {
     }
   };
 
-  const getBusterProfile = async () => {
-    const busterlist = [];
-    rankByReview.map((buster) => busterlist.push(buster?.busterid));
-    const profiles = [];
-    try {
-      for (let i = 0; i < busterlist.length; i++) {
-        const res = await api.get(`/auth/buster?userid=${busterlist[i]}`);
-        const busterData = res.data.data;
-        profiles.push(busterData);
-      }
-      setBusterProfile(profiles);
-    } catch (err) {
-      console.log("Error fetching rank by review", err);
-    }
-  };
-
   const handleClick = (e) => {
     setRevCode(e.target.value);
   };
@@ -106,10 +86,6 @@ export default function Landing() {
   useEffect(() => {
     getRankByReview();
   }, [revCode]);
-
-  useEffect(() => {
-    getBusterProfile();
-  }, [rankByReview]);
 
   return (
     <main style={{ marginTop: "-1rem" }}>
@@ -278,14 +254,13 @@ export default function Landing() {
               </Button>
             </GapItems>
             <GapItems $gap="1rem">
-              {busterProfile.map((buster) => (
-                <Card key={buster?.id}>
-                  <img style={{ width: "50px" }} src={`${buster?.profile}`} />
+              {rankByReview.map((buster) => (
+                <Card key={buster?.busterid}>
                   <P $textColor="darkgreen" $fontSize="lg" $fontWeight="600">
-                    {buster?.userid}
+                    {buster?.busterid}
                   </P>
                   <Span $textColor="black">
-                    {buster?.selfintro.slice(0, 20) + "..."}
+                    리뷰 개수: {buster?.[REV_CODE]}
                   </Span>
                 </Card>
               ))}
@@ -306,7 +281,7 @@ export default function Landing() {
                     {buster?.userid}
                   </P>
                   <Span $textColor="black">
-                    {buster?.selfintro.slice(0, 20) + "..."}
+                    {buster?.selfintro.slice(0, 10) + "..."}
                   </Span>
                   <GapItems $gap="0.25rem" $center>
                     <Span $textColor="darkgreen">
