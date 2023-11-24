@@ -33,11 +33,11 @@ export default function ChatNavBar({ socket }) {
   const [userinfo, setUserInfo] = useState([]);
   const [busterprofile, setBusterProfile] = useState([]);
   const [reviews, setReviews] = useState([
-    {rev: "revcode1",keyword: "빠른"},
-    {rev: "revcode2",keyword: "침착한"},
-    {rev: "revcode3",keyword: "친절한"},
-    {rev: "revcode4",keyword: "꼼꼼한"},
-    {rev: "revcode5",keyword: "터프한"},
+    {rev: "revcode1",keyword: "빨라요"},
+    {rev: "revcode2",keyword: "침착해요"},
+    {rev: "revcode3",keyword: "친절해요"},
+    {rev: "revcode4",keyword: "꼼꼼해요"},
+    {rev: "revcode5",keyword: "터프해요"},
   ]);
   
 

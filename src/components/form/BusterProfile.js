@@ -17,9 +17,16 @@ export default function BusterProfile() {
   // 회원가입한 버스터 아이디
   const busterid = JSON.parse(localStorage.getItem("userid"));
   const [data, setData] = useState([]);
-  const [img, setImage] = useState([]);
   const [selfintro, setSelfIntro] = useState(0);
   const [exp, setExp] = useState(0);
+  const [reviews, setReviews] = useState([
+    {rev: "revcode1",keyword: "빨라요"},
+    {rev: "revcode2",keyword: "침착해요"},
+    {rev: "revcode3",keyword: "친절해요"},
+    {rev: "revcode4",keyword: "꼼꼼해요"},
+    {rev: "revcode5",keyword: "터프해요"},
+  ]);
+  
   const navigate = useNavigate();
 
   const {
@@ -37,7 +44,6 @@ export default function BusterProfile() {
       if (res.data.success) {
         const data = res.data.data;
         setData(data);
-        setImage(data.profile);
       } else {
         console.log("Error fetching buster profile");
       }
@@ -85,6 +91,17 @@ export default function BusterProfile() {
     setExp(e.target.value.replace(/[\u3131-\uD79D]/g, "A").length);
   };
 
+  const showReview = () => {
+    return (
+      reviews.map((review, idx) => (
+        data?.[review.rev] > 0 && (
+          <Badge key={idx}>{review.keyword} {data?.[review.rev]}</Badge>
+        ) 
+      ))
+    )
+  }
+
+
   // 버스터 프로필 정보 가져오기
   useEffect(() => {
     busterid && getData();
@@ -92,6 +109,7 @@ export default function BusterProfile() {
 
   useEffect(() => {
     if (busterid) {
+      setValue("profile", data?.profile);
       setValue("selfintro", data?.selfintro);
       setValue("tech", data?.tech);
       setValue("exp", data?.exp);
@@ -101,6 +119,8 @@ export default function BusterProfile() {
     }
   }, [data]);
 
+  console.log(watch());
+  
   return (
     <div className="Wrapper">
       <div className="Content">
@@ -116,9 +136,10 @@ export default function BusterProfile() {
             <label htmlFor="profile">프로필</label>
             <GapItems>
               {busterid && (
-                <img style={{ width: "100px" }} src={`${img}`} alt="Profile" />
+                <img {...register("profile")}
+                style={{ width: "100px" }} setValue={setValue} src={`${data?.profile}`} alt="Profile" />
               )}
-              <ImageUpload id="profile" setValue={setValue} />
+              <ImageUpload id="profile" setValue={setValue} busterid={busterid} />
             </GapItems>
             <GapItems $col $left>
               <label htmlFor="selfintro">자기소개</label>
@@ -230,33 +251,7 @@ export default function BusterProfile() {
                 <label htmlFor="tradecount">퇴치건수</label>
                 <P>{data.tradecount}건</P>
                 <label htmlFor="review">리뷰</label>
-                <GapItems $wrap>
-                  {data.revcode1 > 0 ? (
-                    <Badge>빨라요 {data.revcode1}</Badge>
-                  ) : (
-                    ""
-                  )}
-                  {data.revcode2 > 0 ? (
-                    <Badge>침착해요 {data.revcode1}</Badge>
-                  ) : (
-                    ""
-                  )}
-                  {data.revcode3 > 0 ? (
-                    <Badge>시간을 잘 지켜요 {data.revcode1}</Badge>
-                  ) : (
-                    ""
-                  )}
-                  {data.revcode4 > 0 ? (
-                    <Badge>꼼꼼해요 {data.revcode1}</Badge>
-                  ) : (
-                    ""
-                  )}
-                  {data.revcode5 > 0 ? (
-                    <Badge>터프해요 {data.revcode1}</Badge>
-                  ) : (
-                    ""
-                  )}
-                </GapItems>
+                <GapItems $wrap>{showReview()}</GapItems>
               </>
             )}
             <Button $color="green" $size="lg" $fullwidth>
