@@ -29,6 +29,8 @@ export default function CommonForm({
   const [showPassword, setShowPassword] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
 
+
+  
   const {
     register,
     watch,
@@ -90,10 +92,16 @@ export default function CommonForm({
       phone: phoneNumber,
     };
     try {
+      const phoneNumber = parseInt(data.phone)
+      const isPhoneExist = await api.get(`/auth/isexist?phone=${phoneNumber}`)
+      if (isPhoneExist.data.success) {
+        alert("중복된 휴대폰 번호입니다.")
+        return;
+      }
+      
       const res = await api.post("/auth/sms", data);
       if (res.data.success) {
         console.log("Success sending Phone Number");
-        // countTime
       } else {
         console.log("Error sending phone number");
       }
@@ -138,7 +146,7 @@ export default function CommonForm({
   useEffect(() => {
     setAddressValue();
   }, [address]);
-
+  
   return (
     
     <form onSubmit={handleSubmit(handleCommonForm)}>

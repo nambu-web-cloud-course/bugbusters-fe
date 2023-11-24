@@ -84,6 +84,10 @@ export default function Header({ socket }) {
 
   useEffect(() => {
     getNewRoom();
+    const intervalId = setInterval(() => {
+      getNewRoom();
+    }, 1500000);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
