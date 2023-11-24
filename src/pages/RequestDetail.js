@@ -97,66 +97,71 @@ export default function RequestDetail({ socket }) {
 
   return (
     <>
-    {
-      token? (
-        <div className="Content">
-          <Container>
-            <GapItems>
-            {image.map((img) => (
-              <img key={img.id} style={{ width: "50%" }} src={`${img.img}`} />
-            ))}
-            </GapItems>
-            <p>{data.content}</p>
-            <GapItems>
-              <Badge>
-                <LocationOnRoundedIcon fontSize="small" />
-                {data.sido} {data.sigungu}
-              </Badge>
-              <Badge>
-                <PersonRoundedIcon fontSize="small" />
-                {data.gender === "F"
-                  ? "여성"
-                  : data.gender === "M"
-                  ? "남성"
-                  : "성별무관"}
-              </Badge>
-              <Badge>
-                <CreditCardRoundedIcon fontSize="small" />
-                {data.price?.toLocaleString()}원
-              </Badge>
-            </GapItems>
-            <Span>
-              {formatDateTime(data.createdAt)} | 작성자: {data.userid}
-            </Span>
-            {usertype === "B" ? (
-              <Button
-                onClick={joinRoom}
-                $color="green"
-                $size="lg"
-                $fullwidth
-              >
-                채팅하기
-              </Button>
-            ) : (
-              <Button
-                onClick={cancelRequest}
-                $color="green"
-                $size="lg"
-                $fullwidth
-                style={{display: data.state !== "PR"? "none" : "block"}}
-                
-              >
-                요청 취소
-              </Button>
-            )}
-          </Container>
-          <Button onClick={goBack} $color="green" $size="lg" $outline $fullwidth>
-            목록
-          </Button>
-        </div>)
-      : (navigate("/"))
-    }
+      {token ? (
+        <div className="Wrapper">
+          <div className="Content">
+            <Container>
+              <GapItems>
+                {image.map((img) => (
+                  <img
+                    key={img.id}
+                    style={{ width: "50%" }}
+                    src={`${img.img}`}
+                  />
+                ))}
+              </GapItems>
+              <p>{data.content}</p>
+              <GapItems>
+                <Badge>
+                  <LocationOnRoundedIcon fontSize="small" />
+                  {data.sido} {data.sigungu}
+                </Badge>
+                <Badge>
+                  <PersonRoundedIcon fontSize="small" />
+                  {data.gender === "F"
+                    ? "여성"
+                    : data.gender === "M"
+                    ? "남성"
+                    : "성별무관"}
+                </Badge>
+                <Badge>
+                  <CreditCardRoundedIcon fontSize="small" />
+                  {data.price?.toLocaleString()}원
+                </Badge>
+              </GapItems>
+              <Span>
+                {formatDateTime(data.createdAt)} | 작성자: {data.userid}
+              </Span>
+              {usertype === "B" ? (
+                <Button onClick={joinRoom} $color="green" $size="lg" $fullwidth>
+                  채팅하기
+                </Button>
+              ) : (
+                <Button
+                  onClick={cancelRequest}
+                  $color="green"
+                  $size="lg"
+                  $fullwidth
+                  style={{ display: data.state !== "PR" ? "none" : "block" }}
+                >
+                  요청 취소
+                </Button>
+              )}
+            </Container>
+            <Button
+              onClick={goBack}
+              $color="green"
+              $size="lg"
+              $outline
+              $fullwidth
+            >
+              목록
+            </Button>
+          </div>
+        </div>
+      ) : (
+        navigate("/")
+      )}
     </>
-
   );
 }

@@ -4,7 +4,7 @@ import reset from "styled-reset";
 const GlobalStyle = createGlobalStyle`
    ${reset}
 
-   .App {
+  .Wrapper {
   display: flex;
   justify-content: center;
   align-items: center;

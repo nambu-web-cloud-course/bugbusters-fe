@@ -79,64 +79,66 @@ export default function Review() {
   return (
     <>
       {token ? (
-        <div className="Content">
-          {submitReview ? (
-            <Container>
-              <h1>리뷰를 작성했습니다.</h1>
-              <Button
-                color="green"
-                size="lg"
-                fullwidth
-                onClick={() => {
-                  navigate("/trade-list");
-                }}
-              >
-                이용내역으로 이동
-              </Button>
-            </Container>
-          ) : (
-            <>
-              <h1>리뷰</h1>
-              <form onSubmit={handleSubmit(writeReview)}>
-                <Container>
-                  <UserInfo
-                    busterid={busterid}
-                    usertype={usertype}
-                    sido={userinfo?.sido}
-                    sigungu={userinfo?.sigungu}
-                    tradecount={busterProfile?.tradecount}
-                    profile={busterProfile?.profile}
-                  />
-                  <P>
-                    거래는 만족스러우셨나요?
-                    <br />
-                    버스터를 설명할 수 있는 키워드를 선택해주세요.{" "}
-                  </P>
-                  <Span>최대 3개 선택 가능</Span>
-                  <GapItems>
-                    <input
-                      type="checkbox"
-                      id="1"
-                      {...register("1")}
-                      defaultChecked
+        <div className="Wrapper">
+          <div className="Content">
+            {submitReview ? (
+              <Container>
+                <h1>리뷰를 작성했습니다.</h1>
+                <Button
+                  color="green"
+                  size="lg"
+                  fullwidth
+                  onClick={() => {
+                    navigate("/trade-list");
+                  }}
+                >
+                  이용내역으로 이동
+                </Button>
+              </Container>
+            ) : (
+              <>
+                <h1>리뷰</h1>
+                <form onSubmit={handleSubmit(writeReview)}>
+                  <Container>
+                    <UserInfo
+                      busterid={busterid}
+                      usertype={usertype}
+                      sido={userinfo?.sido}
+                      sigungu={userinfo?.sigungu}
+                      tradecount={busterProfile?.tradecount}
+                      profile={busterProfile?.profile}
                     />
-                    <label htmlFor="1">빨라요</label>
-                    <input type="checkbox" id="2" {...register("2")} />
-                    <label htmlFor="2">침착해요</label>
-                    <input type="checkbox" id="3" {...register("3")} />
-                    <label htmlFor="3">시간을 잘 지켜요</label>
-                    <input type="checkbox" id="4" {...register("4")} />
-                    <label htmlFor="4">꼼꼼해요</label>
-                    <input type="checkbox" id="5" {...register("5")} />
-                    <label htmlFor="5">섬세해요</label>
-                  </GapItems>
-                  <Button $color="green" $size="lg" $fullwidth>
-                    제출
-                  </Button>
-                </Container>
-              </form>
-            </>
-          )}
+                    <P>
+                      거래는 만족스러우셨나요?
+                      <br />
+                      버스터를 설명할 수 있는 키워드를 선택해주세요.{" "}
+                    </P>
+                    <Span>최대 3개 선택 가능</Span>
+                    <GapItems>
+                      <input
+                        type="checkbox"
+                        id="1"
+                        {...register("1")}
+                        defaultChecked
+                      />
+                      <label htmlFor="1">빨라요</label>
+                      <input type="checkbox" id="2" {...register("2")} />
+                      <label htmlFor="2">침착해요</label>
+                      <input type="checkbox" id="3" {...register("3")} />
+                      <label htmlFor="3">친절해요</label>
+                      <input type="checkbox" id="4" {...register("4")} />
+                      <label htmlFor="4">꼼꼼해요</label>
+                      <input type="checkbox" id="5" {...register("5")} />
+                      <label htmlFor="5">터프해요</label>
+                    </GapItems>
+                    <Button $color="green" $size="lg" $fullwidth>
+                      제출
+                    </Button>
+                  </Container>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       ) : (
         navigate("/")
