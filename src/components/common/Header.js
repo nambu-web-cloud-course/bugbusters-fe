@@ -86,7 +86,7 @@ export default function Header({ socket }) {
     getNewRoom();
     const intervalId = setInterval(() => {
       getNewRoom();
-    }, 1500000);
+    }, 1500);
     return () => clearInterval(intervalId);
   }, []);
 
