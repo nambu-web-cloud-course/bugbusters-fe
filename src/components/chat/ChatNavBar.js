@@ -32,6 +32,7 @@ export default function ChatNavBar({ socket }) {
   const [request, setRequest] = useState([]);
   const [userinfo, setUserInfo] = useState([]);
   const [busterprofile, setBusterProfile] = useState([]);
+  const [finalprice, setFinalPrice] = useState("")
   const [reviews, setReviews] = useState([
     {rev: "revcode1",keyword: "빨라요"},
     {rev: "revcode2",keyword: "침착해요"},
@@ -125,17 +126,19 @@ export default function ChatNavBar({ socket }) {
   };
 
   const requestPayment = async (data) => {
-    const finalprice = { finalprice: parseInt(data.finalprice) };
+    const fprice = parseInt(data.finalprice)
+    const finalprice = { finalprice: fprice };
 
     try {
       const res = await api.put(`/trade/${tradeid}`, finalprice);
       if (res.data.success) {
+        setFinalPrice(fprice)
         console.log("Success sending payment request");
         handleModal();
         socket.emit("request_payment", {
           userid,
           room,
-          price: parseInt(data.finalprice),
+          price: fprice,
         });
       }
     } catch (err) {
@@ -189,7 +192,6 @@ export default function ChatNavBar({ socket }) {
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      console.log("receive_message(msgs)", data);
       setMessagesReceived((state) => [
         ...state,
         {
@@ -233,7 +235,7 @@ export default function ChatNavBar({ socket }) {
                 sigungu={userinfo?.sigungu}
                 content={request?.content}
                 price={request?.price}
-                tradecount={userinfo?.tradecount}
+                tradecount={busterprofile?.tradecount}
                 profile={busterprofile?.profile}
               />
             </Link>

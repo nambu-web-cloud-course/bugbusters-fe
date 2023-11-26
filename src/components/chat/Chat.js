@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function Chat({ socket }) {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
+  
   return (
     <>
       {token ? (

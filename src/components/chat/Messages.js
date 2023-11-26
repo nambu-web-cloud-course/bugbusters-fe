@@ -67,9 +67,7 @@ export default function Messages({ socket }) {
       if (res.data.success) {
         const commonTrades = res.data.data.filter(
           (trade) =>
-            trade.reqid == reqid &&
-            trade.userid === muserverid &&
-            trade.busterid === busterid
+            trade.reqid == reqid && trade.userid === muserverid && trade.busterid === busterid
         );
         setTrade(commonTrades);
       } else {
@@ -92,13 +90,11 @@ export default function Messages({ socket }) {
     }
   };
 
-  const payment = () => {
+  const payment = async () => {
     const uuid = uuidv4();
-
-    PortOne.requestPayment({
+    const data = {
       storeId: "store-35891247-52ee-4acc-a88c-8ff8e7b3691d",
       paymentId: `${uuid}`,
-      // 주문번호는 가맹점 서버에서 고유하게(unique)채번하여 DB에 저장해주세요
       orderName: "버그버스터즈_결제창",
       isTestChannel: true,
       totalAmount: finalprice,
@@ -113,21 +109,26 @@ export default function Messages({ socket }) {
       currency: "CURRENCY_KRW",
       pgProvider: "PG_PROVIDER_KAKAOPAY",
       payMethod: "EASY_PAY",
-    });
-    PortOne.requestIssueBillingKey({
+    };
+    const callback = (res) => {
+      if(res.data.success) alert("결제 성공")
+      else alert("결제 실패")
+    };
+    await PortOne.requestPayment(data, callback);
+    await PortOne.requestIssueBillingKey({
       issueName: "CREATE_BILLING_KEY",
     });
   };
 
   function sortMessagesByDate(messages) {
-    return messages.sort(
-      (a, b) => parseInt(a.createdAt) - parseInt(b.createdAt)
-    );
+    return messages.sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   }
 
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     socket.on("receive_message", (data) => {
+      data.price && setFinalPrice(data.price);
+
       setMessagesReceived((state) => [
         ...state,
         {
@@ -145,7 +146,7 @@ export default function Messages({ socket }) {
   useEffect(() => {
     // Last 100 messages sent in the chat room (fetched from the db in backend)
     socket.on("last_100_messages", (last100Messages) => {
-      console.log("Last 100 messages:", JSON.parse(last100Messages));
+      // console.log("Last 100 messages:", JSON.parse(last100Messages));
       last100Messages = JSON.parse(last100Messages);
       last100Messages = sortMessagesByDate(last100Messages);
       setMessagesReceived((state) => [...last100Messages, ...state]);
@@ -155,8 +156,7 @@ export default function Messages({ socket }) {
 
   // Scroll to the most recent message
   useEffect(() => {
-    messagesColumnRef.current.scrollTop =
-      messagesColumnRef.current.scrollHeight;
+    messagesColumnRef.current.scrollTop = messagesColumnRef.current.scrollHeight;
   }, [messagesRecieved]);
 
   useEffect(() => {
@@ -175,40 +175,30 @@ export default function Messages({ socket }) {
   return (
     <MessagesColumn ref={messagesColumnRef}>
       {messagesRecieved.map((msg, i) => (
-        <Message
-          key={i}
-          $isUser={msg.userid === userid}
-          $isOfficial={msg.userid === BUSTER_BOT}
-        >
-          <GapItems $col $left>
+        <Message key={i} $isUser={msg.userid === userid} $isOfficial={msg.userid === BUSTER_BOT}>
+          <GapItems $col $left $gap="1rem">
             {msg.userid === BUSTER_BOT && (
-              <GapItems>
-                <P $textColor="darkgreen" $fontWeight="700">
-                  {BUSTER_BOT}
-                </P>
-              </GapItems>
+              <P $textColor="darkgreen" $fontWeight="700">
+                {BUSTER_BOT}
+              </P>
             )}
             <P>{msg.message}</P>
-            {usertype === "C" &&
-              msg.message.includes("결제") &&
-              msg.userid === BUSTER_BOT && (
-                <Button $color="green" $size="lg" onClick={payment}>
-                  {finalprice}원 결제하기
-                </Button>
-              )}
-            {usertype === "C" &&
-              msg.message.includes("완료") &&
-              msg.userid === BUSTER_BOT && (
-                <Button
-                  $color="green"
-                  $size="lg"
-                  onClick={() => {
-                    navigate(`/review/${tradeid}`);
-                  }}
-                >
-                  리뷰 작성
-                </Button>
-              )}
+            {usertype === "C" && msg.message.includes("결제") && msg.userid === BUSTER_BOT && (
+              <Button $color="green" $size="lg" type="button" onClick={payment}>
+                {finalprice ? finalprice : finalprice}원 결제하기
+              </Button>
+            )}
+            {usertype === "C" && msg.message.includes("완료") && msg.userid === BUSTER_BOT && (
+              <Button
+                $color="green"
+                $size="lg"
+                onClick={() => {
+                  navigate(`/review/${tradeid}`);
+                }}
+              >
+                리뷰 작성
+              </Button>
+            )}
             <Span $textColor={msg.userid === userid ? "darkgreen" : "black"}>
               {formatDateTime(msg.createdAt)}
             </Span>
