@@ -33,8 +33,6 @@ export default function ChatList({ socket }) {
   const [busterprofile, setBusterProfile] = useState([]);
   const [newroom, setNewRoom] = useState("");
 
-
-
   const getChatRoom = async () => {
     const typeid = usertype === "B" ? "busterid" : "userid";
     const URL = `/chat?${typeid}=${userid}`;
@@ -116,7 +114,6 @@ export default function ChatList({ socket }) {
     getBusterProfile();
   }, [chatroom]);
 
-  console.log(chatroom)
   return (
     <>
       {token ? (

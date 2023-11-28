@@ -192,9 +192,9 @@ export default function Request() {
                             <Badge>
                               <PersonRoundedIcon fontSize="small" />
                               {item.gender === "F"
-                                ? "여자"
+                                ? "여성"
                                 : item.gender === "M"
-                                ? "남자"
+                                ? "남성"
                                 : "성별무관"}
                             </Badge>
                             <Badge>

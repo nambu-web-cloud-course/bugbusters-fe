@@ -81,7 +81,7 @@ export default function Header({ socket }) {
     const token = localStorage.getItem("token");
     setIsSignIn(token);
   }, [location.pathname]);
-
+  
   // useEffect(() => {
   //   const intervalId = setInterval(() => {
   //     getNewRoom();
