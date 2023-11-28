@@ -7,6 +7,20 @@ import formatDateTime from "../utils/formatDateTime";
 import api from "../api";
 import Badge from "../components/common/Badge";
 import GapItems from "../components/common/GapItems";
+import { styled } from "styled-components";
+
+const Unread = styled.span`
+position: absolute;
+top: -4px;
+left: 2px;
+transform: translateX(-50%);
+padding: 0.4rem;
+border-radius: 100rem;
+background-color: ${({ theme }) => theme.color.green};
+font-size: 1rem;
+color: white;
+z-index: 1;
+`;
 
 export default function ChatList({ socket }) {
   const userid = JSON.parse(localStorage.getItem("userid"));
@@ -17,6 +31,9 @@ export default function ChatList({ socket }) {
   const [userinfo, setUserInfo] = useState([]);
   const [request, setRequest] = useState([]);
   const [busterprofile, setBusterProfile] = useState([]);
+  const [newroom, setNewRoom] = useState("");
+
+
 
   const getChatRoom = async () => {
     const typeid = usertype === "B" ? "busterid" : "userid";
@@ -54,7 +71,9 @@ export default function ChatList({ socket }) {
       const busters = [];
       for (let i = 0; i < chatroom.length; i++) {
         if (chatroom[i] && chatroom[i].busterid) {
-          const res = await api.get(`/auth/buster?userid=${chatroom[i].busterid}`);
+          const res = await api.get(
+            `/auth/buster?userid=${chatroom[i].busterid}`
+          );
           if (res.data.success) {
             const data = res.data.data;
             busters.push(data);
@@ -97,6 +116,7 @@ export default function ChatList({ socket }) {
     getBusterProfile();
   }, [chatroom]);
 
+  console.log(chatroom)
   return (
     <>
       {token ? (
@@ -108,27 +128,32 @@ export default function ChatList({ socket }) {
                 {chatroom
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((room, idx) => (
-                    <Link
-                      to={`/chat/${room.room}`}
-                      key={room.room}
-                      onClick={() => handleList(room.room)}
-                    >
-                      <Container>
-                        <UserInfo
-                          room={room?.room}
-                          busterid={room?.busterid}
-                          userid={room?.userid}
-                          sido={userinfo[idx]?.sido}
-                          sigungu={userinfo[idx]?.sigungu}
-                          content={request[idx]?.content}
-                          price={request[idx]?.price}
-                          usertype={usertype}
-                          tradecount={busterprofile[idx]?.tradecount}
-                          profile={busterprofile[idx]?.profile}
-                        />
-                        <Span>{formatDateTime(room.createdAt)}</Span>
-                      </Container>
-                    </Link>
+                    <div style={{ position: "relative" }}>
+                      {
+                        usertype==="C" && !room.user_visit && <Unread />
+                      }
+                      <Link
+                        to={`/chat/${room.room}`}
+                        key={room.room}
+                        onClick={() => handleList(room.room)}
+                      >
+                        <Container>
+                          <UserInfo
+                            room={room?.room}
+                            busterid={room?.busterid}
+                            userid={room?.userid}
+                            sido={userinfo[idx]?.sido}
+                            sigungu={userinfo[idx]?.sigungu}
+                            content={request[idx]?.content}
+                            price={request[idx]?.price}
+                            usertype={usertype}
+                            tradecount={busterprofile[idx]?.tradecount}
+                            profile={busterprofile[idx]?.profile}
+                          />
+                          <Span>{formatDateTime(room.createdAt)}</Span>
+                        </Container>
+                      </Link>
+                    </div>
                   ))}
               </GapItems>
             ) : (

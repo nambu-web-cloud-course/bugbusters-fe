@@ -82,13 +82,13 @@ export default function Header({ socket }) {
     setIsSignIn(token);
   }, [location.pathname]);
 
-  useEffect(() => {
-    getNewRoom();
-    const intervalId = setInterval(() => {
-      getNewRoom();
-    }, 1500);
-    return () => clearInterval(intervalId);
-  }, []);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     getNewRoom();
+  //   }, 1000 * 60 * 5);
+  //   isSignIn && usertype === "C" && intervalId()
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   return (
     <StyledHeader usertype={usertype}>
