@@ -29,8 +29,6 @@ export default function CommonForm({
   const [showPassword, setShowPassword] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
 
-
-  
   const {
     register,
     watch,
