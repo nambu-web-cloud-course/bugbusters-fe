@@ -58,6 +58,9 @@ export default function Header({ socket }) {
     localStorage.removeItem("usertype");
     localStorage.removeItem("token");
     handleDropDown();
+
+    const token = localStorage.getItem("token");
+    !token && setIsSignIn(false)
   };
   // 드롭다운 메뉴 보이기
   const handleDropDown = () => {
@@ -79,17 +82,11 @@ export default function Header({ socket }) {
   useEffect(() => {
     // 유저 로그인 상태 체크
     const token = localStorage.getItem("token");
-    setIsSignIn(token);
+    token && setIsSignIn(true);
     if (usertype === "C") 
       getNewRoom();
   }, [location.pathname]);
   
-  useEffect(() => {
-    // 처음 마운트 되었을 때, 유저 로그인일 때 채팅방카운트 갱신
-    if (usertype === "C")
-      getNewRoom();
-  }, []);
-
   useEffect(() => {
     // chatting newroom count를 갱신하기 위함 (채팅방 생성 시)
     socket.on("newroom", (data) => {
