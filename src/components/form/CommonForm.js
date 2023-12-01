@@ -94,7 +94,7 @@ export default function CommonForm({
     try {
       const phoneNumber = parseInt(data.phone)
       const isPhoneExist = await api.get(`/auth/isexist?phone=${phoneNumber}`)
-      if (isPhoneExist.data.success) {
+      if (isPhoneExist.data.data) {
         alert("중복된 휴대폰 번호입니다.")
         return;
       }
