@@ -100,7 +100,6 @@ export default function Header({ socket }) {
     return () => socket.off("newroom");
   }, [socket]);
 
-
   return (
     <StyledHeader usertype={usertype}>
       <InnerHeader>
