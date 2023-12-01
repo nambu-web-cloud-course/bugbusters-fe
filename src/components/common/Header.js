@@ -80,15 +80,26 @@ export default function Header({ socket }) {
     // 유저 로그인 상태 체크
     const token = localStorage.getItem("token");
     setIsSignIn(token);
+    if (usertype === "C") 
+      getNewRoom();
   }, [location.pathname]);
   
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     getNewRoom();
-  //   }, 1000 * 60 * 5);
-  //   isSignIn && usertype === "C" && intervalId()
-  //   return () => clearInterval(intervalId);
-  // }, []);
+  useEffect(() => {
+    // 처음 마운트 되었을 때, 유저 로그인일 때 채팅방카운트 갱신
+    if (usertype === "C")
+      getNewRoom();
+  }, []);
+
+  useEffect(() => {
+    // chatting newroom count를 갱신하기 위함 (채팅방 생성 시)
+    socket.on("newroom", (data) => {
+      if (data.userid === userid) {
+        setNewRoom(data.newroom_cnt);
+      }
+    });
+    return () => socket.off("newroom");
+  }, [socket]);
+
 
   return (
     <StyledHeader usertype={usertype}>
