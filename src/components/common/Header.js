@@ -116,6 +116,9 @@ export default function Header({ socket }) {
                 <li>
                   <Link to="/trade-list">이용내역</Link>
                 </li>
+                <li>
+                    <Link to="/bugdic">벌레찾기</Link>
+                  </li>
               </>
             )}
           </Menu>

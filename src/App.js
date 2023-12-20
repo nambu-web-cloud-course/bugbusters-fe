@@ -18,7 +18,7 @@ import Chat from "./components/chat/Chat";
 import ChatList from "./pages/ChatList";
 import Review from "./pages/Review"
 import NotFound from "./pages/NotFound"
-
+import BugDic from "./pages/BugDic";
 
 const App = () => {
   return (
@@ -37,6 +37,7 @@ const App = () => {
               path="/request/:id"
               element={<RequestDetail socket={socket} />}
             />
+            <Route path="/bugdic" element={<BugDic/>} />
             <Route path="/chat" element={<ChatList socket={socket} />} />
             <Route path="/chat/:chatroom" element={<Chat socket={socket} />} />
             <Route path="/trade-list" element={<TradeList />} />
