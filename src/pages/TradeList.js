@@ -3,7 +3,8 @@ import Badge from "../components/common/Badge";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
-import { Span } from "../components/common/Text";
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import { Span, P } from "../components/common/Text";
 import Tabs from "../components/common/Tabs";
 import { useEffect, useState } from "react";
 import formatDateTime from "../utils/formatDateTime";
@@ -13,16 +14,16 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function TradeList() {
   const [selectedTab, setSelectedTab] = useState("PR");
+  const [trade, setTrade] = useState([]);
   const userid = JSON.parse(localStorage.getItem("userid"));
   const usertype = JSON.parse(localStorage.getItem("usertype"));
   const token = JSON.parse(localStorage.getItem("token"));
+  const [data, setData] = useState([]);
 
   const navigate = useNavigate();
   const handleTabSelect = (tab) => {
     setSelectedTab(tab);
   };
-
-  const [data, setData] = useState([]);
 
   // 무서버의 요청 데이터 가져오기
   const getReqData = async () => {
@@ -65,15 +66,37 @@ export default function TradeList() {
     }
   };
 
+  const getTrade = async () => {
+    const query = usertype === "B" ? `busterid=${userid}` : `userid=${userid}`;
+
+    try {
+      const res = await api.get(`/trade?${query}`);
+      if (res.data.success) {
+        const data = res.data.data;
+        const filteredData = data
+          .filter((item) => item.state === "CP")
+          .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        setTrade(filteredData);
+      } else {
+        console.log("Error getting trade");
+      }
+    } catch (err) {
+      console.log("Error getting trade", err);
+    }
+  };
+
   useEffect(() => {
     if (usertype === "B") {
       getChatList();
     } else getReqData();
   }, [selectedTab]);
 
-  const filteredData = data
-    ? data.filter((item) => item.state === selectedTab)
-    : [];
+  useEffect(() => {
+    selectedTab === "CP" && getTrade();
+  }, [selectedTab]);
+  console.log(trade);
+
+  const filteredData = data ? data.filter((item) => item.state === selectedTab) : [];
 
   return (
     <>
@@ -85,7 +108,7 @@ export default function TradeList() {
               <Tabs onSelectTab={handleTabSelect} />
               {filteredData && filteredData.length > 0 ? (
                 <GapItems $col $gap="1rem">
-                  {filteredData.map((item) => (
+                  {filteredData.map((item, idx) => (
                     <Link to={`/request/${item.id}`} key={item.id}>
                       <Container>
                         <p>{item.content}</p>
@@ -107,14 +130,25 @@ export default function TradeList() {
                             {item.price.toLocaleString()}
                           </Badge>
                         </GapItems>
-                        {usertype === "C" ? (
-                          <Span>{formatDateTime(item.createdAt)}</Span>
-                        ) : (
-                          <Span>
-                            {formatDateTime(item.createdAt)} 😨 작성자:{" "}
-                            {item.userid}
-                          </Span>
+                        {selectedTab === "CP" && (
+                          <GapItems $col $left $gap="0.5rem">
+                            <GapItems>
+                              <P $textColor="darkgreen">
+                                <CheckRoundedIcon fontSize="small"/>
+                              </P>
+                              <p>버스터 아이디: {trade[idx]?.busterid}</p>
+                            </GapItems>
+                            <GapItems>
+                              <P $textColor="darkgreen">
+                                <CheckRoundedIcon fontSize="small"/>
+                              </P>
+                              <p>최종 금액: {trade[idx]?.finalprice.toLocaleString()}원</p>
+                            </GapItems>
+                          </GapItems>
                         )}
+                        <Span>
+                          {formatDateTime(item.createdAt)} | 작성자: {item.userid}
+                        </Span>
                       </Container>
                     </Link>
                   ))}

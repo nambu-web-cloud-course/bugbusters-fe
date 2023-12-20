@@ -20,10 +20,11 @@ export default function SignUpDetail() {
       //   return;
       // }
       const isUserIDExist = await api.get(`/auth/isexist?userid=${data.userid}`);
-      if (isUserIDExist.data.success) {
+      if (isUserIDExist.data.data) {
         alert("중복된 아이디입니다.");
         return;
       }
+
       const res = await api.post("/auth/sign-up", data);
       if (res.data.success) {
         // usertype 무서버일 경우

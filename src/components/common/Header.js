@@ -58,6 +58,9 @@ export default function Header({ socket }) {
     localStorage.removeItem("usertype");
     localStorage.removeItem("token");
     handleDropDown();
+
+    const token = localStorage.getItem("token");
+    !token && setIsSignIn(false)
   };
   // 드롭다운 메뉴 보이기
   const handleDropDown = () => {
@@ -79,16 +82,20 @@ export default function Header({ socket }) {
   useEffect(() => {
     // 유저 로그인 상태 체크
     const token = localStorage.getItem("token");
-    setIsSignIn(token);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    getNewRoom();
-    const intervalId = setInterval(() => {
+    token && setIsSignIn(true);
+    if (usertype === "C") 
       getNewRoom();
-    }, 1500);
-    return () => clearInterval(intervalId);
-  }, []);
+  }, [location.pathname]);
+  
+  useEffect(() => {
+    // chatting newroom count를 갱신하기 위함 (채팅방 생성 시)
+    socket.on("newroom", (data) => {
+      if (data.userid === userid) {
+        setNewRoom(data.newroom_cnt);
+      }
+    });
+    return () => socket.off("newroom");
+  }, [socket]);
 
   return (
     <StyledHeader usertype={usertype}>
@@ -109,6 +116,9 @@ export default function Header({ socket }) {
                 <li>
                   <Link to="/trade-list">이용내역</Link>
                 </li>
+                <li>
+                    <Link to="/bugdic">벌레찾기</Link>
+                  </li>
               </>
             )}
           </Menu>
